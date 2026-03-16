@@ -13,7 +13,7 @@ const initialTutorProfileForm: TutorProfilePayload = {
     bio: "",
     school: "",
     availableTime: "",
-}
+};
 
 export function useTutorProfileForm(hasTutorProfile: boolean | null, role?: UserRole) {
     const dispatch = useAppDispatch();
@@ -30,14 +30,13 @@ export function useTutorProfileForm(hasTutorProfile: boolean | null, role?: User
         }
 
         if (hasTutorProfile === false) {
-            setFormValues(initialTutorProfileForm);
+            setFormValues({ ...initialTutorProfileForm });
             return;
         }
 
         if (hasTutorProfile !== true) {
             return;
         }
-
 
         let ignore = false;
 
@@ -59,7 +58,7 @@ export function useTutorProfileForm(hasTutorProfile: boolean | null, role?: User
                     bio: profile.bio ?? "",
                     school: profile.school ?? "",
                     availableTime: profile.availableTime ?? "",
-                })
+                });
             } catch (err) {
                 if (ignore) {
                     return;
@@ -68,59 +67,92 @@ export function useTutorProfileForm(hasTutorProfile: boolean | null, role?: User
                 if (err instanceof ApiError && err.status === 404) {
                     dispatch(setHasTutorProfile(false));
                     setFormValues({ ...initialTutorProfileForm });
+                    return;
                 }
 
-                setError(err instanceof Error ? err.message : "Khong the tai ho so gia su");
+                setError(err instanceof Error ? err.message : "Không thể tải hồ sơ gia sư");
             } finally {
                 if (!ignore) {
-                    setLoading(false);
+                    setLoadingProfile(false);
                 }
-            };
+            }
+        };
 
-            loadTutorProfile();
+        loadTutorProfile();
 
-            return () => {
-                ignore = true;
-            };
-        }
+        return () => {
+            ignore = true;
+        };
     }, [dispatch, hasTutorProfile, role]);
 
-    const handleChange =(event: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
 
         setFormValues((prev) => ({
-            ...prev, 
-            [name] : value,
-        }))
-    }
+            ...prev,
+            [name]: value,
+        }));
 
-    const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
+        setError("");
+        setSuccess("");
+    };
+
+    const resetForm = async () => {
+        setError("");
+        setSuccess("");
+
+        if (hasTutorProfile === true) {
+            try {
+                setLoadingProfile(true);
+                const profile = await tutorProfileApi.getMyTutorProfile();
+
+                setFormValues({
+                    experience: profile.experience ?? "",
+                    achievements: profile.achievements ?? "",
+                    teachingArea: profile.teachingArea ?? "",
+                    bio: profile.bio ?? "",
+                    school: profile.school ?? "",
+                    availableTime: profile.availableTime ?? "",
+                });
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "Không thể tải hồ sơ gia sư");
+            } finally {
+                setLoadingProfile(false);
+            }
+
+            return;
+        }
+
+        setFormValues({ ...initialTutorProfileForm });
+    };
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if(hasTutorProfile === null){
+        if (hasTutorProfile === null) {
             setError("Đang kiểm tra trạng thái hồ sơ, vui lòng thử lại sau.");
             return;
         }
 
         const hasEmptyField = Object.values(formValues).some((value) => !value.trim());
 
-        if(hasEmptyField){
+        if (hasEmptyField) {
             setError("Vui lòng nhập đầy đủ thông tin hồ sơ gia sư.");
             return;
         }
 
         const isUpdateMode = hasTutorProfile === true;
 
-        try{
+        try {
             setLoading(true);
             setError("");
             setSuccess("");
 
-            const result = isUpdateMode 
+            const result = isUpdateMode
                 ? await tutorProfileApi.updateTutorProfile(formValues)
                 : await tutorProfileApi.createTutorProfile(formValues);
 
-            if(!isUpdateMode){
+            if (!isUpdateMode) {
                 dispatch(setHasTutorProfile(true));
             }
 
@@ -128,29 +160,30 @@ export function useTutorProfileForm(hasTutorProfile: boolean | null, role?: User
                 typeof result === "string" && result.trim()
                     ? result
                     : isUpdateMode
-                      ? "Cap nhat ho so gia su thanh cong."
-                      : "Tao ho so gia su thanh cong."
+                      ? "Cập nhật hồ sơ gia sư thành công."
+                      : "Tạo hồ sơ gia sư thành công."
             );
-        } catch(err){
+        } catch (err) {
             setError(
                 err instanceof Error
                     ? err.message
                     : isUpdateMode
-                      ? "Cap nhat ho so gia su that bai."
-                      : "Tao ho so gia su that bai."
+                      ? "Cập nhật hồ sơ gia sư thất bại."
+                      : "Tạo hồ sơ gia sư thất bại."
             );
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return {
-        formValues, 
-        loading, 
-        loadingProfile, 
-        error, 
-        success, 
-        handleChange, 
-        handleSubmit, 
+        formValues,
+        loading,
+        loadingProfile,
+        error,
+        success,
+        handleChange,
+        handleSubmit,
+        resetForm,
     };
-} 
+}
