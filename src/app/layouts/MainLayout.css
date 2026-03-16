@@ -4,6 +4,21 @@
     flex-direction: column;
 }
 
+.main-layout__tutor-warning {
+    margin: 0;
+    padding: 8px 16px;
+    background: #fff8e1;
+    color: #8a6116;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid #f3dfaa;
+    border-bottom: 1px solid #f3dfaa;
+}
+
+.main-layout__tutor-warning-link{
+    text-decoration: underline;
+}
+
 .main-layout__content {
     flex: 1;
 }

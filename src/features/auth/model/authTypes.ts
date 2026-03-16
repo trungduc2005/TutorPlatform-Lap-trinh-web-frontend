@@ -18,4 +18,5 @@ export interface AuthState {
     user: AuthUser | null;
     isAuthenticated: boolean;
     status: AuthStatus;
+    hasTutorProfile: boolean | null;
 }

@@ -4,6 +4,17 @@ type UnauthorizedHandler = () => void;
 type AccessTokenProvider = () => string | null;
 type AccessTokenUpdater = (token: string) => void;
 
+export class ApiError extends Error {
+    status?: number;
+
+    constructor(message: string, status?: number) {
+        super(message);
+        this.name = "ApiError";
+        this.status = status;
+    }
+}
+
+
 type RetryableRequestConfig = InternalAxiosRequestConfig & {
     _retry?: boolean;
 };
@@ -123,7 +134,7 @@ async function refreshAccessToken(): Promise<string> {
             })
             .catch((error: AxiosError) => {
                 unauthorizedHandler?.();
-                throw new Error(getErrorMessage(error));
+                throw new ApiError(getErrorMessage(error), error.response?.status);
             })
             .finally(() => {
                 refreshPromise = null;
@@ -156,12 +167,12 @@ axiosClient.interceptors.response.use(
         const status = error.response?.status;
 
         if (!originalRequest) {
-            return Promise.reject(new Error(getErrorMessage(error)));
+            return Promise.reject(new ApiError(getErrorMessage(error), status));
         }
 
         if (status === 401 && normalizeUrl(requestUrl) === `${AUTH_PREFIX}/refresh`) {
             unauthorizedHandler?.();
-            return Promise.reject(new Error(getErrorMessage(error)));
+            return Promise.reject(new ApiError(getErrorMessage(error), status));
         }
 
         if (status === 401 && !originalRequest._retry && !isAuthEndpoint(requestUrl)) {
@@ -181,7 +192,7 @@ axiosClient.interceptors.response.use(
             }
         }
 
-        return Promise.reject(new Error(getErrorMessage(error)));
+        return Promise.reject(new ApiError(getErrorMessage(error), status));
     }
 );
 

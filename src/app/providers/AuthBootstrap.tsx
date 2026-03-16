@@ -1,6 +1,9 @@
 import { useEffect, type ReactNode } from "react";
 import { authApi } from "../../features/auth/api/authApi";
 import type { AuthUser } from "../../features/auth/model/authTypes";
+import { setHasTutorProfile } from "../../features/auth/model/authSlice";
+import { tutorProfileApi } from "../../features/profile/api/tutorProfileApi";
+import { ApiError } from "../../shared/api/axiosClient";
 import {
     logout,
     setAccessToken,
@@ -43,7 +46,7 @@ async function bootstrapSession() {
 
 function AuthBootstrap({ children }: { children: ReactNode }) {
     const dispatch = useAppDispatch();
-    const { status } = useAppSelector((state) => state.auth);
+    const { status, user } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
         const unregisterTokenProvider = registerAccessTokenProvider(() => getStoredAccessToken());
@@ -98,6 +101,48 @@ function AuthBootstrap({ children }: { children: ReactNode }) {
             ignore = true;
         };
     }, [dispatch, status]);
+
+    useEffect(() => {
+        if (status !== "AUTHENTICATED") {
+            dispatch(setHasTutorProfile(null));
+            return;
+        }
+
+        if (user?.role !== "TUTOR") {
+            dispatch(setHasTutorProfile(null));
+            return;
+        }
+
+        let ignore = false;
+
+        const checkTutorProfile = async () => {
+            try {
+                await tutorProfileApi.getMyTutorProfile();
+
+                if (!ignore) {
+                    dispatch(setHasTutorProfile(true));
+                }
+            } catch (error) {
+                if (ignore) {
+                    return;
+                }
+
+                if (error instanceof ApiError && error.status === 404) {
+                    dispatch(setHasTutorProfile(false));
+                    return;
+                }
+
+                dispatch(setHasTutorProfile(null));
+            }
+        };
+
+        checkTutorProfile();
+
+        return () => {
+            ignore = true;
+        };
+    }, [dispatch, status, user?.id, user?.role]);
+
 
     return <>{children}</>;
 }

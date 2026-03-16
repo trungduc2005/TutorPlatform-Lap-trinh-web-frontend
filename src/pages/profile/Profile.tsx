@@ -37,13 +37,15 @@ function Profile() {
                         {MENU_ITEMS.map((item) => (
                             <NavLink
                                 key={item.to}
-                                to={item.to}
+                                to={item.to === "" ? "/profile" : item.to}
+                                end={item.to === ""}
                                 className={({ isActive }) =>
                                     `profile-menu__item${isActive ? " profile-menu__item--active" : ""}`
                                 }
                             >
                                 {item.label}
                             </NavLink>
+
                         ))}
                     </div>
                 </aside>

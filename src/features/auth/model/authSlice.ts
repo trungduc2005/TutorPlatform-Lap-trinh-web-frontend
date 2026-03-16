@@ -16,7 +16,9 @@ const authSlice = createSlice({
             state.user = action.payload.user;
             state.isAuthenticated = true;
             state.status = "AUTHENTICATED";
+            state.hasTutorProfile = null;
         },
+
         setAccessToken(state, action: PayloadAction<string>) {
             state.token = action.payload;
         },
@@ -24,12 +26,19 @@ const authSlice = createSlice({
             state.user = action.payload;
             state.isAuthenticated = true;
             state.status = "AUTHENTICATED";
+            state.hasTutorProfile = null;
         },
+
         logout(state) {
             state.isAuthenticated = false;
             state.token = null;
             state.user = null;
             state.status = "UNAUTHENTICATED";
+            state.hasTutorProfile = null;
+        },
+
+        setHasTutorProfile(state, action: PayloadAction<boolean | null>) {
+            state.hasTutorProfile = action.payload;
         },
     },
 });
@@ -39,7 +48,9 @@ export const {
     setCredential,
     setAccessToken,
     setAuthenticatedUser,
+    setHasTutorProfile,
     logout,
 } = authSlice.actions;
+
 
 export default authSlice.reducer;

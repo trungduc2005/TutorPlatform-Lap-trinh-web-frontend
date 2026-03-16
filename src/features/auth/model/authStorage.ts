@@ -17,8 +17,10 @@ export function getInitialAuthState(): AuthState {
         user: authUser,
         isAuthenticated: false,
         status: "CHECKING",
+        hasTutorProfile: null,
     };
 }
+
 
 export function persistAuthSession(token: string) {
     accessToken = token;

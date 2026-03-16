@@ -23,7 +23,7 @@ function ProfileInfo() {
             <div className="profile-info__header">
                 <div>
                     <p className="profile-info__eyebrow">Thông tin cá nhân</p>
-                    <h3 className="profile-info__title">Cập nhật hồ sơ</h3>
+                    <h3 className="profile-info__title">Cập nhật thông tin cá nhân</h3>
                 </div>
             </div>
 
