@@ -59,7 +59,7 @@ function Register() {
         <>
             <section className="register-page">
                 <div className="register-card">
-                    <h1 className="register-title">Đăng ký làm gia sư</h1>
+                    <h1 className="register-title">Đăng ký tài khoản</h1>
 
                     <form className="register-form" onSubmit={handleSubmit}>
                         <div className="register-field">

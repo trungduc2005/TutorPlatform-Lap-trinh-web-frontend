@@ -1,4 +1,5 @@
-import type { AuthUser, Gender, UserRole } from "../model/authTypes";
+import type { Gender, UserRole } from "../../../shared/model/enums";
+import type { AuthUser } from "../model/authTypes";
 
 interface RegisterFields {
     fullName: string;

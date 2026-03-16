@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import type { UserRole } from "../../../features/auth/model/authTypes";
+import type { UserRole } from "../../../shared/model/enums";
 import { useAppSelector } from "../../store/hooks";
 
 function RequireRole({ allow }: { allow: UserRole[] }) {

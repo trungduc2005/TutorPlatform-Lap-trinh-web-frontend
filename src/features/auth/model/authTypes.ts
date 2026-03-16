@@ -1,7 +1,4 @@
-export type Gender = "MALE" | "FEMALE" | "OTHER";
-export type UserRole = "ADMIN" | "TUTOR" | "HIRER";
-export type UserStatus = "ACTIVE" | "INACTIVE";
-export type AuthStatus = "CHECKING" | "AUTHENTICATED" | "UNAUTHENTICATED";
+import type { Gender, UserRole, UserStatus, AuthStatus } from "../../../shared/model/enums";
 
 export interface AuthUser {
     id: number;

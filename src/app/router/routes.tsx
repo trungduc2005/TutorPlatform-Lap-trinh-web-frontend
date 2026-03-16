@@ -10,6 +10,9 @@ import Register from "../../pages/Register/Register";
 import RequireRole from "./guards/RequireRole";
 import ParentDashboard from "../../pages/ParentDashboard/ParentDashboard";
 import TutorDashboard from "../../pages/TutorDashboard/TutorDashboard";
+import Profile from "../../pages/profile/Profile";
+import ProfileInfo from "../../pages/profile/profileInfo/ProfileInfo";
+import TutorInfo from "../../pages/profile/TutorInfo/TutorInfo";
 
 
 const routes = [
@@ -37,6 +40,13 @@ const routes = [
                     {
                         element: <RequireRole allow={["HIRER"]} />,
                         children: [{ path: "parent/dashboard", element: <ParentDashboard /> }],
+                    },
+                    {
+                        path: "/profile", element: <Profile />,
+                        children: [
+                            { index: true, element: <ProfileInfo /> },
+                            { path: "tutor", element: <TutorInfo /> },
+                        ]
                     },
                 ],
             },

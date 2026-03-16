@@ -72,7 +72,7 @@ const axiosClient = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
-});
+}); 
 
 const refreshClient = axios.create({
     baseURL: BASE_URL,
