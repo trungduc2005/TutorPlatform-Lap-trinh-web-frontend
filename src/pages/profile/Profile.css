@@ -18,6 +18,8 @@
 }
 
 .profile-sidebar {
+    display: flex;
+    flex-direction: column;
     background: #ffffff;
     border-right: 1px solid #e2e8f0;
     padding: 24px 0;
@@ -75,6 +77,30 @@
     padding: 40px 16px;
     text-align: center;
     color: #475569;
+}
+
+.profile-logout {
+    margin-top: auto;
+    padding: 16px 12px 0;
+    border-top: 1px solid #edf2f7;
+}
+
+.profile-logout__button {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #4f6df3;
+    border-radius: 10px;
+    background: #455C77;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.profile-logout__button:hover {
+    background: #112E51;
+    transform: translateY(-1px);
 }
 
 @media (max-width: 900px) {

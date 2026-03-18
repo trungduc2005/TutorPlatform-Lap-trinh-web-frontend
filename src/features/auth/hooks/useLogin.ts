@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/store/hooks";
 import { authApi } from "../api/authApi";
 import type { LoginPayload } from "../api/authDTO";
-import { setCredential } from "../model/authSlice";
-import { persistAuthSession, persistAuthUser } from "../model/authStorage";
+import { logout, setCredential } from "../model/authSlice";
+import { clearAuthStorage, persistAuthSession, persistAuthUser } from "../model/authStorage";
 
 const initialLoginValues: LoginPayload = {
     username: "",
@@ -81,6 +81,19 @@ export function useLogin() {
         } finally {
             setLoading(false);
         }
+
+
+    };
+    const handleLogout = async () => {
+        try {
+            await authApi.logout();
+        } catch {
+
+        }
+
+        clearAuthStorage();
+        dispatch(logout());
+        navigate("/login", { replace: true })
     };
 
     return {
@@ -89,5 +102,6 @@ export function useLogin() {
         error,
         handleChange,
         handleSubmit,
+        handleLogout
     };
 }

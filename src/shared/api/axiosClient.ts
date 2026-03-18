@@ -1,4 +1,5 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
+import { env } from "../lib/env";
 
 type UnauthorizedHandler = () => void;
 type AccessTokenProvider = () => string | null;
@@ -23,7 +24,7 @@ interface RefreshTokenResponse {
     accessToken: string;
 }
 
-const BASE_URL = "http://localhost:8081";
+const BASE_URL = env.apiBaseUrl;
 const AUTH_PREFIX = "/public";
 const AUTH_ENDPOINTS = new Set([
     `${AUTH_PREFIX}/login`,

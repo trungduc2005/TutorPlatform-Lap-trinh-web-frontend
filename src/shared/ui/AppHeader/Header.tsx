@@ -1,32 +1,33 @@
 import { Link, NavLink } from "react-router-dom";
 
 import kittyLogo from "../../../assets/hello-kitty-logo.svg";
-import "./Header.css";
 import { useAppSelector } from "../../../app/store/hooks";
+import "./Header.css";
 
-const NAV_ITEMS_GUEST = [
+interface NavItem {
+    path: string;
+    label: string;
+}
+
+const NAV_ITEMS_GUEST: NavItem[] = [
     { path: "/", label: "Trang chủ" },
     { path: "/about", label: "Giới thiệu" },
     { path: "/classes", label: "Danh sách lớp mới" },
-    { path: "/profile", label: "Gia sư tiêu biểu" },
+    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
+    { path: "/chat", label: "Tin nhắn" }
 ];
 
-const NAV_ITEMS_TUTOR = [
-    
-]
+const NAV_ITEMS_TUTOR: NavItem[] = [];
 
-const NAV_ITEMS_HIRER = [
+const NAV_ITEMS_HIRER: NavItem[] = [];
 
-]
-
-
-function GuestTopActions(){
+function GuestTopActions() {
     return (
         <>
-            <Link to={"/register"}>
+            <Link to="/register">
                 <button className="top-btn top-btn--light">Đăng ký</button>
             </Link>
-            <Link to={"/login"}>
+            <Link to="/login">
                 <button className="top-btn top-btn--pale">Đăng nhập</button>
             </Link>
             <Link to="/contact" className="phone">
@@ -34,31 +35,43 @@ function GuestTopActions(){
                 <span className="phone-number">0123456789</span>
             </Link>
         </>
-    )
-};
+    );
+}
 
-function UserTopActions(){
+function UserTopActions() {
     const user = useAppSelector((state) => state.auth.user);
+    const initial = user?.fullName?.trim().charAt(0).toUpperCase() || "T";
 
     return (
         <>
-            <Link to={"/notification"} aria-label="Thông báo">
+            <Link to="/notification" className="top-action-link" aria-label="Thông báo">
                 <button type="button" className="notification">
-                    <span aria-hidden="true">🔔</span>
+                    <span className="notification__icon" aria-hidden="true">🔔</span>
                 </button>
             </Link>
 
-            <Link to={"/profile"}>
+            <Link to="/profile" className="top-action-link">
                 <button type="button" className="profile">
-                    {user?.fullName ?? "Tài khoản"}
+                    <span className="profile__avatar" aria-hidden="true">
+                        {initial}
+                    </span>
+                    <span className="profile__name">{user?.fullName ?? "Tài khoản"}</span>
                 </button>
             </Link>
         </>
-    )
+    );
 }
 
 function Header() {
-    const {status, user} = useAppSelector((state) => state.auth);
+    const { status, user } = useAppSelector((state) => state.auth);
+
+    const navItems =
+        user?.role === "TUTOR" && NAV_ITEMS_TUTOR.length > 0
+            ? NAV_ITEMS_TUTOR
+            : user?.role === "HIRER" && NAV_ITEMS_HIRER.length > 0
+                ? NAV_ITEMS_HIRER
+                : NAV_ITEMS_GUEST;
+
     return (
         <header className="site-header">
             <div className="topbar">
@@ -67,12 +80,9 @@ function Header() {
                         <img className="brand-logo" src={kittyLogo} alt="Logo" />
                         <span className="brand-name">Nhóm 5</span>
                     </div>
+
                     <div className="top-actions">
-                        {status === "AUTHENTICATED" && user ? (
-                            <UserTopActions/>
-                        ) : (
-                            <GuestTopActions/>
-                        )}
+                        {status === "AUTHENTICATED" && user ? <UserTopActions /> : <GuestTopActions />}
                     </div>
                 </div>
             </div>
@@ -80,7 +90,7 @@ function Header() {
             <div className="navbar">
                 <div className="container navbar-inner">
                     <nav className="header-nav" aria-label="Điều hướng chính">
-                        {NAV_ITEMS_GUEST.map((item) => (
+                        {navItems.map((item) => (
                             <NavLink
                                 key={item.path}
                                 to={item.path}

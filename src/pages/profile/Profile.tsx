@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../app/store/hooks";
+import { useLogin } from "../../features/auth/hooks/useLogin";
 import "./profile.css";
 
 const MENU_ITEMS_TUTOR = [
@@ -16,6 +17,10 @@ function Profile() {
     const user = useAppSelector((state) => state.auth.user);
     const location = useLocation();
     const MENU_ITEMS = (user?.role === "TUTOR" ? MENU_ITEMS_TUTOR : MENU_ITEMS_GUEST);
+
+    const {
+        handleLogout
+    } = useLogin();
 
     if (!user) {
         return <div className="profile-empty">Không có thông tin người dùng</div>;
@@ -47,6 +52,12 @@ function Profile() {
                             </NavLink>
 
                         ))}
+                    </div>
+
+                    <div className="profile-logout">
+                        <button type="button" className="profile-logout__button" onClick={handleLogout}>
+                            Đăng xuất
+                        </button>
                     </div>
                 </aside>
 
