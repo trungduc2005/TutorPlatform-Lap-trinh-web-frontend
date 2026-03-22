@@ -14,6 +14,7 @@ import Profile from "../../pages/profile/Profile";
 import ProfileInfo from "../../pages/profile/profileInfo/ProfileInfo";
 import TutorInfo from "../../pages/profile/TutorInfo/TutorInfo";
 import Chat from "../../pages/Chat/Chat";
+import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
 
 
 const routes = [
@@ -49,7 +50,8 @@ const routes = [
                             { path: "tutor", element: <TutorInfo /> },
                         ]
                     },
-                    { path: "chat", element: <Chat /> }
+                    { path: "chat", element: <Chat /> },
+                    { path: "classroom-calling", element: <ClassroomCallingPage />},
                 ],
             },
         ],

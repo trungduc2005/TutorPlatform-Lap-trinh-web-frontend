@@ -14,7 +14,8 @@ const NAV_ITEMS_GUEST: NavItem[] = [
     { path: "/about", label: "Giới thiệu" },
     { path: "/classes", label: "Danh sách lớp mới" },
     { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
-    { path: "/chat", label: "Tin nhắn" }
+    { path: "/chat", label: "Tin nhắn" },
+    { path: "/classroom-calling", label: "Phòng học Online"}
 ];
 
 const NAV_ITEMS_TUTOR: NavItem[] = [];
