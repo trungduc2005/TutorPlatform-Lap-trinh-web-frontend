@@ -1,7 +1,7 @@
 function ClassListing(){
     return(
         <>
-            ClassListing
+            Class Listing
         </>
     )
 }
