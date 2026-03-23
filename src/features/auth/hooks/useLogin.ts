@@ -24,7 +24,11 @@ function validateLoginForm(values: LoginPayload): string {
 }
 
 function getRedirectPath(role: string): string {
-    return role === "TUTOR" ? "/tutor/dashboard" : "/parent/dashboard";
+    if(role === "TUTOR")
+        return "/tutor/dashboard";
+    else if(role === "HIRER")
+        return "/parent/dashboard";
+    return "/admin/admin-home";
 }
 
 export function useLogin() {
@@ -75,6 +79,8 @@ export function useLogin() {
                 })
             );
 
+            console.log("data.userResponse: ",data.userResponse);
+        
             navigate(getRedirectPath(data.userResponse.role));
         } catch (err) {
             setError(err instanceof Error ? err.message : "Login failed");

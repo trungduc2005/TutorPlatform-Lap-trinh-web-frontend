@@ -10,11 +10,18 @@ import Register from "../../pages/Register/Register";
 import RequireRole from "./guards/RequireRole";
 import ParentDashboard from "../../pages/ParentDashboard/ParentDashboard";
 import TutorDashboard from "../../pages/TutorDashboard/TutorDashboard";
-import Profile from "../../pages/profile/Profile";
-import ProfileInfo from "../../pages/profile/profileInfo/ProfileInfo";
-import TutorInfo from "../../pages/profile/TutorInfo/TutorInfo";
+import Profile from "../../pages/Profile/Profile";
+import ProfileInfo from "../../pages/Profile/ProfileInfo/ProfileInfo";
+import TutorInfo from "../../pages/Profile/TutorInfo/TutorInfo";
 import Chat from "../../pages/Chat/Chat";
 import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
+import { Children } from "react";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminHome from "../../pages/AdminPages/AdminHome";
+import NotificationMana from "../../pages/AdminPages/NotitficationMana";
+import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
+import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana";
+import PaymentMana from "../../pages/AdminPages/PaymentMana";
 
 
 const routes = [
@@ -55,6 +62,34 @@ const routes = [
                 ],
             },
         ],
+    },
+    {
+        path: "/admin",
+        element: <RequireAuth/>,
+        children: [
+            {
+                element: <RequireRole allow={["ADMIN"]} />,
+                children: [
+                    {   
+                        element: <AdminLayout/>,
+                        children: [
+                            { index: true, element: <AdminHome /> },
+                            { path: "admin-home", element: <AdminHome /> },
+                            { path: "register-class-management", element: <RegisterClassMana /> },
+                            { path: "unregister-class-management", element: <UnregisterClassMana /> },
+                            { path: "payment-management", element: <PaymentMana /> },
+                            { path: "notification-management", element: <NotificationMana /> },
+                            { 
+                                path: "profile", element: <Profile />,
+                                children: [
+                                    {index: true, element: <ProfileInfo/>},
+                                ]
+                            },
+                        ]
+                    }
+                ]
+            },
+        ]
     },
     {
         path: "*",
