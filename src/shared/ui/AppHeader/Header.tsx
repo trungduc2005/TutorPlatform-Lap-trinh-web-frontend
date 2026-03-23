@@ -40,7 +40,7 @@ function GuestTopActions() {
 
 function UserTopActions() {
     const user = useAppSelector((state) => state.auth.user);
-    const initial = user?.fullName?.trim().charAt(0).toUpperCase() || "T";
+    const initial = user?.avatarUrl?.trim() || "T";
 
     return (
         <>
@@ -52,9 +52,7 @@ function UserTopActions() {
 
             <Link to="/profile" className="top-action-link">
                 <button type="button" className="profile">
-                    <span className="profile__avatar" aria-hidden="true">
-                        {initial}
-                    </span>
+                    <img src={initial} alt=""  className="profile__avatar"/>
                     <span className="profile__name">{user?.fullName ?? "Tài khoản"}</span>
                 </button>
             </Link>
