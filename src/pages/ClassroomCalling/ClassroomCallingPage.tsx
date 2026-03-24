@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
-import {Card, Button, Space, Typography, Input, message, Divider} from "antd";
+import {useEffect, useMemo, useRef, useState} from "react";
+import {Card, Button, Space, Typography, message, Divider} from "antd";
 import {PhoneOutlined, ShareAltOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import { firestore } from "../../shared/lib/firebase";
 
