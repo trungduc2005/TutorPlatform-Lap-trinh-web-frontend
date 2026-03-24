@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../app/store/hooks";
 import { useLogin } from "../../features/auth/hooks/useLogin";
-import "./profile.css";
+import "./Profile.css"
 
 const MENU_ITEMS_TUTOR = [
     { to: "", label: "Thông tin cá nhân" },
