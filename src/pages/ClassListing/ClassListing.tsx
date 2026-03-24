@@ -3,7 +3,7 @@ import ClassFilter from "./ClassFilter";
 import "./ClassListing.css";
 import { useClassListing } from "../../features/classes/hooks/useClassListing";
 import type { SearchClassesParams } from "../../features/classes/api/classApi";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 
 function ClassListing(){

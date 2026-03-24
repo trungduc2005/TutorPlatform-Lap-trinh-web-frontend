@@ -1,5 +1,4 @@
-import {Form, Button, Select, Slider, Space} from "antd";
-import React from "react";
+import {Form, Button, Select, Slider} from "antd";
 import "./ClassFilter.css"
 import type { SearchClassesParams } from "../../features/classes/api/classApi";
 
