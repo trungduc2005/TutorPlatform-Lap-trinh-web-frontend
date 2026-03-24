@@ -7,15 +7,15 @@ import { useMemo, useState } from "react";
 
 
 function ClassListing(){
-    const [grade, setGrade] = useState<string | undefined>(undefined);
-
-    const params: SearchClassesParams = useMemo(
-        () => ({
-            subject: "",
-            gradeLevel: grade,
-        }),
-        [grade]
-    );
+    const [params, setParams] = useState<SearchClassesParams>({
+        subject: "",
+        gradeLevel: undefined,
+        minFee: undefined,
+        maxFee: undefined,
+        duration: undefined,
+        location: undefined,
+        page: 0
+    })
 
     const {classes, loading, error} = useClassListing(params);
     
@@ -26,7 +26,7 @@ function ClassListing(){
 
             <div className="class-layout">
                 <div className="filter-section">
-                    <ClassFilter grade={grade} setGrade={setGrade}></ClassFilter>
+                    <ClassFilter onSearch={setParams}></ClassFilter>
                 </div>
 
                 <div className="list-section">

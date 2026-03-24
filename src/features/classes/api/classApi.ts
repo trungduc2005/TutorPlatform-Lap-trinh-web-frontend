@@ -4,7 +4,9 @@ import { ClassItem } from "../../../pages/ClassListing/classTypes"
 export interface SearchClassesParams {
     subject?: string;
     gradeLevel?: string;
-    fee?: number;
+    minFee?: number;
+    maxFee?: number;
+    duration?: string;
     location?: string;
     page?:number;
     size?:number;
