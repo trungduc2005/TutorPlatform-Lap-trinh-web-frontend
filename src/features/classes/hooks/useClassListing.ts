@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { searchClass, type SearchClassResponse, type SearchClassesParams } from "../../features/classes/api/classApi";
-import { ClassItem } from "./classTypes";
+import { searchClass, type SearchClassResponse, type SearchClassesParams } from "../api/classApi";
+import type { ClassItem } from "../model/classTypes";
 
 export function useClassListing(initialParams?: SearchClassesParams){
     const [classes, setClasses] = useState<ClassItem[]>([]);

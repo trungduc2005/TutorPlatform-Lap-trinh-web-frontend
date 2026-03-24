@@ -1,5 +1,5 @@
 import axiosClient from"../../../shared/api/axiosClient"
-import { ClassItem } from "../../../pages/ClassListing/classTypes"
+import type { ClassItem } from "../model/classTypes"
 
 export interface SearchClassesParams {
     subject?: string;
