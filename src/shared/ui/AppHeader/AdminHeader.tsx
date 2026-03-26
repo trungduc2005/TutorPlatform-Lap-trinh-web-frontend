@@ -9,7 +9,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS_ADMIN: NavItem[] = [
-    { path: "/admin", label: "Trang chủ"},
+    { path: "/admin/admin-dashboard", label: "Trang chủ"},
     { path: "/admin/register-class-management", label: "Quản lý lớp học"},
     { path: "/admin/unregister-class-management", label: "Quản lý bài đăng"},
     { path: "/admin/payment-management", label: "Quản lý thanh toán"},
