@@ -1,6 +1,10 @@
 import type { AuthState, AuthUser } from "./authTypes";
 
-let accessToken: string | null = null;
+const ACCESS_TOKEN_KEY = "access_token";
+
+let accessToken: string | null =
+    localStorage.getItem(ACCESS_TOKEN_KEY);
+
 let authUser: AuthUser | null = null;
 
 export function getStoredAccessToken(): string | null {
@@ -24,6 +28,7 @@ export function getInitialAuthState(): AuthState {
 
 export function persistAuthSession(token: string) {
     accessToken = token;
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
 }
 
 export function persistAuthUser(user: AuthUser) {
@@ -33,4 +38,5 @@ export function persistAuthUser(user: AuthUser) {
 export function clearAuthStorage() {
     accessToken = null;
     authUser = null;
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
 }

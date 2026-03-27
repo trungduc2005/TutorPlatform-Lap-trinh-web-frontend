@@ -115,7 +115,12 @@ export default function TutorsList() {
 
           {/* Title */}
           <div className="mb-4 text-sm text-gray-600">
-            💠/ Gia sư tiêu biểu
+          <span onClick={() => navigate("/")}
+          className="text-blue-500 cursor-pointer hover:underline">
+          💠
+          </span>
+          <span className="text-gray-400">/</span>
+          <span className="text-gray-600"> Gia sư tiêu biểu </span>
           </div>
 
           {/* Grid */}

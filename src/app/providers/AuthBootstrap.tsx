@@ -3,7 +3,8 @@ import { authApi } from "../../features/auth/api/authApi";
 import type { AuthUser } from "../../features/auth/model/authTypes";
 import { setHasTutorProfile } from "../../features/auth/model/authSlice";
 import { tutorProfileApi } from "../../features/profile/api/tutorProfileApi";
-import { ApiError } from "../../shared/api/axiosClient";
+import { store } from "../store/store";
+
 import {
     logout,
     setAccessToken,
@@ -29,10 +30,13 @@ async function bootstrapSession() {
         bootstrapPromise = authApi
             .refresh()
             .then(async (refreshResponse) => {
-                persistAuthSession(refreshResponse.accessToken);
+                const token = refreshResponse.accessToken;
+                store.dispatch(setAccessToken(token));
+                persistAuthSession(token);
+                await new Promise(r => setTimeout(r, 0));
                 const user = await authApi.me();
                 return {
-                    token: refreshResponse.accessToken,
+                    token,
                     user,
                 };
             })
@@ -49,7 +53,11 @@ function AuthBootstrap({ children }: { children: ReactNode }) {
     const { status, user } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
-        const unregisterTokenProvider = registerAccessTokenProvider(() => getStoredAccessToken());
+        const unregisterTokenProvider = registerAccessTokenProvider(() => {
+                                            const token = store.getState().auth.token;
+
+                                                return token;
+                                        });
         const unregisterTokenUpdater = registerAccessTokenUpdater((token) => {
             persistAuthSession(token);
             dispatch(setAccessToken(token));
@@ -81,9 +89,9 @@ function AuthBootstrap({ children }: { children: ReactNode }) {
                     return;
                 }
 
+                dispatch(setAccessToken(token));
                 persistAuthSession(token);
                 persistAuthUser(user);
-                dispatch(setAccessToken(token));
                 dispatch(setAuthenticatedUser(user));
             } catch {
                 if (ignore) {

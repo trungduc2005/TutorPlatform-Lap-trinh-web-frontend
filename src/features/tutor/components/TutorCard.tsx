@@ -22,7 +22,7 @@ export default function TutorCard({ tutor, onClick }: Props) {
         <img
           src={tutor.avatarUrl || "/default-avatar.png"}
           alt={tutor.fullName}
-          className="w-full h-full object-cover hover:scale-105 transition duration-300"
+          className="w-full h-full object-cover transition duration-300"
         />
       </div>
 

@@ -1,6 +1,8 @@
 import axios from "axios";
+import { store } from "../../app/store/store";
 
 export const getMyClassApplications = async () => {
+  const token = store.getState().auth.token;
   const res = await axios.get(
     "http://localhost:8081/tutor/class-applications",
     {
@@ -8,8 +10,11 @@ export const getMyClassApplications = async () => {
         page: 0,
         size: 10,
       },
-      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
+
   return res.data;
 };

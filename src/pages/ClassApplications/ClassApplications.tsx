@@ -12,14 +12,21 @@ interface ClassApplication {
 export default function AcceptedClasses() {
   const [data, setData] = useState<ClassApplication[]>([]);
   const [loading, setLoading] = useState(true);
+  const statusColor = {
+    ACCEPTED: "text-green-600",
+    REJECTED: "text-red-600",
+    PENDING: "text-yellow-600",
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getMyClassApplications();
-        setData(res.content);
+        setData(res.items ?? []);
       } catch (err) {
         console.error(err);
-      }
+      } finally {
+          setLoading(false);
+          }
     };
     fetchData();
   }, []);
@@ -62,13 +69,7 @@ export default function AcceptedClasses() {
                   <div>
                     <p className="font-medium text-gray-700">Lớp ID: {item.classId}</p>
                     <p className="text-sm text-gray-500">Gia sư: {item.tutorName}</p>
-                    <p
-                      className={`text-sm ${
-                        item.classApplicationStatus === "ACCEPTED"
-                          ? "text-green-600"
-                          : "text-yellow-600"
-                      }`}
-                    >
+                    <p className={`text-sm font-medium ${statusColor[item.classApplicationStatus] || "text-gray-500"}`}>
                       {item.classApplicationStatus}
                     </p>
                   </div>
