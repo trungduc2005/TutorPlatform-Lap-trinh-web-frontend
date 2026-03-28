@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import type { StatisticsItem } from "../../../features/admin/model/statisticsType";
+import type { StatisticsItemType } from "../../../features/admin/model/statisticsType";
 import { adminApi } from "../../../features/admin/api/adminApi";
-import { Statistic } from "antd";
 import StatisticsChart from "./StatisticChart";
 
 export default function AdminDashboard() {
@@ -11,7 +10,7 @@ export default function AdminDashboard() {
     const [statItem, setStatItem] = useState<string>(currentItem);
 
     const [year, setYear] = useState<number>(currentYear);
-    const [statistics, setStatistics] = useState<StatisticsItem[]>([]);
+    const [statistics, setStatistics] = useState<StatisticsItemType[]>([]);
 
     const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setYear(parseInt(e.target.value));

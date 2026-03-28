@@ -19,7 +19,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import AdminHome from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import NotificationMana from "../../pages/AdminPages/NotitficationMana";
 import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
-import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana";
+import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";

@@ -1,0 +1,158 @@
+.unregistered-class-mana-page {
+    background: #f3f3f3;
+    min-height: 100vh;
+    padding: 24px 32px 40px;
+}
+
+.unregistered-class-mana-page__header {
+    display: flex;
+    align-items: center;
+    gap: 30%;
+    margin-bottom: 20px;
+}
+
+.unregistered-class-mana-page__header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #222;
+}
+
+.unregistered-class-mana-page__header p {
+    margin: 6px 0 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+}
+
+.unregistered-class-mana-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px 22px;
+    align-items: stretch;
+}
+
+.unregistered-class-card {
+    padding: 1px;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01);
+    min-height: 182px;
+    display: flex;
+    flex-direction: column;
+}
+
+.unregistered-class-card__code {
+    background: #0b7ac7;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 10px;
+    line-height: 1;
+    letter-spacing: 0.2px;
+}
+
+.unregistered-class-card h3 {
+    margin: 12px 10px 10px;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 700;
+    color: #222;
+    min-height: 20px;
+}
+
+.unregistered-class-card p {
+    margin: 0 10px 7px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #555;
+}
+
+.unregistered-class-card p strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.unregistered-class-card button {
+    margin: auto 10px 12px;
+    align-self: flex-start;
+    border: none;
+    background: #28a745;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.unregistered-class-card button:hover {
+    background: #218838;
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+
+.pagination button {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #f1f1f1;
+}
+
+.pagination button.active {
+    background: #f5f5f5;
+    color: #0b7ac7;
+    border-color: #d8d8d8;
+    font-weight: 700;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* optional: icon-like text spacing if you add icons before content */
+.unregistered-class-card .card-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+/* responsive */
+@media (max-width: 1200px) {
+    .unregistered-class-mana-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .unregistered-class-mana-page {
+        padding: 20px;
+    }
+
+    .unregistered-class-mana-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .unregistered-class-mana-grid {
+        grid-template-columns: 1fr;
+    }
+}
