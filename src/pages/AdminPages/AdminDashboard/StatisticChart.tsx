@@ -1,9 +1,9 @@
 import {ResponsiveContainer, XAxis, YAxis, Tooltip, Bar, CartesianGrid, Legend, ComposedChart, Line } from "recharts";
-import type { StatisticsItem } from "../../../features/admin/model/statisticsType";
+import type { StatisticsItemType } from "../../../features/admin/model/statisticsType";
 
 type Props = {
     title: string;
-    data: StatisticsItem[];
+    data: StatisticsItemType[];
 }
 
 const formatCurrency = (value: number) =>
