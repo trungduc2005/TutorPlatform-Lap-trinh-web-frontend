@@ -1,5 +1,5 @@
 import axiosClient from "../../../shared/api/axiosClient";
-import type {SearchClassType, StatisticsItemType } from "../model/statisticsType";
+import type {FilterOptionType, SearchClassType, StatisticsItemType } from "../model/statisticsType";
 
 
 export const adminApi = {
@@ -26,10 +26,24 @@ export const adminApi = {
     },
 
     //Unregistered Classes APIs
-    getUnregisteredClasses: async (page?: number, size?: number): Promise<SearchClassType> => {
+    getUnregisteredClasses: async (page?: number, size?: number, subjectId?: number, gradeId?: number, locationId?: number): Promise<SearchClassType> => {
         const res = await axiosClient.get("/public/search", {
-            params:{page, size},
+            params:{page, size, subjectId, gradeId, locationId},
         });
         return res.data;
-    }
+    },
+
+    //FilterOption APIs
+    getSubjectOption: async (): Promise<FilterOptionType[]> => {
+        const res = await axiosClient.get("/public/subject-option");
+        return res.data;
+    },
+    getGradeOption: async (): Promise<FilterOptionType[]> => {
+        const res = await axiosClient.get("/public/grade-option");
+        return res.data;
+    },
+    getLocationOption: async (): Promise<FilterOptionType[]> => {
+        const res = await axiosClient.get("/public/location-option");
+        return res.data;
+    },
 }
