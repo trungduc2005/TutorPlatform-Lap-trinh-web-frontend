@@ -1,0 +1,29 @@
+
+
+.class-listing-container {
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.class-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+}
+
+.filter-section {
+    background: #f5f7f6;
+    padding: 16px;
+    border-radius: 12px;
+    height: fit-content;
+}
+
+.list-section {
+    width: 100%;
+}
+
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
