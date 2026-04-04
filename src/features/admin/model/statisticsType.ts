@@ -32,3 +32,8 @@ export type SearchClassType = {
   totalItems: number;
   totalPages: number;
 }
+
+export type FilterOptionType = {
+  id: number;
+  name: string;
+}
