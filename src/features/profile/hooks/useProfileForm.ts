@@ -47,6 +47,16 @@ export function useProfileForm(user: AuthUser) {
         setSuccess("");
     };
 
+    const setAvatarUrl = (avatarUrl: string) => {
+        setFormValues((prev) => ({
+            ...prev,
+            avatarUrl,
+        }));
+        setError("");
+        setSuccess("");
+    };
+
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -74,5 +84,6 @@ export function useProfileForm(user: AuthUser) {
         handleChange,
         handleSubmit,
         resetForm,
+        setAvatarUrl,
     };
 }

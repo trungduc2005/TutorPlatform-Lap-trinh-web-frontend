@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/store/hooks";
 import { authApi } from "../api/authApi";
 import type { LoginPayload } from "../api/authDTO";
-import { setCredential } from "../model/authSlice";
-import { persistAuthSession, persistAuthUser } from "../model/authStorage";
+import { logout, setCredential } from "../model/authSlice";
+import { clearAuthStorage, persistAuthSession, persistAuthUser } from "../model/authStorage";
 
 const initialLoginValues: LoginPayload = {
     username: "",
@@ -24,7 +24,11 @@ function validateLoginForm(values: LoginPayload): string {
 }
 
 function getRedirectPath(role: string): string {
-    return role === "TUTOR" ? "/tutor/dashboard" : "/parent/dashboard";
+    if(role === "TUTOR")
+        return "/tutor/dashboard";
+    else if(role === "HIRER")
+        return "/parent/dashboard";
+    return "/admin/admin-home";
 }
 
 export function useLogin() {
@@ -75,12 +79,27 @@ export function useLogin() {
                 })
             );
 
+            console.log("data.userResponse: ",data.userResponse);
+        
             navigate(getRedirectPath(data.userResponse.role));
         } catch (err) {
             setError(err instanceof Error ? err.message : "Login failed");
         } finally {
             setLoading(false);
         }
+
+
+    };
+    const handleLogout = async () => {
+        try {
+            await authApi.logout();
+        } catch {
+
+        }
+
+        clearAuthStorage();
+        dispatch(logout());
+        navigate("/login", { replace: true })
     };
 
     return {
@@ -89,5 +108,6 @@ export function useLogin() {
         error,
         handleChange,
         handleSubmit,
+        handleLogout
     };
 }

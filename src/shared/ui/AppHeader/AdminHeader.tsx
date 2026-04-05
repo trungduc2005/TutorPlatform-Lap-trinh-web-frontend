@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-
-import kittyLogo from "../../../assets/hello-kitty-logo.svg";
 import { useAppSelector } from "../../../app/store/hooks";
+import kittyLogo from "../../../assets/hello-kitty-logo.svg";
 import "./Header.css";
 
 interface NavItem {
@@ -9,19 +8,15 @@ interface NavItem {
     label: string;
 }
 
-const NAV_ITEMS_GUEST: NavItem[] = [
-    { path: "/", label: "Trang chủ" },
-    { path: "/about", label: "Giới thiệu" },
-    { path: "/classes", label: "Danh sách lớp mới" },
-    { path: "/contract", label: "Hợp đồng"},
-    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
-    { path: "/chat", label: "Tin nhắn" },
-    { path: "/classroom-calling", label: "Phòng học Online"}
-];
-
-const NAV_ITEMS_TUTOR: NavItem[] = [];
-
-const NAV_ITEMS_HIRER: NavItem[] = [];
+const NAV_ITEMS_ADMIN: NavItem[] = [
+    { path: "/admin/admin-dashboard", label: "Trang chủ"},
+    //{ path: "/admin/register-class-management", label: "Quản lý lớp học"},
+    { path: "/admin/unregister-class-management", label: "Quản lý bài đăng"},
+    { path: "/admin/featured-tutor-management", label: "Quản lý gia sư nổi bật"},
+    { path: "/admin/payment-management", label: "Quản lý thanh toán"},
+    { path: "/admin/notification-management", label: "Quản lý thông báo"},
+    { path: "/admin/contract-management", label: "Quản lý hợp đồng"}
+]
 
 function GuestTopActions() {
     return (
@@ -42,19 +37,19 @@ function GuestTopActions() {
 
 function UserTopActions() {
     const user = useAppSelector((state) => state.auth.user);
-    const initial = user?.avatarUrl?.trim() || "T";
+    const initial = user?.fullName?.trim().charAt(0).toUpperCase() || "T";
 
     return (
         <>
-            <Link to="/notification" className="top-action-link" aria-label="Thông báo">
                 <button type="button" className="notification">
                     <span className="notification__icon" aria-hidden="true">🔔</span>
                 </button>
-            </Link>
 
-            <Link to="/profile" className="top-action-link">
+            <Link to="/admin/profile" className="top-action-link">
                 <button type="button" className="profile">
-                    <img src={initial} alt=""  className="profile__avatar"/>
+                    <span className="profile__avatar" aria-hidden="true">
+                        {initial}
+                    </span>
                     <span className="profile__name">{user?.fullName ?? "Tài khoản"}</span>
                 </button>
             </Link>
@@ -62,18 +57,13 @@ function UserTopActions() {
     );
 }
 
-function Header() {
+function AdminHeader() {
     const { status, user } = useAppSelector((state) => state.auth);
 
-    const navItems =
-        user?.role === "TUTOR" && NAV_ITEMS_TUTOR.length > 0
-            ? NAV_ITEMS_TUTOR
-            : user?.role === "HIRER" && NAV_ITEMS_HIRER.length > 0
-                ? NAV_ITEMS_HIRER
-                : NAV_ITEMS_GUEST;
+    const navItems = NAV_ITEMS_ADMIN;
 
     return (
-        <header className="site-header select-none">
+        <header className="site-header">
             <div className="topbar">
                 <div className="container topbar-inner">
                     <div className="brand">
@@ -89,7 +79,15 @@ function Header() {
 
             <div className="navbar">
                 <div className="container navbar-inner">
-                    <nav className="header-nav" aria-label="Điều hướng chính">
+                    <nav 
+                        className="header-nav" aria-label="Điều hướng chính"
+                        style={{
+                            display: "flex",
+                            gap: 20,
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                        }}
+                    >
                         {navItems.map((item) => (
                             <NavLink
                                 key={item.path}
@@ -109,4 +107,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default AdminHeader;

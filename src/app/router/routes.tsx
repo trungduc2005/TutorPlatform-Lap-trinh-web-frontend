@@ -10,9 +10,19 @@ import Register from "../../pages/Register/Register";
 import RequireRole from "./guards/RequireRole";
 import ParentDashboard from "../../pages/ParentDashboard/ParentDashboard";
 import TutorDashboard from "../../pages/TutorDashboard/TutorDashboard";
-import Profile from "../../pages/profile/Profile";
-import ProfileInfo from "../../pages/profile/profileInfo/ProfileInfo";
-import TutorInfo from "../../pages/profile/TutorInfo/TutorInfo";
+import Profile from "../../pages/ProfilePage/Profile";
+import ProfileInfo from "../../pages/ProfilePage/ProfileInfoPage/ProfileInfo";
+import TutorInfo from "../../pages/ProfilePage/TutorInfo/TutorInfo";
+import Chat from "../../pages/Chat/Chat";
+import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
+import AdminLayout from "../layouts/AdminLayout";
+import NotificationMana from "../../pages/AdminPages/NotitficationMana";
+import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
+import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
+import PaymentMana from "../../pages/AdminPages/PaymentMana";
+import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
+import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
+import ContractMana from "../../pages/AdminPages/ContractMana";
 
 
 const routes = [
@@ -48,9 +58,41 @@ const routes = [
                             { path: "tutor", element: <TutorInfo /> },
                         ]
                     },
+                    { path: "chat", element: <Chat /> },
+                    { path: "classroom-calling", element: <ClassroomCallingPage />},
                 ],
             },
         ],
+    },
+    {
+        path: "/admin",
+        element: <RequireAuth/>,
+        children: [
+            {
+                element: <RequireRole allow={["ADMIN"]} />,
+                children: [
+                    {   
+                        element: <AdminLayout/>,
+                        children: [
+                            { index: true, element: <AdminDashboard /> },
+                            { path: "admin-dashboard", element: <AdminDashboard /> },
+                            { path: "register-class-management", element: <RegisterClassMana /> },
+                            { path: "unregister-class-management", element: <UnregisterClassMana /> },
+                            { path: "payment-management", element: <PaymentMana /> },
+                            { path: "notification-management", element: <NotificationMana /> },
+                            { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
+                            { path: "contract-management", element: <ContractMana /> },
+                            { 
+                                path: "profile", element: <Profile />,
+                                children: [
+                                    {index: true, element: <ProfileInfo/>},
+                                ]
+                            },
+                        ]
+                    }
+                ]
+            },
+        ]
     },
     {
         path: "*",

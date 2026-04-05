@@ -1,0 +1,113 @@
+.class-filter-form {
+  background: #f8f8f8;
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid #eeeeee;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.class-filter-form .ant-form-item {
+  margin-bottom: 18px;
+}
+
+.class-filter-form .ant-form-item-label > label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f3a4a;
+}
+
+.class-filter-form .ant-select {
+  width: 100%;
+}
+
+.class-filter-form .ant-select-selector {
+  height: 46px !important;
+  border-radius: 12px !important;
+  border: 1px solid #d9d9d9 !important;
+  box-shadow: none !important;
+  background: #ffffff !important;
+  display: flex;
+  align-items: center;
+  padding: 0 14px !important;
+}
+
+.class-filter-form .ant-select-selection-placeholder {
+  color: #b8b8b8 !important;
+  font-size: 15px;
+}
+
+.class-filter-form .ant-select-selection-item {
+  font-size: 15px;
+  color: #333;
+}
+
+.class-filter-form .ant-slider {
+  margin: 12px 4px 8px;
+}
+
+.class-filter-form .ant-slider-rail {
+  background: #d9d9d9;
+  height: 6px;
+}
+
+.class-filter-form .ant-slider-track {
+  background: #1677ff;
+  height: 6px;
+}
+
+.class-filter-form .ant-slider-handle::after {
+  width: 14px;
+  height: 14px;
+  inset-inline-start: -4px;
+  inset-block-start: -4px;
+  box-shadow: 0 0 0 2px #1677ff;
+}
+
+.class-filter-form .ant-space {
+  width: 100%;
+}
+
+.class-filter-form .ant-space-item {
+  width: 100%;
+}
+
+.class-filter-form .ant-btn {
+  height: 44px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.class-filter-form .ant-btn-primary {
+  width: 130px;
+  background: #1677ff;
+  border-color: #1677ff;
+  box-shadow: 0 8px 18px rgba(22, 119, 255, 0.2);
+}
+
+.class-filter-form .ant-btn-primary:hover {
+  background: #4096ff !important;
+  border-color: #4096ff !important;
+}
+
+.class-filter-form .ant-btn-default {
+  width: 130px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+}
+
+.class-filter-form .ant-btn-default:hover {
+  color: #1677ff !important;
+  border-color: #1677ff !important;
+}
+
+.class-filter-form .filter-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.class-filter-form .fee-filter {
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
