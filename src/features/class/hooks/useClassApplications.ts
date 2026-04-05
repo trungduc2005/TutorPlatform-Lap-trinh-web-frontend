@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyClassApplications } from "../api/classApi";
+import { getMyClassApplications } from "../api/classApplicationsApi";
 import { mapClassApplication, ClassApplication } from "../model/classTypes";
 
 export const useClassApplications = () => {
