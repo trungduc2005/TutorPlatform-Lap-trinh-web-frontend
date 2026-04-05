@@ -44,7 +44,7 @@ export default function TutorCard({ tutor, onClick }: Props) {
             📅 Kinh nghiệm: {tutor.experience}
           </p>
           <p>
-            📍Địa chỉ: {tutor.teaching_area}
+            📍Địa chỉ: {tutor.teachingArea}
           </p>
           <p>
             ⏰ Thời gian: {tutor.availableTime}
