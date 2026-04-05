@@ -22,7 +22,7 @@ import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/Un
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
-import ContractMana from "../../pages/AdminPages/ContractMana";
+import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 
 
 const routes = [

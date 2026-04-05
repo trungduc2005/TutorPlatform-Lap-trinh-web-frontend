@@ -21,6 +21,8 @@ export type UnregisteredClassType = {
   fee: number;
   requirements: string;
   note: string;
+  studentGender: string;
+  studentDescription: string;
   createdById: number;
   createdByName: string;
 };

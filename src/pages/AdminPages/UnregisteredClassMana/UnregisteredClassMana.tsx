@@ -254,6 +254,15 @@ export default function UnregisteredClassMana() {
                                     <span className="label">Người tạo</span>
                                     <span className="value">{selectedClass.createdByName}</span>
                                 </div>
+                                <div className="class-detail__item">
+                                    <span className="label">Giới tính học viên</span>
+                                    <span className="value">{(selectedClass.studentGender == "MALE") ? "Nam" : "Nữ"}</span>
+                                </div>
+
+                                <div className="class-detail__item">
+                                    <span className="label">Học lực học viên</span>
+                                    <span className="value">{selectedClass.studentDescription}</span>
+                                </div>
                             </div>
                             <div className="class-detail__section">
                                 <h3>Yêu cầu</h3>
