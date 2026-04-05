@@ -16,7 +16,6 @@ import TutorInfo from "../../pages/ProfilePage/TutorInfo/TutorInfo";
 import Chat from "../../pages/Chat/Chat";
 import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
 import AdminLayout from "../layouts/AdminLayout";
-import AdminHome from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import NotificationMana from "../../pages/AdminPages/NotitficationMana";
 import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
 import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
