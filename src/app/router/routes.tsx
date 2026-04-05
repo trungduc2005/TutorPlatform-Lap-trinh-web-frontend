@@ -23,7 +23,6 @@ import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/Un
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
-import ContractMana from "../../pages/AdminPages/ContractMana";
 import TutorsList from "../../pages/TutorsList/TutorsList";
 import Contract from "../../pages/Contract/Contract";
 import ClassApplications from "../../pages/ClassApplications/ClassApplications";
@@ -31,6 +30,7 @@ import TutorDetail from "../../pages/TutorDetail/TutorDetail";
 import HireTutor from "../../pages/HireTutor/HireTutor";
 import HirerClassManagement from "../../pages/HirerClassManagement/HirerClassManagement";
 import HirerApplicationManagement from "../../pages/HirerApplicationManagement/HirerApplicationManagement";
+import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 
 const routes = [
     {
