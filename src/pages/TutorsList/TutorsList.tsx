@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TutorCard from "../../features/tutor/components/TutorCard";
-import { getFeaturedTutors } from "../../shared/api/tutorApi";
-import { mapTutor } from "../../shared/api/tutorMapper";
+import { useTutorList } from "../../features/tutor/hooks/useTutorList";
 
 export default function TutorsList() {
   const navigate = useNavigate();
+
+  const { tutors, loading, error } = useTutorList();
 
   const [block, setBlock] = useState(0);
   const pagesPerBlock = 4;
@@ -13,19 +14,9 @@ export default function TutorsList() {
   const itemsPerPage = 8;
   const [page, setPage] = useState(1);
 
-  const [tutors, setTutors] = useState<ReturnType<typeof mapTutor>[]>([]);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
-//API
-  useEffect(() => {
-    const fetchData = async () => {
-        const data = await getFeaturedTutors();
-        setTutors(data.map(mapTutor));
-    };
-
-    fetchData();
-  }, []);
-
-//total pages
   const totalPages = Math.ceil(tutors.length / itemsPerPage);
 
   const currentData = tutors.slice(
@@ -33,7 +24,6 @@ export default function TutorsList() {
     page * itemsPerPage
   );
 
-//pagination
   const renderPagination = () => {
     const pages = [];
 
@@ -113,7 +103,6 @@ export default function TutorsList() {
       <div className="bg-gray-200 min-h-screen py-10 select-none">
         <div className="max-w-5xl mx-auto px-4">
 
-          {/* Title */}
           <div className="mb-4 text-sm text-gray-600">
           <span onClick={() => navigate("/")}
           className="text-blue-500 cursor-pointer hover:underline">
@@ -123,7 +112,6 @@ export default function TutorsList() {
           <span className="text-gray-600"> Gia sư tiêu biểu </span>
           </div>
 
-          {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 justify-items-center">
             {currentData.map((tutor) => (
               <TutorCard
@@ -134,7 +122,6 @@ export default function TutorsList() {
             ))}
           </div>
 
-          {/* Pagination */}
           <div className="flex justify-center mt-6 gap-2">
             {renderPagination()}
           </div>

@@ -23,7 +23,10 @@ import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana";
-
+import TutorsList from "../../pages/TutorsList/TutorsList";
+import Contract from "../../pages/Contract/Contract";
+import ClassApplications from "../../pages/ClassApplications/ClassApplications";
+import TutorDetail from "../../pages/TutorDetail/TutorDetail";
 
 const routes = [
     {
@@ -33,6 +36,9 @@ const routes = [
             { index: true, element: <Home /> },
             { path: "about", element: <About /> },
             { path: "classes", element: <ClassListing /> },
+            { path: "featured-tutors", element: <TutorsList /> },
+            { path: "contract", element: <Contract /> },
+            { path: "tutors/:id", element: <TutorDetail /> },
             {
                 element: <RequireGuest />,
                 children: [
@@ -45,7 +51,10 @@ const routes = [
                 children: [
                     {
                         element: <RequireRole allow={["TUTOR"]} />,
-                        children: [{ path: "tutor/dashboard", element: <TutorDashboard /> }],
+                        children: [
+                            { path: "tutor/dashboard", element: <TutorDashboard /> },
+                            { path: "tutor/class-applications", element: <ClassApplications /> }
+                        ],
                     },
                     {
                         element: <RequireRole allow={["HIRER"]} />,
