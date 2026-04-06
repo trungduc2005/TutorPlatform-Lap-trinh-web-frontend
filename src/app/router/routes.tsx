@@ -3,6 +3,7 @@ import Error404 from "../../pages/ErrorPages/Error404"
 import Home from "../../pages/Home/Home"
 import About from "../../pages/About/About";
 import ClassListing from "../../pages/ClassListing/ClassListing";
+import ClassDetail from "../../pages/ClassDetail/ClassDetail";
 import RequireGuest from "./guards/RequireGuest";
 import RequireAuth from "./guards/RequireAuth";
 import Login from "../../pages/Login/Login";
@@ -39,6 +40,7 @@ const routes = [
             { path: "featured-tutors", element: <TutorsList /> },
             { path: "contract", element: <Contract /> },
             { path: "tutors/:id", element: <TutorDetail /> },
+            { path: "class/:id", element: <ClassDetail /> },
             {
                 element: <RequireGuest />,
                 children: [
