@@ -16,11 +16,13 @@ import TutorInfo from "../../pages/ProfilePage/TutorInfo/TutorInfo";
 import Chat from "../../pages/Chat/Chat";
 import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
 import AdminLayout from "../layouts/AdminLayout";
-import AdminHome from "../../pages/AdminPages/AdminHome";
 import NotificationMana from "../../pages/AdminPages/NotitficationMana";
 import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
-import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana";
+import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
+import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
+import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
+import ContractMana from "../../pages/AdminPages/ContractMana";
 
 
 const routes = [
@@ -72,12 +74,14 @@ const routes = [
                     {   
                         element: <AdminLayout/>,
                         children: [
-                            { index: true, element: <AdminHome /> },
-                            { path: "admin-home", element: <AdminHome /> },
+                            { index: true, element: <AdminDashboard /> },
+                            { path: "admin-dashboard", element: <AdminDashboard /> },
                             { path: "register-class-management", element: <RegisterClassMana /> },
                             { path: "unregister-class-management", element: <UnregisterClassMana /> },
                             { path: "payment-management", element: <PaymentMana /> },
                             { path: "notification-management", element: <NotificationMana /> },
+                            { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
+                            { path: "contract-management", element: <ContractMana /> },
                             { 
                                 path: "profile", element: <Profile />,
                                 children: [

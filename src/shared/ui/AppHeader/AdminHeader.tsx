@@ -9,11 +9,13 @@ interface NavItem {
 }
 
 const NAV_ITEMS_ADMIN: NavItem[] = [
-    { path: "/admin", label: "Trang chủ"},
-    { path: "/admin/register-class-management", label: "Quản lý lớp học"},
+    { path: "/admin/admin-dashboard", label: "Trang chủ"},
+    //{ path: "/admin/register-class-management", label: "Quản lý lớp học"},
     { path: "/admin/unregister-class-management", label: "Quản lý bài đăng"},
+    { path: "/admin/featured-tutor-management", label: "Quản lý gia sư nổi bật"},
     { path: "/admin/payment-management", label: "Quản lý thanh toán"},
     { path: "/admin/notification-management", label: "Quản lý thông báo"},
+    { path: "/admin/contract-management", label: "Quản lý hợp đồng"}
 ]
 
 function GuestTopActions() {
@@ -77,7 +79,15 @@ function AdminHeader() {
 
             <div className="navbar">
                 <div className="container navbar-inner">
-                    <nav className="header-nav" aria-label="Điều hướng chính">
+                    <nav 
+                        className="header-nav" aria-label="Điều hướng chính"
+                        style={{
+                            display: "flex",
+                            gap: 20,
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                        }}
+                    >
                         {navItems.map((item) => (
                             <NavLink
                                 key={item.path}
