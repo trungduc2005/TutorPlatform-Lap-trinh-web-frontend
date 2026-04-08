@@ -1,0 +1,104 @@
+.account-page {
+    padding: 24px;
+    background: #f5f7fa;
+    min-height: auto;
+}
+
+.account-title {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.table-wrapper {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.account-table th {
+    background: #f0f2f5;
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.account-table td {
+    padding: 12px;
+    border-top: 1px solid #eee;
+    font-size: 14px;
+}
+
+.account-table tr:hover {
+    background: #fafafa;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status.active {
+    background: #e6f7ee;
+    color: #2ecc71;
+}
+
+.status.locked {
+    background: #fdecea;
+    color: #e74c3c;
+}
+
+.role {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.role.admin {
+    background: #fff4e5;
+    color: #fa8c16;
+}
+
+.role.user {
+    background: #e6f7ff;
+    color: #1890ff;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.action-btn.lock {
+    background: #ff4d4f;
+    color: white;
+}
+
+.action-btn.unlock {
+    background: #52c41a;
+    color: white;
+}
+
+.action-btn:hover {
+    opacity: 0.85;
+}
+
+.action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

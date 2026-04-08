@@ -31,6 +31,7 @@ import HireTutor from "../../pages/HireTutor/HireTutor";
 import HirerClassManagement from "../../pages/HirerClassManagement/HirerClassManagement";
 import HirerApplicationManagement from "../../pages/HirerApplicationManagement/HirerApplicationManagement";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
+import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
 
 const routes = [
     {
@@ -101,6 +102,7 @@ const routes = [
                             { path: "notification-management", element: <NotificationMana /> },
                             { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
                             { path: "contract-management", element: <ContractMana /> },
+                            { path: "account-management", element: <AccountMana /> },
                             { 
                                 path: "profile", element: <Profile />,
                                 children: [
