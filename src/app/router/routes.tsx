@@ -23,6 +23,7 @@ import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
+import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
 
 
 const routes = [
@@ -82,6 +83,7 @@ const routes = [
                             { path: "notification-management", element: <NotificationMana /> },
                             { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
                             { path: "contract-management", element: <ContractMana /> },
+                            { path: "account-management", element: <AccountMana /> },
                             { 
                                 path: "profile", element: <Profile />,
                                 children: [

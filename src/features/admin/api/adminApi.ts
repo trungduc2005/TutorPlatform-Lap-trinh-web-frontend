@@ -1,8 +1,20 @@
 import axiosClient from "../../../shared/api/axiosClient";
+import type { AccountType } from "../model/accountType";
 import type {FilterOptionType, SearchClassType, StatisticsItemType } from "../model/statisticsType";
 
 
 export const adminApi = {
+    //Account APIs
+    getAllAccounts: async (): Promise<AccountType[]> => {
+        const res = await axiosClient.get("/admin/accounts");
+        return res.data;
+    },
+
+    updateAccountStatus: async (accountId: number, newStatus: string): Promise<void> => {
+        const res = await axiosClient.put(`/admin/accounts/${accountId}`, { status: newStatus });
+        return res.data;
+    },
+
     // Statistics APIs
     getSubjectStats: async (year?: number): Promise<StatisticsItemType[]> => {
         const res = await axiosClient.get("/admin/statistics/subject", {
