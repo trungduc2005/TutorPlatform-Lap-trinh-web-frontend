@@ -1,10 +1,16 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Button, Breadcrumb, Spin, Empty } from 'antd';
+import { Button, Breadcrumb, Spin, Empty, Modal, Input, message as antMessage } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import type { ClassItem } from '../../features/classes/model/classTypes';
-import { searchClass } from '../../features/classes/api/classApi';
+import { searchClass, applyClass } from '../../features/classes/api/classApi';
+import 'leaflet/dist/leaflet.css';
 import './ClassDetail.css';
+
+type GeocodePoint = [number, number];
+
+const DEFAULT_MAP_CENTER: GeocodePoint = [21.028511, 105.804817];
 
 function ClassDetail() {
     const { id } = useParams<{ id: string }>();
@@ -12,6 +18,12 @@ function ClassDetail() {
     const [classData, setClassData] = useState<ClassItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+    const [applicationMessage, setApplicationMessage] = useState('');
+    const [submittingApplication, setSubmittingApplication] = useState(false);
+    const [mapCenter, setMapCenter] = useState<GeocodePoint>(DEFAULT_MAP_CENTER);
+    const [mapLoading, setMapLoading] = useState(false);
+    const [mapError, setMapError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchClassDetail = async () => {
@@ -39,7 +51,113 @@ function ClassDetail() {
         }
     }, [id]);
 
+    useEffect(() => {
+        const address = [classData?.locationName, classData?.locationCity]
+            .filter(Boolean)
+            .join(', ')
+            .trim();
+
+        if (!address) {
+            setMapCenter(DEFAULT_MAP_CENTER);
+            setMapError('Không có địa chỉ để hiển thị bản đồ');
+            return;
+        }
+
+        const controller = new AbortController();
+
+        const geocodeAddress = async () => {
+            try {
+                setMapLoading(true);
+                setMapError(null);
+
+                const query = encodeURIComponent(`${address}, Vietnam`);
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${query}`,
+                    {
+                        signal: controller.signal,
+                        headers: {
+                            'Accept-Language': 'vi',
+                        },
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Không thể tải dữ liệu bản đồ');
+                }
+
+                const result = await response.json() as Array<{ lat: string; lon: string }>;
+
+                if (!result.length) {
+                    setMapCenter(DEFAULT_MAP_CENTER);
+                    setMapError('Không tìm thấy vị trí chính xác cho địa chỉ này');
+                    return;
+                }
+
+                const lat = Number(result[0].lat);
+                const lon = Number(result[0].lon);
+
+                if (Number.isNaN(lat) || Number.isNaN(lon)) {
+                    throw new Error('Dữ liệu tọa độ không hợp lệ');
+                }
+
+                setMapCenter([lat, lon]);
+            } catch (err) {
+                if ((err as Error).name === 'AbortError') {
+                    return;
+                }
+                setMapCenter(DEFAULT_MAP_CENTER);
+                setMapError('Không thể định vị địa chỉ, đang hiển thị vị trí mặc định');
+            } finally {
+                setMapLoading(false);
+            }
+        };
+
+        void geocodeAddress();
+
+        return () => {
+            controller.abort();
+        };
+    }, [classData?.locationCity, classData?.locationName]);
+
     const classId = classData ? "E" + classData.id.toString().padStart(5, "0") : "";
+
+    const handleOpenApplyModal = () => {
+        setIsApplyModalOpen(true);
+    };
+
+    const handleCloseApplyModal = () => {
+        if (!submittingApplication) {
+            setIsApplyModalOpen(false);
+        }
+    };
+
+    const handleSubmitApplication = async () => {
+        if (!classData) {
+            return;
+        }
+
+        const trimmedMessage = applicationMessage.trim();
+
+        if (!trimmedMessage) {
+            antMessage.warning('Vui lòng nhập lời nhắn ứng tuyển');
+            return;
+        }
+
+        try {
+            setSubmittingApplication(true);
+            await applyClass({
+                classId: classData.id,
+                message: trimmedMessage,
+            });
+            antMessage.success('Ứng tuyển thành công');
+            setIsApplyModalOpen(false);
+            setApplicationMessage('');
+        } catch (err) {
+            antMessage.error(err instanceof Error ? err.message : 'Ứng tuyển thất bại');
+        } finally {
+            setSubmittingApplication(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -141,12 +259,73 @@ function ClassDetail() {
                     </div>
 
                     <div className="detail-actions">
-                        <Button type="primary" size="large" className="register-btn">
-                            Đăng ký nhân lớp
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="register-btn"
+                            onClick={handleOpenApplyModal}
+                        >
+                            Đăng ký nhận lớp
                         </Button>
                     </div>
                 </div>
+
+                <aside className="detail-map-panel">
+                    <h3>Bản đồ lớp học</h3>
+                    <p className="map-address">
+                        {[classData.locationName, classData.locationCity].filter(Boolean).join(', ') || 'Chưa có địa chỉ'}
+                    </p>
+
+                    <div className="map-wrapper">
+                        {mapLoading && (
+                            <div className="map-overlay">
+                                <Spin size="small" />
+                                <span>Đang tải bản đồ...</span>
+                            </div>
+                        )}
+
+                        <MapContainer
+                            key={`${mapCenter[0]}-${mapCenter[1]}`}
+                            center={mapCenter}
+                            zoom={14}
+                            scrollWheelZoom
+                            className="class-detail-map"
+                        >
+                            <TileLayer
+                                attribution='&copy; OpenStreetMap contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <CircleMarker center={mapCenter} radius={10} pathOptions={{ color: '#ff7a45' }}>
+                                <Popup>
+                                    {[classData.locationName, classData.locationCity].filter(Boolean).join(', ')}
+                                </Popup>
+                            </CircleMarker>
+                        </MapContainer>
+                    </div>
+
+                    {mapError && <p className="map-error">{mapError}</p>}
+                </aside>
             </div>
+
+            <Modal
+                title="Ứng tuyển lớp học"
+                open={isApplyModalOpen}
+                onOk={handleSubmitApplication}
+                onCancel={handleCloseApplyModal}
+                okText="Xác nhận ứng tuyển"
+                cancelText="Hủy"
+                confirmLoading={submittingApplication}
+                destroyOnClose
+            >
+                <Input.TextArea
+                    value={applicationMessage}
+                    onChange={(event) => setApplicationMessage(event.target.value)}
+                    placeholder="Nhập lời nhắn ứng tuyển"
+                    autoSize={{ minRows: 4, maxRows: 8 }}
+                    maxLength={500}
+                    showCount
+                />
+            </Modal>
         </div>
     );
 }
