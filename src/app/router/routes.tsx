@@ -21,7 +21,7 @@ import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
 import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
-import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
+import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
 
