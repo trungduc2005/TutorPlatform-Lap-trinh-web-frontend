@@ -1,5 +1,5 @@
 .unregistered-class-mana-page {
-
+    background: #f5f7fb;;
     min-height: 100vh;
     padding: 24px 32px 40px;
 }
@@ -27,7 +27,7 @@
 
 .unregistered-class-mana-filters {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     margin-bottom: 20px;
     flex-wrap: wrap;
     align-items: center;
@@ -72,7 +72,7 @@
 }
 
 .unregistered-class-card {
-    min-width: 300px;
+    min-width: 320px;
     padding: 1px;
     background: #fff;
     border: 1px solid #d9d9d9;
@@ -80,6 +80,7 @@
     min-height: 182px;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .unregistered-class-card__code {
@@ -114,7 +115,7 @@
 }
 
 .unregistered-class-card button {
-    margin: auto 10px 12px;
+    margin: 7px 7px 10px 6px;
     align-self: flex-start;
     border: none;
     background: #28a745;
@@ -125,6 +126,12 @@
     border-radius: 2px;
     cursor: pointer;
     transition: background 0.2s ease;
+}
+
+.card-button {
+    margin: 15px 7px 0 4px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .unregistered-class-card button:hover {
