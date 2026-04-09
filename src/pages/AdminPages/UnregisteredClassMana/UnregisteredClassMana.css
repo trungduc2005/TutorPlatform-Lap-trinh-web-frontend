@@ -296,6 +296,39 @@
     background: #218838;
 }
 
+.modal-delete {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-delete__content {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.modal-delete__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+}
+
+.btn-danger {
+    background: #ff4d4f;
+    color: white;
+}
+
 @media (max-width: 768px) {
     .class-detail__grid {
         grid-template-columns: 1fr;
