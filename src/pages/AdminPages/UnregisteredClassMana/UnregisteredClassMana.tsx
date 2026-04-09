@@ -220,7 +220,7 @@ export default function UnregisteredClassMana() {
                                     <div>
                                         <button
                                             onClick = {() => handleModalDeleteOpen(item)}
-                                            style={{background: "red", borderRadius: "6%", marginTop: "auto"}}
+                                            style={{background: "#ff4d4f", color: "white", borderRadius: "2px", marginTop: "auto"}}
                                         >
                                                 Xóa Lớp
                                     </button>
@@ -338,21 +338,29 @@ export default function UnregisteredClassMana() {
             <Modal
                 open={isModalDeleteOpen}
                 onCancel={() => setIsModalDeleteOpen(false)}
+                footer={null}
+                centered
             >
                 {selectedClass && (
-                    <div>
-                        <div>
-                            Bạn có chắc chắn muốn xóa lớp học
-                            <div>
-                                E{String(selectedClass.id).padStart(4, "0")}
-                            </div>
+                    <div
+                        className="modal-delete"
+                    >
+                        <div className="modal-delete__content">
+                            Bạn có chắc chắn muốn xóa lớp học {" "}
+                            <b>E{String(selectedClass.id).padStart(4, "0")}</b> 
                         </div>
-                        <button onClick={() => {deleteUnregisteredClass(selectedClass.id), setLoading(true)}}>
-                            Xác nhận
-                        </button>
-                        <button onClick={() => handleModalDeleteClose()}>
-                            Hủy
-                        </button>
+                        <div className="modal-delete__actions">
+                            <button 
+                                className="btn btn-cancel"
+                                onClick={() => handleModalDeleteClose()}>
+                                Hủy
+                            </button>
+                            <button 
+                                className="btn btn-danger"
+                                onClick={() => {deleteUnregisteredClass(selectedClass.id); setLoading(true); setIsModalDeleteOpen(false)}}>
+                                Xác nhận
+                            </button>
+                        </div>
                     </div>
                 )}
             </Modal>
