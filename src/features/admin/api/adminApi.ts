@@ -1,7 +1,8 @@
+import type { Payload } from "recharts/types/component/DefaultTooltipContent";
 import axiosClient from "../../../shared/api/axiosClient";
 import type { AccountType } from "../model/accountType";
+import type { FeaturedTutorType } from "../model/featuredTutorType";
 import type {FilterOptionType, SearchClassType, StatisticsItemType } from "../model/statisticsType";
-
 
 export const adminApi = {
     //Account APIs
@@ -62,4 +63,24 @@ export const adminApi = {
         const res = await axiosClient.get("/public/location-option");
         return res.data;
     },
+
+    //Featured Tutor APIs
+    getFeaturedTutors: async (): Promise<FeaturedTutorType[]> => {
+        const res = await axiosClient.get("/public/featured_tutors");
+        console.log(res.data);
+        return res.data;
+    },
+    createFeaturedTutor: async (tutorData: Payload): Promise<void> => {
+        const res = await axiosClient.post("/admin/featured_tutors", tutorData);
+        return res.data;
+    },
+    deleteFeaturedTutor: async (tutorId: number): Promise<void> => {
+        const res = await axiosClient.delete(`/admin/featured_tutors/${tutorId}`);
+        return res.data;
+    },
+    updateFeaturedTutor: async (tutorId: number, tutorData: Partial<FeaturedTutorType>): Promise<void> => {
+        const res = await axiosClient.put(`/admin/featured_tutors/${tutorId}`, tutorData);
+        return res.data;
+    }
+
 }
