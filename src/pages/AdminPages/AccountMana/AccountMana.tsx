@@ -125,8 +125,9 @@ export default function AccountMana() {
             )}
             <Modal
                 open={modalOpen}
-                onCancel={selectedAccount === undefined ? handleCloseModal : undefined}
+                onCancel={handleCloseModal}
                 footer={null}
+                centered
             >
                 <div className="modal-content">
                     <p>
@@ -135,17 +136,16 @@ export default function AccountMana() {
                         <strong>{selectedAccount?.fullName}</strong>?
                     </p>
 
-                    <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+                    <div style={{ display: "flex", gap: 10, marginTop: 16 , justifyContent: "flex-end"}}>
+                        <Button onClick={handleCloseModal}>
+                            Hủy
+                        </Button>
                         <Button
                             type="primary"
                             danger={selectedAccount?.status === "ACTIVE"}
                             onClick={() => handleConfirm(selectedAccount)}
                         >
                             Xác nhận
-                        </Button>
-
-                        <Button onClick={handleCloseModal}>
-                            Hủy
                         </Button>
                     </div>
                 </div>
