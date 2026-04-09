@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getFeaturedTutors } from "../api/tutorApi";
-import { mapTutor, Tutor } from "../model/tutorTypes";
+import { mapTutor, type Tutor } from "../model/tutorTypes";
 
 export const useTutorList = () => {
   const [tutors, setTutors] = useState<Tutor[]>([]);

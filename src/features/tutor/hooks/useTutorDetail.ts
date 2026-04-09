@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getTutorById } from "../api/tutorApi";
-import { mapTutor, Tutor } from "../model/tutorTypes";
+import { mapTutor, type Tutor } from "../model/tutorTypes";
 
 export const useTutorDetail = (id: number) => {
   const [tutor, setTutor] = useState<Tutor | null>(null);

@@ -13,6 +13,7 @@ const NAV_ITEMS_GUEST: NavItem[] = [
     { path: "/", label: "Trang chủ" },
     { path: "/about", label: "Giới thiệu" },
     { path: "/classes", label: "Danh sách lớp mới" },
+    { path: "/contract", label: "Hợp đồng"},
     { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
     { path: "/chat", label: "Tin nhắn" },
     { path: "/classroom-calling", label: "Phòng học Online"}
@@ -72,7 +73,7 @@ function Header() {
                 : NAV_ITEMS_GUEST;
 
     return (
-        <header className="site-header">
+        <header className="site-header select-none">
             <div className="topbar">
                 <div className="container topbar-inner">
                     <div className="brand">

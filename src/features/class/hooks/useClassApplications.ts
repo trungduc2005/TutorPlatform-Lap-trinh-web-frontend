@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyClassApplications } from "../api/classApplicationsApi";
-import { mapClassApplication, ClassApplication } from "../model/classTypes";
+import { mapClassApplication, type ClassApplication } from "../model/classTypes";
 
 export const useClassApplications = () => {
   const [data, setData] = useState<ClassApplication[]>([]);

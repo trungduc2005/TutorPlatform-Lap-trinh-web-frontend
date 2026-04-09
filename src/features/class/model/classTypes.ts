@@ -1,7 +1,9 @@
+export type ClassApplicationStatus = "ACCEPTED" | "REJECTED" | "PENDING";
+
 export interface ClassApplicationDTO {
   id: number;
   classId: number;
-  classApplicationStatus: string;
+  classApplicationStatus: ClassApplicationStatus;
   tutorName: string;
   message: string;
   updateAt: string;
@@ -10,7 +12,7 @@ export interface ClassApplicationDTO {
 export type ClassApplication = {
   id: number;
   classId: number;
-  status: string;
+  status: ClassApplicationStatus;
   tutorName: string;
   message: string;
   updatedAt: string;

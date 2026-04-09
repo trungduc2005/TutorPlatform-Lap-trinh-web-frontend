@@ -1,9 +1,10 @@
 import { useClassApplications } from "../../features/class/hooks/useClassApplications";
+import type { ClassApplicationStatus } from "../../features/class/model/classTypes";
 
 export default function AcceptedClasses() {
   const { data, loading, error } = useClassApplications();
 
-  const statusColor = {
+  const statusColor: Record<ClassApplicationStatus, string> = {
     ACCEPTED: "text-green-600",
     REJECTED: "text-red-600",
     PENDING: "text-yellow-600",

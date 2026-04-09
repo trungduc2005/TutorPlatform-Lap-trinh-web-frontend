@@ -1,15 +1,11 @@
-type Tutor = {
-  id: number;
-  fullName: string;
-  school: string;
-  achievements: string;
-  experience: string;
-  avatarUrl: string;
-};
+import type { Tutor } from "../model/tutorTypes";
+
+
 type Props = {
   tutor: Tutor;
   onClick: () => void;
-};
+}; 
+
 export default function TutorCard({ tutor, onClick }: Props) {
   return (
     <div

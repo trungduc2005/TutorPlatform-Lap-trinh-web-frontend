@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TutorCard from "../../features/tutor/components/TutorCard";
 import { useTutorList } from "../../features/tutor/hooks/useTutorList";
@@ -115,7 +115,7 @@ export default function TutorsList() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 justify-items-center">
             {currentData.map((tutor) => (
               <TutorCard
-                key={tutor.id}
+                key={tutor.featuredId}
                 tutor={tutor}
                 onClick={() => navigate(`/tutors/${tutor.id}`)}
               />
