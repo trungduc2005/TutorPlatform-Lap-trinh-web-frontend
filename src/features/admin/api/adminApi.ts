@@ -44,6 +44,10 @@ export const adminApi = {
         });
         return res.data;
     },
+    deleteUnregisteredClass: async (classId: number): Promise<void> => {
+        const res = await axiosClient.delete(`/admin/classes/${classId}`);
+        return res.data;
+    },
 
     //FilterOption APIs
     getSubjectOption: async (): Promise<FilterOptionType[]> => {

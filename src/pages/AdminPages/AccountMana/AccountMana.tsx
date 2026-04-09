@@ -5,7 +5,7 @@ import "./AccountMana.css";
 import { Button, Modal } from "antd";
 
 export default function AccountMana() {
-        const [accounts, setAccounts] = useState<AccountType[]>([]);
+    const [accounts, setAccounts] = useState<AccountType[]>([]);
     const [loading, setLoading] = useState(false);
     const [updatingId, setUpdatingId] = useState<number | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
