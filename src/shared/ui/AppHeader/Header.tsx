@@ -9,19 +9,35 @@ interface NavItem {
     label: string;
 }
 
-const NAV_ITEMS_GUEST: NavItem[] = [
+const NAV_ITEMS_COMMON: NavItem[] = [
     { path: "/", label: "Trang chủ" },
     { path: "/about", label: "Giới thiệu" },
-    { path: "/classes", label: "Danh sách lớp mới" },
     { path: "/contract", label: "Hợp đồng"},
-    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
     { path: "/chat", label: "Tin nhắn" },
     { path: "/classroom-calling", label: "Phòng học Online"}
 ];
 
-const NAV_ITEMS_TUTOR: NavItem[] = [];
+const NAV_ITEMS_GUEST: NavItem[] = [
+    ...NAV_ITEMS_COMMON,
+    { path: "/classes", label: "Danh sách lớp mới" },
+    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
+];
 
-const NAV_ITEMS_HIRER: NavItem[] = [];
+const NAV_ITEMS_TUTOR: NavItem[] = [
+    ...NAV_ITEMS_COMMON,
+    { path: "/classes", label: "Danh sách lớp mới" },
+];
+
+const NAV_ITEMS_HIRER: NavItem[] = [
+    { path: "/", label: "Trang chủ" },
+    { path: "/hire-tutor", label: "Thuê gia sư" },
+    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
+    { path: "/hirer/class-management", label: "Quản lý lớp học" },
+    { path: "/hirer/application-management", label: "Quản lý ứng tuyển" },
+    { path: "/contract", label: "Hợp đồng" },
+    { path: "/chat", label: "Tin nhắn" },
+    { path: "/classroom-calling", label: "Phòng học Online" },
+];
 
 function GuestTopActions() {
     return (
@@ -66,9 +82,9 @@ function Header() {
     const { status, user } = useAppSelector((state) => state.auth);
 
     const navItems =
-        user?.role === "TUTOR" && NAV_ITEMS_TUTOR.length > 0
+        user?.role === "TUTOR"
             ? NAV_ITEMS_TUTOR
-            : user?.role === "HIRER" && NAV_ITEMS_HIRER.length > 0
+            : user?.role === "HIRER"
                 ? NAV_ITEMS_HIRER
                 : NAV_ITEMS_GUEST;
 

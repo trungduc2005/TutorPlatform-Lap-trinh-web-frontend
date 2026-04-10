@@ -1,0 +1,264 @@
+import { Button, Card, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+    cancelClassSelection,
+    getGradeOptions,
+    getHirerClassApplications,
+    getHirerClasses,
+    getSubjectOptions,
+    selectClassApplication,
+    type FilterOption,
+    type HirerClassApplicationResponse,
+    type HirerClassDTO,
+} from "../../features/classes/api/classApi";
+import "./HirerApplicationManagement.css";
+
+type ApplicationStatus = "ACCEPTED" | "REJECTED" | "PENDING";
+
+function getAppStatus(item: HirerClassApplicationResponse): ApplicationStatus {
+    return (item.classApplicationStatus || item.status || "PENDING") as ApplicationStatus;
+}
+
+function HirerApplicationManagement() {
+    const initializedRef = useRef(false);
+
+    const [classes, setClasses] = useState<HirerClassDTO[]>([]);
+    const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
+    const [applications, setApplications] = useState<HirerClassApplicationResponse[]>([]);
+
+    const [subjects, setSubjects] = useState<FilterOption[]>([]);
+    const [grades, setGrades] = useState<FilterOption[]>([]);
+
+    const [loadingClasses, setLoadingClasses] = useState(false);
+    const [loadingApplications, setLoadingApplications] = useState(false);
+    const [submittingAction, setSubmittingAction] = useState(false);
+    const [bootstrapping, setBootstrapping] = useState(true);
+
+    const subjectMap = useMemo(() => new Map(subjects.map((item) => [item.id, item.name])), [subjects]);
+    const gradeMap = useMemo(() => new Map(grades.map((item) => [item.id, item.name])), [grades]);
+
+    const selectedClass = useMemo(
+        () => classes.find((item) => item.id === selectedClassId),
+        [classes, selectedClassId]
+    );
+
+    const acceptedApplication = useMemo(
+        () => applications.find((item) => getAppStatus(item) === "ACCEPTED"),
+        [applications]
+    );
+
+    const fetchApplications = async (classId: number) => {
+        try {
+            setLoadingApplications(true);
+            const data = await getHirerClassApplications(classId);
+            setApplications(data);
+        } catch (error) {
+            message.error(error instanceof Error ? error.message : "Không thể tải danh sách ứng tuyển");
+        } finally {
+            setLoadingApplications(false);
+        }
+    };
+
+    useEffect(() => {
+        if (initializedRef.current) {
+            return;
+        }
+        initializedRef.current = true;
+
+        const bootstrap = async () => {
+            try {
+                setBootstrapping(true);
+                setLoadingClasses(true);
+                const [classRes, subjectRes, gradeRes] = await Promise.allSettled([
+                    getHirerClasses(),
+                    getSubjectOptions(),
+                    getGradeOptions(),
+                ]);
+
+                if (classRes.status === "fulfilled") {
+                    setClasses(classRes.value);
+                    if (classRes.value.length > 0) {
+                        const firstClassId = classRes.value[0].id;
+                        setSelectedClassId(firstClassId);
+                        await fetchApplications(firstClassId);
+                    } else {
+                        setApplications([]);
+                    }
+                } else {
+                    message.error(classRes.reason instanceof Error ? classRes.reason.message : "Không thể tải danh sách lớp");
+                }
+
+                if (subjectRes.status === "fulfilled") {
+                    setSubjects(subjectRes.value);
+                }
+                if (gradeRes.status === "fulfilled") {
+                    setGrades(gradeRes.value);
+                }
+            } finally {
+                setLoadingClasses(false);
+                setBootstrapping(false);
+            }
+        };
+
+        void bootstrap();
+    }, []);
+
+    const handleChangeClass = async (value: number) => {
+        setSelectedClassId(value);
+        await fetchApplications(value);
+    };
+
+    const handleSelectApplication = async (applicationId: number) => {
+        if (!selectedClassId) {
+            return;
+        }
+
+        try {
+            setSubmittingAction(true);
+            await selectClassApplication(selectedClassId, applicationId);
+            message.success("Đã chọn gia sư cho lớp");
+            await fetchApplications(selectedClassId);
+        } catch (error) {
+            message.error(error instanceof Error ? error.message : "Không thể chọn gia sư");
+        } finally {
+            setSubmittingAction(false);
+        }
+    };
+
+    const handleCancelSelection = async () => {
+        if (!selectedClassId) {
+            return;
+        }
+
+        try {
+            setSubmittingAction(true);
+            await cancelClassSelection(selectedClassId);
+            message.success("Đã hủy lựa chọn gia sư");
+            await fetchApplications(selectedClassId);
+        } catch (error) {
+            message.error(error instanceof Error ? error.message : "Không thể hủy lựa chọn");
+        } finally {
+            setSubmittingAction(false);
+        }
+    };
+
+    const columns: ColumnsType<HirerClassApplicationResponse> = [
+        {
+            title: "Mã đơn",
+            dataIndex: "id",
+            width: 110,
+            render: (id: number) => <span className="hirer-application-code">AP{id}</span>,
+        },
+        {
+            title: "Gia sư",
+            dataIndex: "tutorName",
+            render: (value?: string) => value || "Chưa rõ",
+        },
+        {
+            title: "Nội dung ứng tuyển",
+            dataIndex: "message",
+            render: (value?: string) => value || "(Không có)",
+        },
+        {
+            title: "Trạng thái",
+            key: "status",
+            width: 130,
+            render: (_, item) => {
+                const status = getAppStatus(item);
+                const color = status === "ACCEPTED" ? "green" : status === "REJECTED" ? "red" : "gold";
+                return <Tag color={color}>{status}</Tag>;
+            },
+        },
+        {
+            title: "Thao tác",
+            key: "actions",
+            width: 170,
+            render: (_, item) => {
+                const status = getAppStatus(item);
+                return (
+                    <Button
+                        type="primary"
+                        size="small"
+                        disabled={status === "ACCEPTED" || submittingAction}
+                        onClick={() => void handleSelectApplication(item.id)}
+                    >
+                        Chọn gia sư
+                    </Button>
+                );
+            },
+        },
+    ];
+
+    return (
+        <div className="hirer-application-page">
+            <div className="hirer-application-header">
+                <Typography.Title level={2}>Quản lý ứng tuyển</Typography.Title>
+                <Space>
+                    <Select
+                        className="hirer-application-class-select"
+                        placeholder="Chọn lớp học"
+                        value={selectedClassId}
+                        onChange={(value) => void handleChangeClass(value)}
+                        loading={loadingClasses}
+                        options={classes.map((item) => ({
+                            value: item.id,
+                            label: `E${item.id.toString().padStart(4, "0")} - ${subjectMap.get(item.subjectId) || `Môn #${item.subjectId}`} / ${gradeMap.get(item.gradeId) || `Khối #${item.gradeId}`}`,
+                        }))}
+                    />
+                    <Button
+                        onClick={() => selectedClassId && void fetchApplications(selectedClassId)}
+                        loading={loadingApplications}
+                        disabled={!selectedClassId}
+                    >
+                        Làm mới
+                    </Button>
+                </Space>
+            </div>
+
+            <p className="hirer-application-subtitle">
+                Quản lý các đơn ứng tuyển của gia sư theo từng lớp và chọn gia sư phù hợp.
+            </p>
+
+            <Card className="hirer-application-summary" bordered>
+                {selectedClass ? (
+                    <>
+                        <p>
+                            <strong>Lớp đang chọn:</strong> E{selectedClass.id.toString().padStart(4, "0")} - {subjectMap.get(selectedClass.subjectId) || `Môn #${selectedClass.subjectId}`} / {gradeMap.get(selectedClass.gradeId) || `Khối #${selectedClass.gradeId}`}
+                        </p>
+                        <p>
+                            <strong>Gia sư đã chọn:</strong> {acceptedApplication?.tutorName || "Chưa chọn"}
+                        </p>
+                        <Popconfirm
+                            title="Hủy gia sư đã chọn?"
+                            description="Bạn có thể chọn lại gia sư khác sau khi hủy."
+                            okText="Hủy chọn"
+                            cancelText="Đóng"
+                            disabled={!acceptedApplication || submittingAction}
+                            onConfirm={() => void handleCancelSelection()}
+                        >
+                            <Button danger disabled={!acceptedApplication || submittingAction}>
+                                Hủy lựa chọn hiện tại
+                            </Button>
+                        </Popconfirm>
+                    </>
+                ) : (
+                    <p>Bạn chưa có lớp nào để quản lý ứng tuyển.</p>
+                )}
+            </Card>
+
+            <div className="hirer-application-table-wrap">
+                <Table
+                    rowKey="id"
+                    columns={columns}
+                    loading={loadingApplications || bootstrapping}
+                    dataSource={applications}
+                    pagination={{ pageSize: 8, showSizeChanger: false }}
+                    locale={{ emptyText: "Chưa có đơn ứng tuyển cho lớp này" }}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default HirerApplicationManagement;

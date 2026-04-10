@@ -22,12 +22,16 @@ import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
 import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
-import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana";
-import ContractMana from "../../pages/AdminPages/ContractMana";
 import TutorsList from "../../pages/TutorsList/TutorsList";
 import Contract from "../../pages/Contract/Contract";
 import ClassApplications from "../../pages/ClassApplications/ClassApplications";
 import TutorDetail from "../../pages/TutorDetail/TutorDetail";
+import HireTutor from "../../pages/HireTutor/HireTutor";
+import HirerClassManagement from "../../pages/HirerClassManagement/HirerClassManagement";
+import HirerApplicationManagement from "../../pages/HirerApplicationManagement/HirerApplicationManagement";
+import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
+import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
+import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
 
 const routes = [
     {
@@ -60,7 +64,12 @@ const routes = [
                     },
                     {
                         element: <RequireRole allow={["HIRER"]} />,
-                        children: [{ path: "parent/dashboard", element: <ParentDashboard /> }],
+                        children: [
+                            { path: "parent/dashboard", element: <ParentDashboard /> },
+                            { path: "hire-tutor", element: <HireTutor /> },
+                            { path: "hirer/class-management", element: <HirerClassManagement /> },
+                            { path: "hirer/application-management", element: <HirerApplicationManagement /> },
+                        ],
                     },
                     {
                         path: "/profile", element: <Profile />,
@@ -93,6 +102,7 @@ const routes = [
                             { path: "notification-management", element: <NotificationMana /> },
                             { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
                             { path: "contract-management", element: <ContractMana /> },
+                            { path: "account-management", element: <AccountMana /> },
                             { 
                                 path: "profile", element: <Profile />,
                                 children: [

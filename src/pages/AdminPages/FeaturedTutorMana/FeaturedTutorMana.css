@@ -1,0 +1,179 @@
+.featured-tutor-page {
+    padding: 24px 32px 40px;
+    min-height: 100vh;
+    background: #f5f7fa;
+}
+
+.featured-tutor__header h1 {
+    margin: 10px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #222;
+}
+
+.featured-tutor__create-btn {
+    font-size: 16px;
+    justify-content: center;
+    height: 32px;
+    padding: 2px 16px;
+    border: 2px solid #d9d9d9;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.featured-tutor__create-btn:hover {
+    border-color: #1677ff;
+    color: #1677ff;
+}
+
+.featured-tutor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
+}
+
+.featured-tutor-card {
+    width: 300px;
+    height: 460px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.featured-tutor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.featured-tutor-avatar img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.featured-tutor-info {
+  padding: 6px 16px;
+}
+
+.featured-tutor-info h3 {
+  margin: 6px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.featured-tutor-info p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.featured-tutor-info:nth-child(4),
+.featured-tutor-info:nth-child(5) h3 {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.featured-tutor-card::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #eee;
+  margin: 10px 0;
+}
+
+.featured-tutor-card button,
+.featured-tutor-card .btn {
+  display: flex;
+  margin: 16px auto 20px;
+  padding: 10px 20px ;
+  background-color: #3b5bcc;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.featured-tutor-card button:hover {
+  background-color: #2f4bb3;
+}
+
+.tutor-modal-card {
+  border: 1px solid #4c6ef5;
+  border-radius: 16px;
+  padding: 20px;
+  background: #fff;
+}
+
+.tutor-modal-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.tutor-modal-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.tutor-modal-info p {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+.tutor-modal-info strong {
+  color: #333;
+}
+
+.tutor-modal-body {
+  margin-top: 10px;
+}
+
+.tutor-modal-body p {
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.tutor-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.tutor-delete-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tutor-delete-btn:hover {
+  background-color: #d4272a;
+}
+
+.tutor-update-btn {
+  background-color: #3b5bcc;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tutor-update-btn:hover {
+  background-color: #223fa7;
+}

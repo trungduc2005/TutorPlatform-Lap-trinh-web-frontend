@@ -3,6 +3,7 @@ import { adminApi } from "../../../features/admin/api/adminApi";
 import type { FilterOptionType, UnregisteredClassType } from "../../../features/admin/model/statisticsType";
 import "./UnregisteredClassMana.css";
 import { Card, Empty, Modal, Select } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 
 const formatCurrency = (value: number) => 
     new Intl.NumberFormat("vi-VN").format(value) + "đ"; 
@@ -17,6 +18,7 @@ export default function UnregisteredClassMana() {
     const [locationId, setLocationId] = useState<number | undefined>(undefined);
 
     const [isModalOpen, setIsMocalOpen] = useState(false);
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<UnregisteredClassType | null>(null);
 
     const [classes, setClasses] = useState<UnregisteredClassType[]>([]); 
@@ -69,7 +71,24 @@ export default function UnregisteredClassMana() {
             }
         }
         fetchClassData();
-    }, [currentPage, pageSize, subjectId, gradeId, locationId]);
+    }, [currentPage, pageSize, subjectId, gradeId, locationId, loading]);
+
+    const deleteUnregisteredClass = async (classId: number | null) => {
+        if(!classId) return;
+
+        try {
+            const res = await adminApi.deleteUnregisteredClass(classId);
+            console.log("Delete class response: ", res);
+            setLoading(true);
+            window.alert("Xóa lớp học thành công");
+            handleModalDeleteClose();
+        }
+        catch(error) {
+            console.log("Failed to delete class: ", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubjectChange = (value: number | undefined) => {
         setSubjectId(value);
@@ -101,6 +120,16 @@ export default function UnregisteredClassMana() {
         setIsMocalOpen(false);
         setSelectedClass(null);
     };
+
+    const handleModalDeleteOpen = (item: UnregisteredClassType) => {
+        setIsModalDeleteOpen(true);
+        setSelectedClass(item);
+    }
+
+    const handleModalDeleteClose = () => {
+        setIsModalDeleteOpen(false);
+        setSelectedClass(null);
+    }
 
     return (
         <div className="unregistered-class-mana-page">
@@ -153,6 +182,10 @@ export default function UnregisteredClassMana() {
                 >
                     Xóa bộ lọc
                 </button>
+                <ReloadOutlined 
+                    onClick={() => setLoading(true)}
+                    style={{border: "1px solid", borderRadius: "50%", padding: "4px", fontSize: "18px", cursor: "pointer", background: "white"}}
+                />
             </div>
 
             {loading ? (
@@ -176,8 +209,23 @@ export default function UnregisteredClassMana() {
                                 <p>$  {formatCurrency(item.fee)}, {item.durationName}</p>
                                 <p>🎓 {item.requirements}</p>
                                 <p>Người tạo: {item.createdByName}</p>
-                            
-                                <button onClick={() => handleModalOpen(item)}>Xem chi tiết</button>
+                                
+                                <div className="card-button">
+                                    <div>
+                                        <button 
+                                        onClick={() => handleModalOpen(item)}
+                                        style={{marginTop: "auto"}}
+                                        >Xem chi tiết</button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            onClick = {() => handleModalDeleteOpen(item)}
+                                            style={{background: "#ff4d4f", color: "white", borderRadius: "2px", marginTop: "auto"}}
+                                        >
+                                                Xóa Lớp
+                                    </button>
+                                    </div>
+                                </div>
                             </Card>
                         ))}
                     </div>
@@ -254,6 +302,15 @@ export default function UnregisteredClassMana() {
                                     <span className="label">Người tạo</span>
                                     <span className="value">{selectedClass.createdByName}</span>
                                 </div>
+                                <div className="class-detail__item">
+                                    <span className="label">Giới tính học viên</span>
+                                    <span className="value">{(selectedClass.studentGender == "MALE") ? "Nam" : "Nữ"}</span>
+                                </div>
+
+                                <div className="class-detail__item">
+                                    <span className="label">Học lực học viên</span>
+                                    <span className="value">{selectedClass.studentDescription}</span>
+                                </div>
                             </div>
                             <div className="class-detail__section">
                                 <h3>Yêu cầu</h3>
@@ -274,6 +331,35 @@ export default function UnregisteredClassMana() {
                                     Đóng
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                )}
+            </Modal>
+            <Modal
+                open={isModalDeleteOpen}
+                onCancel={() => setIsModalDeleteOpen(false)}
+                footer={null}
+                centered
+            >
+                {selectedClass && (
+                    <div
+                        className="modal-delete"
+                    >
+                        <div className="modal-delete__content">
+                            Bạn có chắc chắn muốn xóa lớp học {" "}
+                            <b>E{String(selectedClass.id).padStart(4, "0")}</b> 
+                        </div>
+                        <div className="modal-delete__actions">
+                            <button 
+                                className="btn btn-cancel"
+                                onClick={() => handleModalDeleteClose()}>
+                                Hủy
+                            </button>
+                            <button 
+                                className="btn btn-danger"
+                                onClick={() => {deleteUnregisteredClass(selectedClass.id); setLoading(true); setIsModalDeleteOpen(false)}}>
+                                Xác nhận
+                            </button>
                         </div>
                     </div>
                 )}

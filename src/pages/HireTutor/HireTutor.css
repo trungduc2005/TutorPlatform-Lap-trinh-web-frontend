@@ -1,0 +1,90 @@
+.hire-tutor-page {
+    min-height: calc(100vh - 220px);
+    padding: 44px 16px 56px;
+    background: #f3f3f3;
+}
+
+.hire-tutor-card {
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid #d2d2d2;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 28px 28px 20px;
+}
+
+.hire-tutor-card h1 {
+    margin: 0 0 20px;
+    text-align: center;
+    font-size: 42px;
+    line-height: 1.2;
+    color: #2d3642;
+    font-weight: 700;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #1b84d6;
+}
+
+.hire-tutor-form .ant-form-item {
+    margin-bottom: 14px;
+}
+
+.hire-tutor-form .ant-form-item-label > label {
+    font-weight: 600;
+    color: #354255;
+}
+
+.hire-tutor-form .ant-input,
+.hire-tutor-form .ant-input-number,
+.hire-tutor-form .ant-select-selector,
+.hire-tutor-form .ant-input-textarea {
+    border-radius: 2px !important;
+}
+
+.hire-tutor-form .ant-input-number {
+    width: 100%;
+}
+
+.hire-tutor-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 12px;
+}
+
+.hire-tutor-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.hire-tutor-submit .ant-btn {
+    min-width: 160px;
+    height: 42px;
+    border-radius: 4px;
+    background: #0b78d0;
+    border-color: #0b78d0;
+    font-weight: 700;
+}
+
+.hire-tutor-note {
+    border-top: 1px solid #e7e7e7;
+    margin-top: 16px;
+    padding-top: 12px;
+    color: #4b5565;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .hire-tutor-card {
+        padding: 20px 16px 16px;
+    }
+
+    .hire-tutor-card h1 {
+        font-size: 32px;
+    }
+
+    .hire-tutor-form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
