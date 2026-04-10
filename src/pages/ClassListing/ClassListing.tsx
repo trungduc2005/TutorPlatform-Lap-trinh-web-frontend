@@ -36,12 +36,7 @@ function ClassListing(){
                         {!loading && !error && classes.map((item) => (
                             <ClassCard 
                                 key={item.id}
-                                id={item.id}
-                                subject={item.subject}
-                                gradeLevel={item.gradeLevel}
-                                fee={item.fee}
-                                duration={item.duration}
-                                location={item.location}
+                                {...item}
                             ></ClassCard>
                         ))}
                     </div>

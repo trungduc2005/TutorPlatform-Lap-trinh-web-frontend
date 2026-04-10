@@ -20,6 +20,11 @@ export interface SearchClassResponse {
     totalElements: number;
 }
 
+export interface ClassApplicationPayload {
+    classId: number;
+    message: string;
+}
+
 export const searchClass = async (
     params?: SearchClassesParams
 ): Promise<SearchClassResponse> => {
@@ -28,4 +33,8 @@ export const searchClass = async (
         {params}
     );
     return response.data;
+}
+
+export const applyClass = async (payload: ClassApplicationPayload): Promise<void> => {
+    await axiosClient.post('/tutor/class-applications', payload);
 }
