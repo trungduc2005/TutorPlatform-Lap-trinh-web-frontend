@@ -1,0 +1,70 @@
+.hirer-application-page {
+    max-width: 1240px;
+    margin: 28px auto 52px;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.hirer-application-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hirer-application-header .ant-typography {
+    margin: 0 !important;
+    color: #1b2f4f;
+}
+
+.hirer-application-class-select {
+    min-width: min(420px, calc(100vw - 48px));
+    max-width: 100%;
+}
+
+.hirer-application-header .ant-space {
+    max-width: 100%;
+}
+
+.hirer-application-header .ant-space-item {
+    max-width: 100%;
+}
+
+.hirer-application-subtitle {
+    margin: 8px 0 16px;
+    color: #5f6f88;
+}
+
+.hirer-application-summary {
+    margin-bottom: 16px;
+    border-color: #d9e1ee !important;
+}
+
+.hirer-application-summary p {
+    margin: 0 0 8px;
+    color: #33445e;
+}
+
+.hirer-application-code {
+    font-weight: 700;
+    color: #0f69b0;
+}
+
+.hirer-application-table-wrap {
+    background: #ffffff;
+    border: 1px solid #d9e1ee;
+    border-radius: 8px;
+    overflow-x: auto;
+    min-height: 420px;
+}
+
+.hirer-application-table-wrap .ant-table-wrapper {
+    min-width: 900px;
+}
+
+@media (max-width: 760px) {
+    .hirer-application-class-select {
+        min-width: 100%;
+    }
+}

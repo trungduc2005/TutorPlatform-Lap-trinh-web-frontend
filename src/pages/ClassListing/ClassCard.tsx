@@ -14,22 +14,22 @@ function ClassCard(props: ClassItem){
 
     return (
         <div className='class-card-container'>
-            <span className='class-id'>{classId}</span>
+            <div className='class-id'>{classId}</div>
             <p className='class-card-title'>{props.subjectName} - {props.gradeName}</p>
-            <div>
+            <div className='class-row'>
                 <EnvironmentOutlined className='infor-icon'></EnvironmentOutlined> 
-                <span className='class-infor'>{" "}{props.locationName}</span>
+                <span className='class-infor'>{" "}{props.locationName}, {props.locationCity}</span>
             </div>
-            <div>
+            <div className='class-row'>
                 <DollarOutlined className='infor-icon'></DollarOutlined>
                 <span className='class-infor'>
                     <span>{Math.floor(props.fee)}</span>
                     <span>{"/"+props.durationName}</span>
                 </span>
             </div>
-            <div>
+            <div className='class-row'>
                 <TeamOutlined className='infor-icon'></TeamOutlined>
-                <span className='class-infor'>{"Yêu cầu: "}</span>
+                <span className='class-infor'>{"Yêu cầu: "}{props.studentDescription || "Sinh viên"}</span>
             </div>
             <Button type='primary' className="more-detail-btn" onClick={handleViewDetail}>Xem chi tiết {">"}</Button>
         </div>
