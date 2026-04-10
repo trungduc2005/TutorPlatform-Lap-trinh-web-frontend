@@ -1,39 +1,82 @@
 .register-page {
     min-height: calc(100vh - 128px);
-    padding: 56px 16px;
+    padding: 40px 16px 56px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(180deg, #ffffff 0%, #fbfdf9 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f6faff 100%);
 }
 
 .register-card {
     width: 100%;
-    max-width: 780px;
-    padding: 30px 28px 32px;
-    border: 1px solid #e3ebde;
-    border-radius: 20px;
-    background: #ffffff;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    max-width: 980px;
+    padding: 34px 54px 190px;
+    border: 1px solid #d9e6ff;
+    border-radius: 34px;
+    background: linear-gradient(180deg, #f9fbff 0%, #f5f8ff 100%);
+    box-shadow: 0 18px 42px rgba(58, 86, 146, 0.14);
+    position: relative;
+    overflow: hidden;
+}
+
+.register-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+.register-card__top-bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 190px;
+    border-radius: 34px 34px 120px 120px;
+    background:
+        radial-gradient(circle at 15% 24%, rgba(255, 255, 255, 0.84) 0 16%, transparent 17% 100%),
+        radial-gradient(circle at 88% 30%, rgba(255, 255, 255, 0.76) 0 13%, transparent 14% 100%),
+        linear-gradient(180deg, #dff0ff 0%, rgba(233, 243, 255, 0.58) 78%, transparent 100%);
+    z-index: 0;
+}
+
+.register-hero-icon {
+    width: min(360px, 62%);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-hero-icon__image {
+    width: 96%;
+    max-width: 250px;
+    display: block;
+    object-fit: contain;
 }
 
 .register-title {
-    margin: 0 0 26px;
+    margin: 0;
     text-align: center;
     font-weight: 700;
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     color: #245b33;
+}
+
+.register-subtitle {
+    margin: 12px 0 26px;
+    text-align: center;
+    color: #425776;
+    font-size: 2rem;
 }
 
 .register-form {
     display: grid;
-    gap: 22px;
+    gap: 18px;
 }
 
 .register-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 20px;
+    gap: 18px 22px;
 }
 
 .register-field {
@@ -47,11 +90,11 @@
 
 .register-field--avatar {
     justify-items: start;
-    margin-top: 2px;
+    margin-top: 4px;
 }
 
 .register-field label {
-    font-size: 1rem;
+    font-size: 1.04rem;
     font-weight: 600;
     color: #35533b;
 }
@@ -65,7 +108,7 @@
     border-radius: 14px;
     outline: none;
     font: inherit;
-    font-size: 1rem;
+    font-size: 1.04rem;
     color: #223127;
     background: #ffffff;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -83,23 +126,23 @@
 }
 
 .register-upload {
-    width: 170px;
-    min-height: 182px;
+    width: 190px;
+    min-height: 190px;
     padding: 12px 12px 16px;
-    border: 1px dashed #bfd0b8;
-    border-radius: 16px;
+    border: 1px dashed #bacce5;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background: #fbfef9;
+    background: rgba(248, 252, 255, 0.9);
     cursor: pointer;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .register-upload:hover {
-    border-color: #63a04b;
-    box-shadow: 0 10px 18px rgba(99, 160, 75, 0.12);
+    border-color: #5698f4;
+    box-shadow: 0 10px 18px rgba(86, 152, 244, 0.16);
     transform: translateY(-1px);
 }
 
@@ -115,7 +158,7 @@
 .register-upload__text {
     font-size: 0.84rem;
     line-height: 1.4;
-    color: #667364;
+    color: #5f6f86;
     text-align: center;
 }
 
@@ -130,7 +173,7 @@
     position: absolute;
     inset: 0;
     font-size: 110px;
-    color: #86c5ea;
+    color: #90c6ef;
 }
 
 .register-upload__arrow {
@@ -139,7 +182,7 @@
     bottom: 8px;
     transform: translateX(-50%);
     font-size: 42px;
-    color: #63a04b;
+    color: #4c8fdc;
     text-shadow:
         -3px 0 #ffffff,
         0 3px #ffffff,
@@ -171,7 +214,7 @@
 .register-upload__link {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #3f8d32;
+    color: #2f77d7;
     text-decoration: none;
 }
 
@@ -203,11 +246,11 @@
 }
 
 .register-submit {
-    width: min(260px, 100%);
+    width: min(320px, 100%);
     height: 50px;
-    margin: 2px auto 0;
+    margin: 6px auto 0;
     border: 0;
-    border-radius: 14px;
+    border-radius: 12px;
     background: linear-gradient(180deg, #51a63f 0%, #3f8d32 100%);
     color: #ffffff;
     font: inherit;
@@ -238,7 +281,7 @@
 .register-message {
     margin: 20px 0 0;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.04rem;
 }
 
 .register-message--error {
@@ -254,7 +297,7 @@
     margin: 18px 0 0;
     text-align: center;
     color: #5b6b59;
-    font-size: 1rem;
+    font-size: 1.04rem;
 }
 
 .register-login a {
@@ -267,23 +310,87 @@
     text-decoration: underline;
 }
 
-@media (max-width: 900px) {
-    .register-page {
-        padding: 40px 16px 52px;
-    }
+.register-rabbit {
+    width: min(360px, 40%);
+    position: absolute;
+    right: 18px;
+    bottom: 54px;
+    z-index: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 12px 22px rgba(35, 59, 97, 0.18));
 }
 
-@media (max-width: 560px) {
+.register-card > .register-rabbit {
+    z-index: 0;
+}
+
+@media (max-width: 900px) {
     .register-page {
-        padding: 28px 14px 40px;
+        padding: 34px 14px 44px;
     }
 
     .register-card {
-        padding: 24px 18px 28px;
+        max-width: 820px;
+        padding: 28px 24px 162px;
+        border-radius: 26px;
     }
 
     .register-title {
-        font-size: 1.9rem;
+        font-size: 2rem;
+    }
+
+    .register-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 22px;
+    }
+
+    .register-submit {
+        font-size: 1.05rem;
+        height: 56px;
+    }
+
+    .register-note,
+    .register-login {
+        font-size: 1.04rem;
+    }
+
+    .register-rabbit {
+        width: min(290px, 42%);
+        right: 8px;
+        bottom: 62px;
+    }
+}
+
+@media (max-width: 640px) {
+    .register-page {
+        padding: 24px 12px 34px;
+    }
+
+    .register-card {
+        padding: 20px 16px 28px;
+        border-radius: 22px;
+    }
+
+    .register-card__top-bg {
+        height: 150px;
+    }
+
+    .register-hero-icon {
+        width: min(270px, 76%);
+        margin-bottom: 8px;
+    }
+
+    .register-hero-icon__image {
+        max-width: 200px;
+    }
+
+    .register-title {
+        font-size: 1.75rem;
+    }
+
+    .register-subtitle {
+        font-size: 1.04rem;
+        margin-bottom: 18px;
     }
 
     .register-grid {
@@ -293,6 +400,17 @@
 
     .register-upload {
         width: 100%;
-        max-width: 180px;
+        max-width: 200px;
     }
+
+    .register-submit {
+        font-size: 1.05rem;
+        height: 52px;
+    }
+
+    .register-rabbit {
+        display: none;
+    }
+
 }
+

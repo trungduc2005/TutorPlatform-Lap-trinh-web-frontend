@@ -7,6 +7,8 @@ import { useRegister } from "../../features/auth/hooks/useRegister";
 import { toRegisterPayload } from "../../features/auth/lib/registerMapper";
 import { validateRegisterForm } from "../../features/auth/lib/registerValidation";
 import { uploadAvatarToCloudinary } from "../../shared/api/cloudinaryApi";
+import rabbitBook from "../../assets/rabbit-book.png";
+import registerBookTop from "../../assets/register-book-top.png";
 import "./Register.css";
 
 const initFormValues: RegisterFormValues = {
@@ -55,6 +57,7 @@ function Register() {
         try {
             await submitRegister(toRegisterPayload(formValues));
         } catch {
+            // Error feedback is handled by useRegister.
         }
     };
 
@@ -89,6 +92,11 @@ function Register() {
     return (
         <section className="register-page">
             <div className="register-card">
+                <div className="register-card__top-bg" aria-hidden="true" />
+                <div className="register-hero-icon" aria-hidden="true">
+                    <img src={registerBookTop} alt="" className="register-hero-icon__image" />
+                </div>
+
                 <h1 className="register-title">Đăng ký tài khoản</h1>
 
                 <form className="register-form" onSubmit={handleSubmit}>
@@ -272,9 +280,12 @@ function Register() {
                 <p className="register-login">
                     Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
                 </p>
+
+                <img className="register-rabbit" src={rabbitBook} alt="" aria-hidden="true" />
             </div>
         </section>
     );
 }
 
 export default Register;
+

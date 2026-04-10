@@ -1,20 +1,63 @@
 .login-page {
     min-height: calc(100vh - 128px);
-    padding: 56px 16px;
+    padding: 46px 16px 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #ffffff 0%, #fbfdf9 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f6faff 100%);
+    overflow: hidden;
+}
+
+.login-layout {
+    width: 100%;
+    max-width: 1140px;
+    display: grid;
+    grid-template-columns: minmax(320px, 440px) minmax(420px, 1fr);
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
 }
 
 .login-card {
     width: 100%;
     max-width: 440px;
     padding: 32px 28px;
-    border: 1px solid #e3ebde;
+    border: 1px solid #d9e6ff;
     border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    background: linear-gradient(180deg, #f9fbff 0%, #f5f8ff 100%);
+    box-shadow: 0 12px 28px rgba(58, 86, 146, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+.login-illustration {
+    width: 100%;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-top: 8px;
+}
+
+.login-illustration__image {
+    width: min(660px, 122%);
+    max-width: none;
+    display: block;
+    transform: translate(9%, -2%);
+}
+
+.login-illustration::before {
+    content: "";
+    width: min(520px, 92%);
+    aspect-ratio: 1 / 1;
+    border-radius: 44% 56% 55% 45%;
+    background: #eef8ff;
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
 }
 
 .login-card__header {
@@ -161,6 +204,35 @@
 @media (max-width: 900px) {
     .login-page {
         padding: 40px 16px 52px;
+        overflow: visible;
+    }
+
+    .login-layout {
+        max-width: 520px;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .login-card {
+        max-width: 100%;
+    }
+
+    .login-illustration {
+        min-height: auto;
+        padding-top: 8px;
+    }
+
+    .login-illustration__image {
+        width: min(460px, 100%);
+        transform: none;
+        margin: 0 auto;
+    }
+
+    .login-illustration::before {
+        width: min(420px, 95%);
+        right: 50%;
+        top: 48%;
+        transform: translate(50%, -50%);
     }
 }
 
@@ -175,5 +247,17 @@
 
     .login-card {
         padding: 24px 18px;
+    }
+
+    .login-illustration {
+        padding-top: 6px;
+    }
+
+    .login-illustration__image {
+        width: min(380px, 100%);
+    }
+
+    .login-illustration::before {
+        width: min(330px, 92%);
     }
 }
