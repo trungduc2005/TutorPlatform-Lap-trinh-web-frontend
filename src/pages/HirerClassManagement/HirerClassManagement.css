@@ -1,0 +1,67 @@
+.hirer-class-page {
+    max-width: 1240px;
+    margin: 28px auto 52px;
+    padding: 0 16px;
+}
+
+.hirer-class-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hirer-class-header .ant-typography {
+    margin: 0 !important;
+    color: #1b2f4f;
+}
+
+.hirer-class-subtitle {
+    margin: 8px 0 18px;
+    color: #5f6f88;
+}
+
+.hirer-class-table-wrap {
+    background: #ffffff;
+    border: 1px solid #d9e1ee;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 520px;
+}
+
+.hirer-class-table-wrap .ant-table-wrapper {
+    min-height: 520px;
+}
+
+.hirer-class-pagination-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.hirer-class-code {
+    font-weight: 700;
+    color: #0f69b0;
+}
+
+.hirer-class-detail p {
+    margin: 0 0 10px;
+    color: #36475f;
+}
+
+.hirer-class-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 12px;
+}
+
+.hirer-class-fee {
+    width: 100%;
+}
+
+@media (max-width: 760px) {
+    .hirer-class-edit-grid {
+        grid-template-columns: 1fr;
+    }
+}

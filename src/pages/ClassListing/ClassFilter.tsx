@@ -1,59 +1,28 @@
 import {Form, Button, Select, Slider} from "antd";
+import { useEffect, useState } from "react";
 import "./ClassFilter.css"
-import type { SearchClassesParams } from "../../features/classes/api/classApi";
+import {
+    getDurationOptions,
+    getGradeOptions,
+    getLocationOptions,
+    getSubjectOptions,
+    type FilterOption,
+    type SearchClassesParams,
+} from "../../features/classes/api/classApi";
 
-const grades = [
-    { value: "GRADE_1", label: "Lớp 1" },
-    { value: "GRADE_2", label: "Lớp 2" },
-    { value: "GRADE_3", label: "Lớp 3" },
-    { value: "GRADE_4", label: "Lớp 4" },
-    { value: "GRADE_5", label: "Lớp 5" },
-    { value: "GRADE_6", label: "Lớp 6" },
-    { value: "GRADE_7", label: "Lớp 7" },
-    { value: "GRADE_8", label: "Lớp 8" },
-    { value: "GRADE_9", label: "Lớp 9" },
-    { value: "GRADE_10", label: "Lớp 10" },
-    { value: "GRADE_11", label: "Lớp 11" },
-    { value: "GRADE_12", label: "Lớp 12" },
-]
-
-const subjects = [
-    { value: "TOAN", label: "Toán" },
-    { value: "VAT_LY", label: "Vật Lý" },
-    { value: "TIENG_ANH", label: "Tiếng Anh" },
-    { value: "NGU_VAN", label: "Ngữ Văn" },
-    { value: "HOA", label: "Hóa" },
-    { value: "TIN_HOC", label: "Tin học" }
-]
-
-const durationOptions = [
-    { label: '1h/buổi', value: '1' },
-    { label: '1.5h/buổi', value: '1.5' },
-    { label: '2h/buổi', value: '2' },
-    { label: '2.5h/buổi', value: '2.5' },
+const fallbackDurationOptions = [
+    { label: '1h/buổi', value: 1 },
+    { label: '1.5h/buổi', value: 2 },
+    { label: '2h/buổi', value: 3 },
+    { label: '2.5h/buổi', value: 4 },
 ];
 
-const locationOptions = [
-    'Ba Đình',
-    'Hoàn Kiếm',
-    'Tây Hồ',
-    'Long Biên',
-    'Cầu Giấy',
-    'Đống Đa',
-    'Hai Bà Trưng',
-    'Hoàng Mai',
-    'Thanh Xuân',
-    'Hà Đông',
-    'Nam Từ Liêm',
-    'Bắc Từ Liêm',
-].map(item => ({ label: item, value: item }));
-
 type FilterValues = {
-    subject?: string;
-    gradeLevel?: string;
+    subjectId?: number;
+    gradeId?: number;
     fee?: [number, number];
-    duration?: string;
-    location?: string;
+    durationId?: number;
+    locationId?: number;
 }
 
 type ClassFilterProps = {
@@ -63,30 +32,71 @@ type ClassFilterProps = {
 
 function ClassFilter({onSearch}: ClassFilterProps){
     const [form] = Form.useForm<FilterValues>();
+    const [subjects, setSubjects] = useState<FilterOption[]>([]);
+    const [grades, setGrades] = useState<FilterOption[]>([]);
+    const [locations, setLocations] = useState<FilterOption[]>([]);
+    const [durations, setDurations] = useState<FilterOption[]>([]);
+
+    useEffect(() => {
+        const fetchFilterOptions = async () => {
+            try {
+                const [subjectRes, gradeRes, locationRes, durationRes] = await Promise.allSettled([
+                    getSubjectOptions(),
+                    getGradeOptions(),
+                    getLocationOptions(),
+                    getDurationOptions(),
+                ]);
+
+                if (subjectRes.status === "fulfilled") {
+                    setSubjects(subjectRes.value);
+                }
+
+                if (gradeRes.status === "fulfilled") {
+                    setGrades(gradeRes.value);
+                }
+
+                if (locationRes.status === "fulfilled") {
+                    setLocations(locationRes.value);
+                }
+
+                if (durationRes.status === "fulfilled") {
+                    setDurations(durationRes.value);
+                }
+            } catch (error) {
+                console.error("Khong the tai du lieu bo loc", error);
+            }
+        };
+
+        fetchFilterOptions();
+    }, []);
 
     const onFinish = (values: FilterValues) => {
-        const params = {
-            subject: values.subject || "",
-            gradeLevel: values.gradeLevel,
+        const params: SearchClassesParams = {
+            subjectId: values.subjectId,
+            gradeId: values.gradeId,
             minFee: values.fee?.[0],
             maxFee: values.fee?.[1],
-            duration: values.duration,
-            location: values.location,
+            durationId: values.durationId,
+            locationId: values.locationId,
+            page: 0,
+            size: 10,
         };
         onSearch(params)
-        console.log(params)
+        console.log("Tìm kiếm với params:", params)
     }
 
     const onReset = () => {
         form.resetFields();
 
         onSearch({
-            subject: "",
-            gradeLevel: undefined,
+            subjectId: undefined,
+            gradeId: undefined,
             minFee: undefined,
             maxFee: undefined,
-            duration: undefined,
-            location: undefined,
+            durationId: undefined,
+            locationId: undefined,
+            page: 0,
+            size: 10,
         });
     };
 
@@ -99,20 +109,40 @@ function ClassFilter({onSearch}: ClassFilterProps){
             initialValues={{fee: [0, 5000000]}}
         >
             <div className="filter-fields">
-                <Form.Item name="subject" label="Môn học">
-                    <Select allowClear placeholder="Chọn môn" options={subjects} />
+                <Form.Item name="subjectId" label="Môn học">
+                    <Select
+                        allowClear
+                        placeholder="Chọn môn"
+                        options={subjects.map((item) => ({ label: item.name, value: item.id }))}
+                    />
                 </Form.Item>
 
-                <Form.Item name="gradeLevel" label="Khối">
-                    <Select allowClear placeholder="Chọn khối" options={grades} />
+                <Form.Item name="gradeId" label="Khối">
+                    <Select
+                        allowClear
+                        placeholder="Chọn khối"
+                        options={grades.map((item) => ({ label: item.name, value: item.id }))}
+                    />
                 </Form.Item>
 
-                <Form.Item name="duration" label="Thời lượng">
-                    <Select allowClear placeholder="Chọn thời lượng" options={durationOptions} />
+                <Form.Item name="durationId" label="Thời lượng">
+                    <Select
+                        allowClear
+                        placeholder="Chọn thời lượng"
+                        options={
+                            durations.length > 0
+                                ? durations.map((item) => ({ label: item.name, value: item.id }))
+                                : fallbackDurationOptions
+                        }
+                    />
                 </Form.Item>
 
-                <Form.Item name="location" label="Địa điểm">
-                    <Select allowClear placeholder="Chọn địa điểm" options={locationOptions} />
+                <Form.Item name="locationId" label="Địa điểm">
+                    <Select
+                        allowClear
+                        placeholder="Chọn địa điểm"
+                        options={locations.map((item) => ({ label: item.name, value: item.id }))}
+                    />
                 </Form.Item>
             </div>
 
