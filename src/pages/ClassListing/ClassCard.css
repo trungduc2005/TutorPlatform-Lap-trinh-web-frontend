@@ -1,50 +1,136 @@
-
-.class-id{
-    background: #e6f4ea;
-    color: #30433d;
-    padding: 6px 14px;
-    border-radius: 10px;
-    width: fit-content;
-    font-weight: 600;
-}
-
-.class-card-container{
+.class-card-container {
     width: 100%;
-    height: 300px;
-    border: 1px solid rgb(203, 191, 191);
-    border-radius: 10px;
+    min-height: 260px;
+    border: 1px solid #e6edf3;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: 12px;
-    gap: 12px;
+    padding: 20px;
+    padding-right: 84px;
+    gap: 10px;
     box-sizing: border-box;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-.class-card-container:hover{
-    box-shadow: -6px 6px 10px rgba(0, 0, 0, 0.1);
+.class-card-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+.class-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.class-subject-decor {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d7e6f5;
+    box-shadow: 0 4px 14px rgba(30, 58, 90, 0.08);
+    font-size: 24px;
+    line-height: 1;
+    user-select: none;
+}
+
+.class-subject-decor-math {
+    background: linear-gradient(145deg, #eef7ff 0%, #ddecff 100%);
+}
+
+.class-subject-decor-physics {
+    background: linear-gradient(145deg, #ecfbff 0%, #d7f1ff 100%);
+}
+
+.class-subject-decor-science {
+    background: linear-gradient(145deg, #eafff4 0%, #d6f7e9 100%);
+}
+
+.class-subject-decor-language {
+    background: linear-gradient(145deg, #eef3ff 0%, #dde8ff 100%);
+}
+
+.class-subject-decor-social {
+    background: linear-gradient(145deg, #fff7ea 0%, #ffedd4 100%);
+}
+
+.class-subject-decor-tech {
+    background: linear-gradient(145deg, #eefbff 0%, #d7f3ff 100%);
+}
+
+.class-subject-decor-default {
+    background: linear-gradient(145deg, #f2f6fb 0%, #e6edf5 100%);
+}
+
+.class-id {
+    background: #edf7ef;
+    color: #3f5751;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid #e1ece4;
+    width: fit-content;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .class-card-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 10px 0 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #1e3a24;
+    line-height: 1.35;
 }
 
-.infor-icon {
-    font-size: 18px;
-    color: #8c8c8c;
+.class-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 1px;
 }
 
-.class-infor {
-    margin-left: 8px;
+.info-icon {
+    margin-top: 2px;
+    font-size: 1rem;
+    color: #7b8a7f;
+}
+
+.class-info-text {
     font-size: 15px;
+    color: #34463a;
+    line-height: 1.45;
 }
 
 .more-detail-btn {
     margin-top: auto;
+    margin-bottom: 0;
     width: 100%;
-    height: 48px;
+    height: 44px;
     border-radius: 10px;
     font-size: 16px;
-    background-color: rgb(13, 146, 13);
+    font-weight: 600;
+    border: 0;
+    background: linear-gradient(180deg, #1f4f8b 0%, #173f70 100%) !important;
+    box-shadow: 0 6px 12px rgba(23, 63, 112, 0.18);
+}
+
+.class-info-row:last-of-type {
+    margin-bottom: 18px;
+}
+
+.more-detail-btn:hover {
+    background: linear-gradient(180deg, #1b4579 0%, #13355e 100%) !important;
 }

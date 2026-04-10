@@ -1,6 +1,6 @@
-import {Form, Button, Select, Slider} from "antd";
-import "./ClassFilter.css"
+import { Button, Form, Select, Slider } from "antd";
 import type { SearchClassesParams } from "../../features/classes/api/classApi";
+import "./ClassFilter.css";
 
 const grades = [
     { value: "GRADE_1", label: "Lớp 1" },
@@ -15,7 +15,7 @@ const grades = [
     { value: "GRADE_10", label: "Lớp 10" },
     { value: "GRADE_11", label: "Lớp 11" },
     { value: "GRADE_12", label: "Lớp 12" },
-]
+];
 
 const subjects = [
     { value: "TOAN", label: "Toán" },
@@ -23,30 +23,30 @@ const subjects = [
     { value: "TIENG_ANH", label: "Tiếng Anh" },
     { value: "NGU_VAN", label: "Ngữ Văn" },
     { value: "HOA", label: "Hóa" },
-    { value: "TIN_HOC", label: "Tin học" }
-]
+    { value: "TIN_HOC", label: "Tin học" },
+];
 
 const durationOptions = [
-    { label: '1h/buổi', value: '1' },
-    { label: '1.5h/buổi', value: '1.5' },
-    { label: '2h/buổi', value: '2' },
-    { label: '2.5h/buổi', value: '2.5' },
+    { label: "1h/buổi", value: "1" },
+    { label: "1.5h/buổi", value: "1.5" },
+    { label: "2h/buổi", value: "2" },
+    { label: "2.5h/buổi", value: "2.5" },
 ];
 
 const locationOptions = [
-    'Ba Đình',
-    'Hoàn Kiếm',
-    'Tây Hồ',
-    'Long Biên',
-    'Cầu Giấy',
-    'Đống Đa',
-    'Hai Bà Trưng',
-    'Hoàng Mai',
-    'Thanh Xuân',
-    'Hà Đông',
-    'Nam Từ Liêm',
-    'Bắc Từ Liêm',
-].map(item => ({ label: item, value: item }));
+    "Ba Đình",
+    "Hoàn Kiếm",
+    "Tây Hồ",
+    "Long Biên",
+    "Cầu Giấy",
+    "Đống Đa",
+    "Hai Bà Trưng",
+    "Hoàng Mai",
+    "Thanh Xuân",
+    "Hà Đông",
+    "Nam Từ Liêm",
+    "Bắc Từ Liêm",
+].map((item) => ({ label: item, value: item }));
 
 type FilterValues = {
     subject?: string;
@@ -54,15 +54,19 @@ type FilterValues = {
     fee?: [number, number];
     duration?: string;
     location?: string;
-}
+};
 
 type ClassFilterProps = {
-    onSearch: (params: SearchClassesParams) => void
+    onSearch: (params: SearchClassesParams) => void;
+};
+
+function formatCurrency(value: number) {
+    return value.toLocaleString("vi-VN");
 }
 
-
-function ClassFilter({onSearch}: ClassFilterProps){
+function ClassFilter({ onSearch }: ClassFilterProps) {
     const [form] = Form.useForm<FilterValues>();
+    const feeRange = Form.useWatch("fee", form) ?? [0, 5000000];
 
     const onFinish = (values: FilterValues) => {
         const params = {
@@ -73,9 +77,9 @@ function ClassFilter({onSearch}: ClassFilterProps){
             duration: values.duration,
             location: values.location,
         };
-        onSearch(params)
-        console.log(params)
-    }
+
+        onSearch(params);
+    };
 
     const onReset = () => {
         form.resetFields();
@@ -96,8 +100,12 @@ function ClassFilter({onSearch}: ClassFilterProps){
             form={form}
             layout="vertical"
             onFinish={onFinish}
-            initialValues={{fee: [0, 5000000]}}
+            initialValues={{ fee: [0, 5000000] }}
         >
+            <div className="class-filter-header">
+                <h3 className="class-filter-title">Bộ lọc</h3>
+            </div>
+
             <div className="filter-fields">
                 <Form.Item name="subject" label="Môn học">
                     <Select allowClear placeholder="Chọn môn" options={subjects} />
@@ -120,16 +128,20 @@ function ClassFilter({onSearch}: ClassFilterProps){
                 <Form.Item name="fee" label="Học phí">
                     <Slider range min={0} max={5000000} step={100000} />
                 </Form.Item>
+
+                <p className="fee-range-text">
+                    Từ {formatCurrency(feeRange[0])}đ đến {formatCurrency(feeRange[1])}đ
+                </p>
             </div>
 
             <div className="filter-actions">
                 <Button type="primary" htmlType="submit">
-                    Lọc
+                    Áp dụng
                 </Button>
-                <Button onClick={onReset}>Xóa lọc</Button>
+                <Button onClick={onReset}>Thiết lập lại</Button>
             </div>
         </Form>
-    )
+    );
 }
 
 export default ClassFilter;

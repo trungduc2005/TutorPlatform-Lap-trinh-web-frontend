@@ -1,19 +1,35 @@
 .class-filter-form {
-  background: #f8f8f8;
-  border-radius: 18px;
-  padding: 20px;
-  border: 1px solid #eeeeee;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  border: 1px solid #e6edf3;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.class-filter-header {
+  margin-bottom: 12px;
+}
+
+.class-filter-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #1f3555;
+  line-height: 1.2;
 }
 
 .class-filter-form .ant-form-item {
   margin-bottom: 18px;
 }
 
+.class-filter-form .ant-form-item-label {
+  padding-bottom: 4px;
+}
+
 .class-filter-form .ant-form-item-label > label {
   font-size: 16px;
-  font-weight: 700;
-  color: #2f3a4a;
+  font-weight: 500;
+  color: #2f4b35;
 }
 
 .class-filter-form .ant-select {
@@ -21,9 +37,9 @@
 }
 
 .class-filter-form .ant-select-selector {
-  height: 46px !important;
+  height: 45px !important;
   border-radius: 12px !important;
-  border: 1px solid #d9d9d9 !important;
+  border: 1px solid #d7e0ea !important;
   box-shadow: none !important;
   background: #ffffff !important;
   display: flex;
@@ -32,82 +48,99 @@
 }
 
 .class-filter-form .ant-select-selection-placeholder {
-  color: #b8b8b8 !important;
+  color: #97a397 !important;
   font-size: 15px;
 }
 
 .class-filter-form .ant-select-selection-item {
   font-size: 15px;
-  color: #333;
+  color: #2c3f31;
+}
+
+.class-filter-form .ant-select-focused .ant-select-selector,
+.class-filter-form .ant-select:hover .ant-select-selector {
+  border-color: #5f84b9 !important;
+  box-shadow: 0 0 0 4px rgba(95, 132, 185, 0.14) !important;
 }
 
 .class-filter-form .ant-slider {
-  margin: 12px 4px 8px;
+  margin: 10px 4px 8px;
 }
 
 .class-filter-form .ant-slider-rail {
-  background: #d9d9d9;
+  background: #d6ddd4;
   height: 6px;
 }
 
 .class-filter-form .ant-slider-track {
-  background: #1677ff;
+  background: #1f4f8b;
   height: 6px;
 }
 
 .class-filter-form .ant-slider-handle::after {
-  width: 14px;
-  height: 14px;
-  inset-inline-start: -4px;
-  inset-block-start: -4px;
-  box-shadow: 0 0 0 2px #1677ff;
+  width: 28px;
+  height: 28px;
+  inset-inline-start: -11px;
+  inset-block-start: -12px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffffff url("../../assets/rabbit-slider.svg") center/24px 24px no-repeat;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
 }
 
-.class-filter-form .ant-space {
-  width: 100%;
+.class-filter-form .ant-slider-handle:hover::after,
+.class-filter-form .ant-slider-handle:active::after,
+.class-filter-form .ant-slider-handle:focus::after,
+.class-filter-form .ant-slider-handle.ant-slider-handle-dragging::after {
+  box-shadow: 0 0 0 4px rgba(95, 132, 185, 0.18), 0 4px 12px rgba(15, 23, 42, 0.2);
 }
 
-.class-filter-form .ant-space-item {
-  width: 100%;
+.fee-range-text {
+  margin: -2px 0 0;
+  color: #4f5f74;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .class-filter-form .ant-btn {
   height: 44px;
   border-radius: 12px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .class-filter-form .ant-btn-primary {
-  width: 130px;
-  background: #1677ff;
-  border-color: #1677ff;
-  box-shadow: 0 8px 18px rgba(22, 119, 255, 0.2);
+  background: linear-gradient(180deg, #1f4f8b 0%, #173f70 100%);
+  border: 0;
+  box-shadow: 0 8px 16px rgba(23, 63, 112, 0.22);
 }
 
 .class-filter-form .ant-btn-primary:hover {
-  background: #4096ff !important;
-  border-color: #4096ff !important;
+  background: linear-gradient(180deg, #1b4579 0%, #13355e 100%) !important;
 }
 
 .class-filter-form .ant-btn-default {
-  width: 130px;
   background: #ffffff;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #d1d8e2;
+  color: #334e39;
 }
 
 .class-filter-form .ant-btn-default:hover {
-  color: #1677ff !important;
-  border-color: #1677ff !important;
+  color: #1f4f8b !important;
+  border-color: #1f4f8b !important;
 }
 
 .class-filter-form .filter-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.class-filter-form .filter-actions .ant-btn {
+  flex: 1;
 }
 
 .class-filter-form .fee-filter {
-  margin-top: 6px;
-  margin-bottom: 10px;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
