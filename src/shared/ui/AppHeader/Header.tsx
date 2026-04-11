@@ -1,9 +1,11 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { message, Modal } from "antd";
+import { FiBell } from "react-icons/fi";
+import type { NotificationType } from "../../../features/notification/model/notificationType";
 import { useBellNotification } from "../../../features/notification/hooks/useBellNotification";
 import kittyLogo from "../../../assets/hello-kitty-logo.svg";
 import { useAppSelector } from "../../../app/store/hooks";
-import { message } from "antd";
-import { FiBell } from "react-icons/fi";
 import "./Header.css";
 
 interface NavItem {
@@ -41,6 +43,22 @@ const NAV_ITEMS_HIRER: NavItem[] = [
     { path: "/classroom-calling", label: "Phòng học Online" },
 ];
 
+function formatNotificationDate(value: string) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return value;
+    }
+
+    return new Intl.DateTimeFormat("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
+}
+
+
 function GuestTopActions() {
     return (
         <>
@@ -62,36 +80,130 @@ function GuestTopActions() {
 
 function UserTopActions() {
     const user = useAppSelector((state) => state.auth.user);
-    const { hasNew, markAllAsRead } = useBellNotification();
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+    const [selectedNotification, setSelectedNotification] = useState<NotificationType | null>(null);
+    const notificationRef = useRef<HTMLDivElement | null>(null);
+    const { notifications, hasNew, isLoading, openDropdown } = useBellNotification(isNotificationOpen);
     const initial = user?.avatarUrl?.trim() || "T";
 
-    const handleNotificationClick = async () => {
-        if (!hasNew) {
-            message.info("Bạn không có thông báo mới");
+    useEffect(() => {
+        if (!isNotificationOpen || selectedNotification) {
             return;
         }
 
-        try {
-            await markAllAsRead();
-            message.success("Đã đánh dấu tất cả thông báo là đã đọc");
-        } catch {
-            message.error("Không thể cập nhật thông báo");
+        const handleMouseDown = (event: MouseEvent) => {
+            const target = event.target as Node;
+
+            if (!notificationRef.current?.contains(target)) {
+                setIsNotificationOpen(false);
+            }
+        };
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setIsNotificationOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleMouseDown);
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("mousedown", handleMouseDown);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isNotificationOpen, selectedNotification]);
+
+    const handleNotificationButtonClick = () => {
+        if (isNotificationOpen) {
+            setSelectedNotification(null);
+            setIsNotificationOpen(false);
+            return;
         }
+
+        setIsNotificationOpen(true);
+        void openDropdown().catch((error) => {
+            message.error(error instanceof Error ? error.message : "Không thể tải thông báo");
+        });
     };
 
     return (
         <>
-            <button
-                type="button"
-                className="notification"
-                aria-label="Thông báo"
-                onClick={() => { void handleNotificationClick(); }}
+            <div className="notification-wrapper" ref={notificationRef}>
+                <button
+                    type="button"
+                    className="notification"
+                    aria-label="Thông báo"
+                    aria-expanded={isNotificationOpen}
+                    aria-haspopup="dialog"
+                    onClick={handleNotificationButtonClick}
+                >
+                    <span className="notification__icon" aria-hidden="true">
+                        <FiBell />
+                    </span>
+                    {hasNew ? <span className="notification__dot" aria-hidden="true" /> : null}
+                </button>
+
+                {isNotificationOpen ? (
+                    <div className="notification-dropdown" role="dialog" aria-label="Danh sách thông báo">
+                        <div className="notification-dropdown__header">
+                            <p className="notification-dropdown__title">Thông báo</p>
+                            <span className="notification-dropdown__subtitle">8 thông báo gần nhất</span>
+                        </div>
+
+                        <div className="notification-dropdown__content">
+                            {isLoading ? (
+                                <p className="notification-dropdown__state">Đang tải thông báo...</p>
+                            ) : notifications.length === 0 ? (
+                                <p className="notification-dropdown__state">Bạn chưa có thông báo nào.</p>
+                            ) : (
+                                <ul className="notification-list">
+                                    {notifications.map((item) => (
+                                        <li key={item.id}>
+                                            <button
+                                                type="button"
+                                                className={`notification-list__item${
+                                                    item.read ? "" : " notification-list__item--unread"
+                                                }`}
+                                                onClick={() => setSelectedNotification(item)}
+                                            >
+                                                <div className="notification-list__top">
+                                                    <span className="notification-list__title">{item.title}</span>
+                                                    <span className="notification-list__time">
+                                                        {formatNotificationDate(item.createdAt)}
+                                                    </span>
+                                                </div>
+                                                <span className="notification-list__sender">{item.senderName}</span>
+                                                <p className="notification-list__body">{item.body}</p>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+                ) : null}
+            </div>
+
+            <Modal
+                title={selectedNotification?.title ?? "Chi tiết thông báo"}
+                open={selectedNotification !== null}
+                onCancel={() => setSelectedNotification(null)}
+                footer={null}
+                destroyOnClose
+                centered
             >
-                <span className="notification__icon" aria-hidden="true">
-                    <FiBell />
-                </span>
-                {hasNew ? <span className="notification__dot" aria-hidden="true" /> : null}
-            </button>
+                {selectedNotification ? (
+                    <div className="notification-detail">
+                        <div className="notification-detail__meta">
+                            <span>Từ: {selectedNotification.senderName}</span>
+                            <span>{formatNotificationDate(selectedNotification.createdAt)}</span>
+                        </div>
+
+                        <p className="notification-detail__body">{selectedNotification.body}</p>
+                    </div>
+                ) : null}
+            </Modal>
 
             <Link to="/profile" className="top-action-link">
                 <button type="button" className="profile">
@@ -102,6 +214,7 @@ function UserTopActions() {
         </>
     );
 }
+
 
 
 function Header() {
