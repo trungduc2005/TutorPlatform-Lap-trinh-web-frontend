@@ -5,6 +5,43 @@ import { useClassListing } from "../../features/classes/hooks/useClassListing";
 import type { SearchClassesParams } from "../../features/classes/api/classApi";
 import { useState } from "react";
 
+type PageToken = number | "ellipsis";
+
+const getCompactPageTokens = (currentPage: number, totalPages: number): PageToken[] => {
+    if (totalPages <= 7) {
+        return Array.from({ length: totalPages }, (_, index) => index);
+    }
+
+    const pages = new Set<number>([
+        0,
+        totalPages - 1,
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+    ]);
+
+    const sortedPages = Array.from(pages)
+        .filter((page) => page >= 0 && page < totalPages)
+        .sort((a, b) => a - b);
+
+    const tokens: PageToken[] = [];
+
+    sortedPages.forEach((page, index) => {
+        if (index > 0) {
+            const prevPage = sortedPages[index - 1];
+            if (page - prevPage === 2) {
+                tokens.push(prevPage + 1);
+            } else if (page - prevPage > 2) {
+                tokens.push("ellipsis");
+            }
+        }
+
+        tokens.push(page);
+    });
+
+    return tokens;
+};
+
 
 function ClassListing(){
     const [params, setParams] = useState<SearchClassesParams>({
@@ -14,7 +51,8 @@ function ClassListing(){
         maxFee: undefined,
         durationId: undefined,
         locationId: undefined,
-        page: 0
+        page: 0,
+        size: 12,
     })
 
     const handleFilterChange = (filterParams: Partial<SearchClassesParams>) => {
@@ -25,7 +63,20 @@ function ClassListing(){
         }));
     };
 
-    const {classes, loading, error} = useClassListing(params);
+    const {classes, loading, error, pagination} = useClassListing(params);
+
+    const handlePageChange = (page: number) => {
+        if (page < 0 || page >= pagination.totalPages || page === pagination.currentPage) {
+            return;
+        }
+
+        setParams((prev) => ({
+            ...prev,
+            page,
+        }));
+    };
+
+    const pageTokens = getCompactPageTokens(pagination.currentPage, pagination.totalPages);
     
     return (
         <div className="class-listing-container">
@@ -33,7 +84,7 @@ function ClassListing(){
 
             <div className="listing-header">
                 <h1>Danh sách lớp mới</h1>
-                <div className="listing-meta">(Đang có {classes.length} lớp)</div>
+                <div className="listing-meta">(Đang có {pagination.totalItems} lớp)</div>
             </div>
 
             <div className="class-layout">
@@ -55,11 +106,54 @@ function ClassListing(){
                 </div>
             </div>
 
-            <div className="listing-pagination" aria-hidden="true">
-                <span className="page-item page-active">1</span>
-                <span className="page-item">2</span>
-                <span className="page-item">3</span>
-            </div>
+            {pagination.totalPages > 0 && (
+                <div className="listing-pagination" aria-label="Phân trang danh sách lớp">
+                    <button
+                        type="button"
+                        className="page-item page-arrow"
+                        onClick={() => handlePageChange(pagination.currentPage - 1)}
+                        disabled={pagination.currentPage === 0}
+                        aria-label="Trang trước"
+                    >
+                        &lt;
+                    </button>
+
+                    {pageTokens.map((token, index) => {
+                        if (token === "ellipsis") {
+                            return (
+                                <span key={`ellipsis-${index}`} className="page-item page-ellipsis" aria-hidden="true">
+                                    ...
+                                </span>
+                            );
+                        }
+
+                        const page = token;
+
+                        return (
+                            <button
+                                key={page}
+                                type="button"
+                                className={`page-item ${page === pagination.currentPage ? "page-active" : ""}`}
+                                onClick={() => handlePageChange(page)}
+                                aria-label={`Trang ${page + 1}`}
+                                aria-current={page === pagination.currentPage ? "page" : undefined}
+                            >
+                                {page + 1}
+                            </button>
+                        );
+                    })}
+
+                    <button
+                        type="button"
+                        className="page-item page-arrow"
+                        onClick={() => handlePageChange(pagination.currentPage + 1)}
+                        disabled={pagination.currentPage >= pagination.totalPages - 1}
+                        aria-label="Trang sau"
+                    >
+                        &gt;
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
