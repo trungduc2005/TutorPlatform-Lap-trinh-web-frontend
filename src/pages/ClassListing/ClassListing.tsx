@@ -36,15 +36,6 @@ function ClassListing(){
                 <div className="listing-meta">(Đang có {classes.length} lớp)</div>
             </div>
 
-            <div className="listing-search-row">
-                <input
-                    className="listing-search-input"
-                    placeholder="Tìm kiếm lớp gia sư ..."
-                    aria-label="Tìm kiếm lớp"
-                />
-                <button className="listing-search-btn" type="button">Tìm kiếm</button>
-            </div>
-
             <div className="class-layout">
                 <div className="filter-section">
                     <ClassFilter onSearch={handleFilterChange} />

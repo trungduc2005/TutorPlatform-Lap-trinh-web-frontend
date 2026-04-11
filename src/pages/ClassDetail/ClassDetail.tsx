@@ -250,14 +250,6 @@ function ClassDetail() {
                         </div>
                     </div>
 
-                    <div className="detail-section">
-                        <h3>Gia sư hướng dẫn</h3>
-                        <div className="info-row">
-                            <span className="label">Tên gia sư:</span>
-                            <span className="value">{classData.createdByName}</span>
-                        </div>
-                    </div>
-
                     <div className="detail-actions">
                         <Button
                             type="primary"

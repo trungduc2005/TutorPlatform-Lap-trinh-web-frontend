@@ -36,6 +36,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
     const [grades, setGrades] = useState<FilterOption[]>([]);
     const [locations, setLocations] = useState<FilterOption[]>([]);
     const [durations, setDurations] = useState<FilterOption[]>([]);
+    const [feeRange, setFeeRange] = useState<[number, number]>([0, 5000000]);
 
     useEffect(() => {
         const fetchFilterOptions = async () => {
@@ -148,7 +149,28 @@ function ClassFilter({onSearch}: ClassFilterProps){
 
             <div className="fee-filter">
                 <Form.Item name="fee" label="Học phí">
-                    <Slider range min={0} max={5000000} step={100000} />
+                    <Slider
+                        range
+                        min={0}
+                        max={5000000}
+                        step={100000}
+                        labels={{
+                            0: '0đ',
+                            5000000: '5.000.000đ',
+                        }}
+                        tooltip={{
+                            formatter: (value) => `${(value ?? 0).toLocaleString('vi-VN')}đ`,
+                        }}
+                        onChange={(value) => {
+                            if (Array.isArray(value)) {
+                                setFeeRange(value as [number, number]);
+                            }
+                        }}
+                    />
+                    <div className="fee-range-labels">
+                        <span>{feeRange[0].toLocaleString('vi-VN')}đ</span>
+                        <span>{feeRange[1].toLocaleString('vi-VN')}đ</span>
+                    </div>
                 </Form.Item>
             </div>
 
