@@ -3,6 +3,7 @@ import Error404 from "../../pages/ErrorPages/Error404"
 import Home from "../../pages/Home/Home"
 import About from "../../pages/About/About";
 import ClassListing from "../../pages/ClassListing/ClassListing";
+import ClassDetail from "../../pages/ClassDetail/ClassDetail";
 import RequireGuest from "./guards/RequireGuest";
 import RequireAuth from "./guards/RequireAuth";
 import Login from "../../pages/Login/Login";
@@ -21,10 +22,16 @@ import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
 import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
+import TutorsList from "../../pages/TutorsList/TutorsList";
+import Contract from "../../pages/Contract/Contract";
+import ClassApplications from "../../pages/ClassApplications/ClassApplications";
+import TutorDetail from "../../pages/TutorDetail/TutorDetail";
+import HireTutor from "../../pages/HireTutor/HireTutor";
+import HirerClassManagement from "../../pages/HirerClassManagement/HirerClassManagement";
+import HirerApplicationManagement from "../../pages/HirerApplicationManagement/HirerApplicationManagement";
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
-
 
 const routes = [
     {
@@ -34,6 +41,10 @@ const routes = [
             { index: true, element: <Home /> },
             { path: "about", element: <About /> },
             { path: "classes", element: <ClassListing /> },
+            { path: "featured-tutors", element: <TutorsList /> },
+            { path: "contract", element: <Contract /> },
+            { path: "tutors/:id", element: <TutorDetail /> },
+            { path: "class/:id", element: <ClassDetail /> },
             {
                 element: <RequireGuest />,
                 children: [
@@ -46,11 +57,19 @@ const routes = [
                 children: [
                     {
                         element: <RequireRole allow={["TUTOR"]} />,
-                        children: [{ path: "tutor/dashboard", element: <TutorDashboard /> }],
+                        children: [
+                            { path: "tutor/dashboard", element: <TutorDashboard /> },
+                            { path: "tutor/class-applications", element: <ClassApplications /> }
+                        ],
                     },
                     {
                         element: <RequireRole allow={["HIRER"]} />,
-                        children: [{ path: "parent/dashboard", element: <ParentDashboard /> }],
+                        children: [
+                            { path: "parent/dashboard", element: <ParentDashboard /> },
+                            { path: "hire-tutor", element: <HireTutor /> },
+                            { path: "hirer/class-management", element: <HirerClassManagement /> },
+                            { path: "hirer/application-management", element: <HirerApplicationManagement /> },
+                        ],
                     },
                     {
                         path: "/profile", element: <Profile />,
