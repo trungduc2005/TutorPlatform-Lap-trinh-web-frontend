@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { StatisticsItemType } from "../../../features/admin/model/statisticsType";
 import { adminApi } from "../../../features/admin/api/adminApi";
 import StatisticsChart from "./StatisticChart";
+import { message } from "antd";
 
 export default function AdminDashboard() {
     const currentYear = new Date().getFullYear();
@@ -34,6 +35,7 @@ export default function AdminDashboard() {
                     res = await adminApi.getLocationStats(year);
                 }
                 setStatistics(res);
+                message.success("Thống kê đã được cập nhật");
             }
             catch(error) {
                 console.error("Failed to fetch statistics: ", error);  

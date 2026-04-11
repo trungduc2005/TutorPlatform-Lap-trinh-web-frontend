@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { adminApi } from "../../../features/admin/api/adminApi";
 import type { AccountType } from "../../../features/admin/model/accountType";
 import "./AccountMana.css";
-import { Button, Modal } from "antd";
+import { Button, message, Modal } from "antd";
 
 export default function AccountMana() {
     const [accounts, setAccounts] = useState<AccountType[]>([]);
@@ -42,6 +42,7 @@ export default function AccountMana() {
                         : item
                 )
             );
+            message.success(`Tài khoản ${acc.fullName} đã được ${newStatus === "ACTIVE" ? "mở khóa" : "khóa"} thành công`);
         } finally {
             setUpdatingId(null);
             handleCloseModal();

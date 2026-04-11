@@ -1,7 +1,7 @@
 import type { Payload } from "recharts/types/component/DefaultTooltipContent";
 import axiosClient from "../../../shared/api/axiosClient";
 import type { AccountType } from "../model/accountType";
-import type { FeaturedTutorType } from "../model/featuredTutorType";
+import type { FeaturedTutorType, UpdateFeaturedTutorPayload } from "../model/featuredTutorType";
 import type {FilterOptionType, SearchClassType, StatisticsItemType } from "../model/statisticsType";
 
 export const adminApi = {
@@ -46,7 +46,7 @@ export const adminApi = {
         return res.data;
     },
     deleteUnregisteredClass: async (classId: number): Promise<void> => {
-        const res = await axiosClient.delete(`/admin/classes/${classId}`);
+        const res = await axiosClient.delete(`/hirer/classes/${classId}`);
         return res.data;
     },
 
@@ -78,7 +78,7 @@ export const adminApi = {
         const res = await axiosClient.delete(`/admin/featured_tutors/${tutorId}`);
         return res.data;
     },
-    updateFeaturedTutor: async (tutorId: number, tutorData: Partial<FeaturedTutorType>): Promise<void> => {
+    updateFeaturedTutor: async (tutorId: number, tutorData: UpdateFeaturedTutorPayload): Promise<void> => {
         const res = await axiosClient.put(`/admin/featured_tutors/${tutorId}`, tutorData);
         return res.data;
     }

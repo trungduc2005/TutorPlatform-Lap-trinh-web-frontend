@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { adminApi } from "../../../features/admin/api/adminApi";
-import type { FeaturedTutorType } from "../../../features/admin/model/featuredTutorType";
+import type { FeaturedTutorType, UpdateFeaturedTutorPayload} from "../../../features/admin/model/featuredTutorType";
 import { Button, Card, Form, Input, InputNumber, message, Modal, Popconfirm } from "antd";
 import kittyLogo from "../../../assets/hello-kitty-logo.svg";
 import "./FeaturedTutorMana.css";
@@ -12,6 +12,13 @@ export default function FeaturedTutorMana() {
     const [selectedFeturedTutor, setSelectedFeaturedTutor] = useState<FeaturedTutorType | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [updatingTutorData, setUpdatingTutorData] = useState<UpdateFeaturedTutorPayload>({
+        title: "",
+        note: "",
+        displayOrder: 0
+    });
+
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -44,11 +51,23 @@ export default function FeaturedTutorMana() {
         }
     };
 
+    const handleUpdateFeaturedTutor = async (tutorData: UpdateFeaturedTutorPayload) => {
+        if (!selectedFeturedTutor) return;
+        try {
+            await adminApi.updateFeaturedTutor(selectedFeturedTutor.id, tutorData);
+            message.success("Cập nhật gia sư tiêu biểu thành công");
+            setIsEditing(false);
+            setLoading(true);
+        } catch (error) {
+            console.error("Không thể cập nhật gia sư tiêu biểu:", error);
+            message.error("Cập nhật gia sư tiêu biểu thất bại");
+        }
+    };
+
     const handleDeleteFeaturedTutor = async () => {
         if (!selectedFeturedTutor) return;
         try{
             await adminApi.deleteFeaturedTutor(selectedFeturedTutor.id);
-            
             message.success("Xóa gia sư tiêu biểu thành công");
             handleModalClose();
             setLoading(true);
@@ -58,12 +77,24 @@ export default function FeaturedTutorMana() {
         }
     }
 
+    const handleEdit = () => {
+        if(!selectedFeturedTutor) return;
+
+        setUpdatingTutorData({
+            title: selectedFeturedTutor.title,
+            note: selectedFeturedTutor.note,
+            displayOrder: selectedFeturedTutor.displayOrder
+        });
+        setIsEditing(true);
+    }
+
     const handleModalOpen = () => {
         setIsModalOpen(true);
     }
 
     const handleModalClose = () => {
         setIsModalOpen(false);
+        setIsEditing(false);
         setSelectedFeaturedTutor(null);
     }
 
@@ -74,6 +105,7 @@ export default function FeaturedTutorMana() {
     const handleCreateModalClose = () => {
         setIsCreateModalOpen(false);
     }
+
 
     return (
         <div
@@ -128,48 +160,94 @@ export default function FeaturedTutorMana() {
                 width={750}
                 className="featured-tutor-modal"
             >
-            {selectedFeturedTutor && (
-                <div className="tutor-modal-card">
-                
-                <div className="tutor-modal-header">
-                    <img
-                    className="tutor-modal-avatar"
-                    src={selectedFeturedTutor.avatarUrl ?? kittyLogo}
-                    alt={selectedFeturedTutor.fullName}
-                    />
+                {!isEditing ? (
+                    <>
+                        {selectedFeturedTutor && (
+                            <div className="tutor-modal-card">
+                                <div className="tutor-modal-header">
+                                    <img
+                                    className="tutor-modal-avatar"
+                                    src={selectedFeturedTutor.avatarUrl ?? kittyLogo}
+                                    alt={selectedFeturedTutor.fullName}
+                                    />
 
-                    <div className="tutor-modal-info">
-                    <p><strong>Mã số:</strong> E{String(selectedFeturedTutor.id).padStart(4, "0")}</p>
-                    <p><strong>Gia sư:</strong> {selectedFeturedTutor.fullName}</p>
-                    <p><strong>Trường:</strong> {selectedFeturedTutor.school}</p>
-                    <p><strong>Tiêu đề:</strong> {selectedFeturedTutor.title}</p>
-                    <p><strong>Giới thiệu:</strong> {selectedFeturedTutor.bio}</p>
+                                    <div className="tutor-modal-info">
+                                    <p><strong>Mã số:</strong> E{String(selectedFeturedTutor.id).padStart(4, "0")}</p>
+                                    <p><strong>Gia sư:</strong> {selectedFeturedTutor.fullName}</p>
+                                    <p><strong>Trường:</strong> {selectedFeturedTutor.school}</p>
+                                    <p><strong>Tiêu đề:</strong> {selectedFeturedTutor.title}</p>
+                                    <p><strong>Giới thiệu:</strong> {selectedFeturedTutor.bio}</p>
+                                    </div>
+                                </div>
+
+                                <div className="tutor-modal-body">
+                                    <p><strong>Ghi chú:</strong> {selectedFeturedTutor.note}</p>
+                                    <p><strong>Kinh nghiệm:</strong> {selectedFeturedTutor.experience}</p>
+                                    <p><strong>Thành tích:</strong> {selectedFeturedTutor.achievements}</p>
+                                    <p><strong>Khu vực:</strong> {selectedFeturedTutor.teaching_area}</p>
+                                    <p><strong>Thời gian rảnh:</strong> {selectedFeturedTutor.availableTime}</p>
+                                </div>
+
+                                <div className="tutor-modal-footer">
+                                    <Popconfirm
+                                        title="Bạn có chắc muốn xóa?"
+                                        description="Hành động này không thể hoàn tác"
+                                        onConfirm={() => handleDeleteFeaturedTutor()}
+                                        okText="Xóa"
+                                        cancelText="Hủy"
+                                    >
+                                        <button className="tutor-delete-btn">Xóa</button>
+                                    </Popconfirm>
+                                    <button className="tutor-update-btn" onClick={() => handleEdit()}>Chỉnh sửa thông tin</button>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                    ) : (
+                    <div className="tutor-edit-card">
+                        {selectedFeturedTutor && (
+                            <div className="tutor-modal-header">
+                            <img
+                            className="tutor-modal-avatar"
+                            src={selectedFeturedTutor.avatarUrl ?? kittyLogo}
+                            alt={selectedFeturedTutor.fullName}
+                            />
+
+                            <div className="tutor-modal-info">
+                            <p><strong>Mã số:</strong> E{String(selectedFeturedTutor.id).padStart(4, "0")}</p>
+                            <p><strong>Gia sư:</strong> {selectedFeturedTutor.fullName}</p>
+                            <p><strong>Trường:</strong> {selectedFeturedTutor.school}</p>
+                            <p><strong>Tiêu đề:</strong> {selectedFeturedTutor.title}</p>
+                            <p><strong>Giới thiệu:</strong> {selectedFeturedTutor.bio}</p>
+                            </div>
+                        </div>
+                        )}
+                        <Input
+                            value={updatingTutorData?.title}
+                            onChange={(e) =>
+                                setUpdatingTutorData((prev) => prev ? ({ ...prev, title: e.target.value }) : prev)
+                            }
+                        />
+                        <Input
+                            value={updatingTutorData?.note}
+                            onChange={(e) => {
+                                setUpdatingTutorData((prev) => prev ? ({...prev, note: e.target.value}) : prev)
+                            }}
+                        />
+                        <Input
+                            value={updatingTutorData?.displayOrder}
+                            onChange={(e) =>
+                                setUpdatingTutorData((prev) => prev ? ({ ...prev, displayOrder: Number(e.target.value) }) : prev)
+                            }
+                        />
+                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
+                            <Button onClick={() => setIsEditing(false)}>Hủy</Button>
+                            <Button type="primary" onClick={() => handleUpdateFeaturedTutor(updatingTutorData)}>
+                                Lưu
+                            </Button>
+                        </div>
                     </div>
-                </div>
-
-                <div className="tutor-modal-body">
-                    <p><strong>Ghi chú:</strong> {selectedFeturedTutor.note}</p>
-                    <p><strong>Kinh nghiệm:</strong> {selectedFeturedTutor.experience}</p>
-                    <p><strong>Thành tích:</strong> {selectedFeturedTutor.achievements}</p>
-                    <p><strong>Khu vực:</strong> {selectedFeturedTutor.teaching_area}</p>
-                    <p><strong>Thời gian rảnh:</strong> {selectedFeturedTutor.availableTime}</p>
-                </div>
-
-                <div className="tutor-modal-footer">
-                    <Popconfirm
-                        title="Bạn có chắc muốn xóa?"
-                        description="Hành động này không thể hoàn tác"
-                        onConfirm={() => handleDeleteFeaturedTutor()}
-                        okText="Xóa"
-                        cancelText="Hủy"
-                    >
-                        <button className="tutor-delete-btn">Xóa</button>
-                    </Popconfirm>
-                    <button className="tutor-update-btn">Chỉnh sửa thông tin</button>
-                </div>
-
-                </div>
-            )}
+                )}
             </Modal>
             <Modal
                 title="Thêm gia sư nổi bật"
@@ -185,7 +263,7 @@ export default function FeaturedTutorMana() {
                     onFinish={handleCreateFeaturedTutor}
                 >
                     <Form.Item
-                    label="ID tìa khoản gia sư"
+                    label="ID tài khoản gia sư"
                     name="tutorUserId"
                     rules={[{ required: true, message: "Vui lòng nhập Tutor User Id" }]}
                     >
