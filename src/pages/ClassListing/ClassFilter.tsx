@@ -82,7 +82,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             durationId: values.durationId,
             locationId: values.locationId,
             page: 0,
-            size: 10,
+            size: 12,
         };
         onSearch(params)
         console.log("Tìm kiếm với params:", params)
@@ -101,7 +101,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             durationId: undefined,
             locationId: undefined,
             page: 0,
-            size: 10,
+            size: 12,
         });
     };
 
@@ -159,10 +159,6 @@ function ClassFilter({onSearch}: ClassFilterProps){
                         min={0}
                         max={5000000}
                         step={100000}
-                        marks={{
-                            0: '0đ',
-                            5000000: '5.000.000đ',
-                        }}
                         tooltip={{
                             formatter: (value) => `${(value ?? 0).toLocaleString('vi-VN')}đ`,
                         }}
