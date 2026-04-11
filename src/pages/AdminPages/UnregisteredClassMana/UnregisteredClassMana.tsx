@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { adminApi } from "../../../features/admin/api/adminApi";
 import type { FilterOptionType, UnregisteredClassType } from "../../../features/admin/model/statisticsType";
 import "./UnregisteredClassMana.css";
-import { Card, Empty, Modal, Select } from "antd";
+import { Card, Empty, message, Modal, Select } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 
 const formatCurrency = (value: number) => 
@@ -80,7 +80,7 @@ export default function UnregisteredClassMana() {
             const res = await adminApi.deleteUnregisteredClass(classId);
             console.log("Delete class response: ", res);
             setLoading(true);
-            window.alert("Xóa lớp học thành công");
+            message.success("Xóa lớp học thành công");
             handleModalDeleteClose();
         }
         catch(error) {
@@ -264,7 +264,7 @@ export default function UnregisteredClassMana() {
                 onCancel={handleModalClose}
                 footer={null}
                 centered
-                width={720}
+                width={650}
                 className="class-detail-modal"
             >
                 {selectedClass && (

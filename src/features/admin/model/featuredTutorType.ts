@@ -13,3 +13,9 @@ export type FeaturedTutorType = {
   school: string;
   availableTime: string;
 };
+
+export type UpdateFeaturedTutorPayload = {
+  title: string;
+  note: string;
+  displayOrder: number;
+};
