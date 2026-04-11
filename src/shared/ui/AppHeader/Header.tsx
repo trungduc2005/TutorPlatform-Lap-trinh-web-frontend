@@ -1,7 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
-
+import { useBellNotification } from "../../../features/notification/hooks/useBellNotification";
 import kittyLogo from "../../../assets/hello-kitty-logo.svg";
 import { useAppSelector } from "../../../app/store/hooks";
+import { message } from "antd";
+import { FiBell } from "react-icons/fi";
 import "./Header.css";
 
 interface NavItem {
@@ -56,27 +58,51 @@ function GuestTopActions() {
     );
 }
 
+
+
 function UserTopActions() {
     const user = useAppSelector((state) => state.auth.user);
+    const { hasNew, markAllAsRead } = useBellNotification();
     const initial = user?.avatarUrl?.trim() || "T";
+
+    const handleNotificationClick = async () => {
+        if (!hasNew) {
+            message.info("Bạn không có thông báo mới");
+            return;
+        }
+
+        try {
+            await markAllAsRead();
+            message.success("Đã đánh dấu tất cả thông báo là đã đọc");
+        } catch {
+            message.error("Không thể cập nhật thông báo");
+        }
+    };
 
     return (
         <>
-            <Link to="/notification" className="top-action-link" aria-label="Thông báo">
-                <button type="button" className="notification">
-                    <span className="notification__icon" aria-hidden="true">🔔</span>
-                </button>
-            </Link>
+            <button
+                type="button"
+                className="notification"
+                aria-label="Thông báo"
+                onClick={() => { void handleNotificationClick(); }}
+            >
+                <span className="notification__icon" aria-hidden="true">
+                    <FiBell />
+                </span>
+                {hasNew ? <span className="notification__dot" aria-hidden="true" /> : null}
+            </button>
 
             <Link to="/profile" className="top-action-link">
                 <button type="button" className="profile">
-                    <img src={initial} alt=""  className="profile__avatar"/>
+                    <img src={initial} alt="" className="profile__avatar" />
                     <span className="profile__name">{user?.fullName ?? "Tài khoản"}</span>
                 </button>
             </Link>
         </>
     );
 }
+
 
 function Header() {
     const { status, user } = useAppSelector((state) => state.auth);
