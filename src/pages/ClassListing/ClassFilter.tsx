@@ -29,6 +29,8 @@ type ClassFilterProps = {
     onSearch: (params: SearchClassesParams) => void
 }
 
+const DEFAULT_FEE_RANGE: [number, number] = [0, 5000000];
+
 
 function ClassFilter({onSearch}: ClassFilterProps){
     const [form] = Form.useForm<FilterValues>();
@@ -36,7 +38,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
     const [grades, setGrades] = useState<FilterOption[]>([]);
     const [locations, setLocations] = useState<FilterOption[]>([]);
     const [durations, setDurations] = useState<FilterOption[]>([]);
-    const [feeRange, setFeeRange] = useState<[number, number]>([0, 5000000]);
+    const [feeRange, setFeeRange] = useState<[number, number]>(DEFAULT_FEE_RANGE);
 
     useEffect(() => {
         const fetchFilterOptions = async () => {
@@ -87,6 +89,8 @@ function ClassFilter({onSearch}: ClassFilterProps){
     }
 
     const onReset = () => {
+        setFeeRange(DEFAULT_FEE_RANGE);
+        form.setFieldValue("fee", DEFAULT_FEE_RANGE);
         form.resetFields();
 
         onSearch({
@@ -107,7 +111,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             form={form}
             layout="vertical"
             onFinish={onFinish}
-            initialValues={{fee: [0, 5000000]}}
+            initialValues={{fee: DEFAULT_FEE_RANGE}}
         >
             <div className="filter-fields">
                 <Form.Item name="subjectId" label="Môn học">
@@ -151,10 +155,11 @@ function ClassFilter({onSearch}: ClassFilterProps){
                 <Form.Item name="fee" label="Học phí">
                     <Slider
                         range
+                        value={feeRange}
                         min={0}
                         max={5000000}
                         step={100000}
-                        labels={{
+                        marks={{
                             0: '0đ',
                             5000000: '5.000.000đ',
                         }}
@@ -163,7 +168,9 @@ function ClassFilter({onSearch}: ClassFilterProps){
                         }}
                         onChange={(value) => {
                             if (Array.isArray(value)) {
-                                setFeeRange(value as [number, number]);
+                                const nextRange = value as [number, number];
+                                setFeeRange(nextRange);
+                                form.setFieldValue("fee", nextRange);
                             }
                         }}
                     />
