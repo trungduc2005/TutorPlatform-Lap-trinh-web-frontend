@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { StatisticsItemType } from "../../../features/admin/model/statisticsType";
 import { adminApi } from "../../../features/admin/api/adminApi";
 import StatisticsChart from "./StatisticChart";
+import { message } from "antd";
 
 export default function AdminDashboard() {
     const currentYear = new Date().getFullYear();
@@ -12,15 +13,8 @@ export default function AdminDashboard() {
     const [year, setYear] = useState<number>(currentYear);
     const [statistics, setStatistics] = useState<StatisticsItemType[]>([]);
 
-    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setYear(parseInt(e.target.value));
-    };
-
-    const handleStatItemChange = (item: string) => {
-        setStatItem(item);
-    }
-    
     useEffect(() =>{
+
         const fetchData = async () => {
             try{
                 let res;
@@ -34,6 +28,7 @@ export default function AdminDashboard() {
                     res = await adminApi.getLocationStats(year);
                 }
                 setStatistics(res);
+                message.success("Thống kê đã được cập nhật");
             }
             catch(error) {
                 console.error("Failed to fetch statistics: ", error);  
@@ -41,6 +36,15 @@ export default function AdminDashboard() {
         }
         fetchData();
     }, [year, statItem]);
+
+    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setYear(parseInt(e.target.value));
+    };
+
+    const handleStatItemChange = (item: string) => {
+        setStatItem(item);
+    }
+    
     
     return (
         <div
