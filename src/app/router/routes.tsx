@@ -18,7 +18,6 @@ import Chat from "../../pages/Chat/Chat";
 import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
 import AdminLayout from "../layouts/AdminLayout";
 import NotificationMana from "../../pages/AdminPages/NotificationMana/NotitficationMana";
-import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
 import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
@@ -32,6 +31,7 @@ import HirerApplicationManagement from "../../pages/HirerApplicationManagement/H
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
+import FilterOptionMana from "../../pages/AdminPages/FilterOptionMana";
 
 const routes = [
     {
@@ -96,13 +96,13 @@ const routes = [
                         children: [
                             { index: true, element: <AdminDashboard /> },
                             { path: "admin-dashboard", element: <AdminDashboard /> },
-                            { path: "register-class-management", element: <RegisterClassMana /> },
                             { path: "unregister-class-management", element: <UnregisterClassMana /> },
                             { path: "payment-management", element: <PaymentMana /> },
                             { path: "notification-management", element: <NotificationMana /> },
                             { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
                             { path: "contract-management", element: <ContractMana /> },
                             { path: "account-management", element: <AccountMana /> },
+                            { path: "filteroption-class-management", element: <FilterOptionMana /> },
                             { 
                                 path: "profile", element: <Profile />,
                                 children: [
