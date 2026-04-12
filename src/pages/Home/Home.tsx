@@ -1,4 +1,4 @@
-import heroBg from "../../assets/hero-bg.svg";
+import heroBg from "../../assets/hero-rabbit-bg-v2.png";
 import studentImg from "../../assets/student-section.svg";
 import starImg from "../../assets/star-icon.svg";
 import {useNavigate} from "react-router-dom";
