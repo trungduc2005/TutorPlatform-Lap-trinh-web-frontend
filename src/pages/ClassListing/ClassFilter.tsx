@@ -82,7 +82,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             durationId: values.durationId,
             locationId: values.locationId,
             page: 0,
-            size: 10,
+            size: 12,
         };
         onSearch(params)
         console.log("Tìm kiếm với params:", params)
@@ -101,7 +101,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             durationId: undefined,
             locationId: undefined,
             page: 0,
-            size: 10,
+            size: 12,
         });
     };
 
@@ -153,31 +153,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
 
             <div className="fee-filter">
                 <Form.Item name="fee" label="Học phí">
-                    <Slider
-                        range
-                        value={feeRange}
-                        min={0}
-                        max={5000000}
-                        step={100000}
-                        marks={{
-                            0: '0đ',
-                            5000000: '5.000.000đ',
-                        }}
-                        tooltip={{
-                            formatter: (value) => `${(value ?? 0).toLocaleString('vi-VN')}đ`,
-                        }}
-                        onChange={(value) => {
-                            if (Array.isArray(value)) {
-                                const nextRange = value as [number, number];
-                                setFeeRange(nextRange);
-                                form.setFieldValue("fee", nextRange);
-                            }
-                        }}
-                    />
-                    <div className="fee-range-labels">
-                        <span>{feeRange[0].toLocaleString('vi-VN')}đ</span>
-                        <span>{feeRange[1].toLocaleString('vi-VN')}đ</span>
-                    </div>
+                    <Slider range min={0} max={5000000} step={100000} />
                 </Form.Item>
             </div>
 
