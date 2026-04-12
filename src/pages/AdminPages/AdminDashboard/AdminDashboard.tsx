@@ -13,15 +13,8 @@ export default function AdminDashboard() {
     const [year, setYear] = useState<number>(currentYear);
     const [statistics, setStatistics] = useState<StatisticsItemType[]>([]);
 
-    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setYear(parseInt(e.target.value));
-    };
-
-    const handleStatItemChange = (item: string) => {
-        setStatItem(item);
-    }
-    
     useEffect(() =>{
+
         const fetchData = async () => {
             try{
                 let res;
@@ -43,6 +36,15 @@ export default function AdminDashboard() {
         }
         fetchData();
     }, [year, statItem]);
+
+    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setYear(parseInt(e.target.value));
+    };
+
+    const handleStatItemChange = (item: string) => {
+        setStatItem(item);
+    }
+    
     
     return (
         <div
