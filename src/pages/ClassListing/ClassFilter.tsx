@@ -29,6 +29,8 @@ type ClassFilterProps = {
     onSearch: (params: SearchClassesParams) => void
 }
 
+const DEFAULT_FEE_RANGE: [number, number] = [0, 5000000];
+
 
 function ClassFilter({onSearch}: ClassFilterProps){
     const [form] = Form.useForm<FilterValues>();
@@ -36,6 +38,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
     const [grades, setGrades] = useState<FilterOption[]>([]);
     const [locations, setLocations] = useState<FilterOption[]>([]);
     const [durations, setDurations] = useState<FilterOption[]>([]);
+    const [feeRange, setFeeRange] = useState<[number, number]>(DEFAULT_FEE_RANGE);
 
     useEffect(() => {
         const fetchFilterOptions = async () => {
@@ -79,13 +82,15 @@ function ClassFilter({onSearch}: ClassFilterProps){
             durationId: values.durationId,
             locationId: values.locationId,
             page: 0,
-            size: 10,
+            size: 12,
         };
         onSearch(params)
         console.log("Tìm kiếm với params:", params)
     }
 
     const onReset = () => {
+        setFeeRange(DEFAULT_FEE_RANGE);
+        form.setFieldValue("fee", DEFAULT_FEE_RANGE);
         form.resetFields();
 
         onSearch({
@@ -96,7 +101,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             durationId: undefined,
             locationId: undefined,
             page: 0,
-            size: 10,
+            size: 12,
         });
     };
 
@@ -106,7 +111,7 @@ function ClassFilter({onSearch}: ClassFilterProps){
             form={form}
             layout="vertical"
             onFinish={onFinish}
-            initialValues={{fee: [0, 5000000]}}
+            initialValues={{fee: DEFAULT_FEE_RANGE}}
         >
             <div className="filter-fields">
                 <Form.Item name="subjectId" label="Môn học">
@@ -148,7 +153,27 @@ function ClassFilter({onSearch}: ClassFilterProps){
 
             <div className="fee-filter">
                 <Form.Item name="fee" label="Học phí">
-                    <Slider range min={0} max={5000000} step={100000} />
+                    <Slider
+                        range
+                        value={feeRange}
+                        min={0}
+                        max={5000000}
+                        step={100000}
+                        tooltip={{
+                            formatter: (value) => `${(value ?? 0).toLocaleString('vi-VN')}đ`,
+                        }}
+                        onChange={(value) => {
+                            if (Array.isArray(value)) {
+                                const nextRange = value as [number, number];
+                                setFeeRange(nextRange);
+                                form.setFieldValue("fee", nextRange);
+                            }
+                        }}
+                    />
+                    <div className="fee-range-labels">
+                        <span>{feeRange[0].toLocaleString('vi-VN')}đ</span>
+                        <span>{feeRange[1].toLocaleString('vi-VN')}đ</span>
+                    </div>
                 </Form.Item>
             </div>
 

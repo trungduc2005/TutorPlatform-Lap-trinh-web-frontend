@@ -63,8 +63,20 @@ export interface HirerClassApplicationResponse {
     tutorId?: number;
     tutorName?: string;
     message?: string;
-    classApplicationStatus?: "ACCEPTED" | "REJECTED" | "PENDING";
-    status?: "ACCEPTED" | "REJECTED" | "PENDING";
+    classApplicationStatus?:
+        | "PENDING"
+        | "ACCEPTED"
+        | "REJECTED"
+        | "CANCELLED"
+        | "SELECTED_AWAITING_PAYMENT"
+        | "PAYMENT_EXPIRED";
+    status?:
+        | "PENDING"
+        | "ACCEPTED"
+        | "REJECTED"
+        | "CANCELLED"
+        | "SELECTED_AWAITING_PAYMENT"
+        | "PAYMENT_EXPIRED";
     updateAt?: string;
     updatedAt?: string;
 }
@@ -86,6 +98,28 @@ export const searchClass = async (
         {params}
     );
     return response.data;
+}
+
+export const getPublicClassById = async (id: number): Promise<ClassItem | null> => {
+    const pageSize = 50;
+
+    const firstPage = await searchClass({ page: 0, size: pageSize });
+    const firstMatch = firstPage.items.find((item) => item.id === id);
+
+    if (firstMatch) {
+        return firstMatch;
+    }
+
+    for (let page = 1; page < firstPage.totalPages; page += 1) {
+        const response = await searchClass({ page, size: pageSize });
+        const found = response.items.find((item) => item.id === id);
+
+        if (found) {
+            return found;
+        }
+    }
+
+    return null;
 }
 
 export const getSubjectOptions = async (): Promise<FilterOption[]> => {

@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button, Breadcrumb, Spin, Empty, Modal, Input, message as antMessage } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import type { ClassItem } from '../../features/classes/model/classTypes';
-import { searchClass, applyClass } from '../../features/classes/api/classApi';
+import { getPublicClassById, applyClass } from '../../features/classes/api/classApi';
 import 'leaflet/dist/leaflet.css';
 import './ClassDetail.css';
 
@@ -12,10 +12,16 @@ type GeocodePoint = [number, number];
 
 const DEFAULT_MAP_CENTER: GeocodePoint = [21.028511, 105.804817];
 
+type ClassDetailLocationState = {
+    classData?: ClassItem;
+};
+
 function ClassDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const [classData, setClassData] = useState<ClassItem | null>(null);
+    const location = useLocation();
+    const stateClassData = (location.state as ClassDetailLocationState | null)?.classData;
+    const [classData, setClassData] = useState<ClassItem | null>(stateClassData ?? null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
@@ -27,29 +33,44 @@ function ClassDetail() {
 
     useEffect(() => {
         const fetchClassDetail = async () => {
+            const classId = Number(id);
+
+            if (!id || Number.isNaN(classId)) {
+                setClassData(null);
+                setError('Mã lớp không hợp lệ');
+                setLoading(false);
+                return;
+            }
+
+            if (stateClassData?.id === classId) {
+                setClassData(stateClassData);
+                setError(null);
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
                 setError(null);
                 
-                const response = await searchClass({ page: 0 });
-                const foundClass = response.items.find(item => item.id === Number(id));
+                const foundClass = await getPublicClassById(classId);
                 
                 if (foundClass) {
                     setClassData(foundClass);
                 } else {
+                    setClassData(null);
                     setError('Không tìm thấy lớp học này');
                 }
             } catch (err) {
+                setClassData(null);
                 setError(err instanceof Error ? err.message : 'Có lỗi xảy ra');
             } finally {
                 setLoading(false);
             }
         };
 
-        if (id) {
-            fetchClassDetail();
-        }
-    }, [id]);
+        void fetchClassDetail();
+    }, [id, stateClassData]);
 
     useEffect(() => {
         const address = [classData?.locationName, classData?.locationCity]
@@ -250,14 +271,6 @@ function ClassDetail() {
                         </div>
                     </div>
 
-                    <div className="detail-section">
-                        <h3>Gia sư hướng dẫn</h3>
-                        <div className="info-row">
-                            <span className="label">Tên gia sư:</span>
-                            <span className="value">{classData.createdByName}</span>
-                        </div>
-                    </div>
-
                     <div className="detail-actions">
                         <Button
                             type="primary"
@@ -310,6 +323,7 @@ function ClassDetail() {
             <Modal
                 title="Ứng tuyển lớp học"
                 open={isApplyModalOpen}
+                wrapClassName="class-apply-modal"
                 onOk={handleSubmitApplication}
                 onCancel={handleCloseApplyModal}
                 okText="Xác nhận ứng tuyển"

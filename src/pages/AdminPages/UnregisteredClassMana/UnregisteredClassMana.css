@@ -185,7 +185,7 @@
   padding: 20px 24px;
 }
 
-.class-detail-content {
+.unregistered-class-detail-content {
   display: flex;
   flex-direction: column;
   gap: 16px;

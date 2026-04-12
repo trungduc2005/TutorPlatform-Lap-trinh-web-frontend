@@ -6,6 +6,12 @@ export function useClassListing(initialParams?: SearchClassesParams){
     const [classes, setClasses] = useState<ClassItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string|null>(null);
+    const [pagination, setPagination] = useState({
+        currentPage: 0,
+        pageSize: initialParams?.size ?? 12,
+        totalPages: 0,
+        totalItems: 0,
+    });
 
     useEffect(() => {
         let isMounted = true;
@@ -18,6 +24,12 @@ export function useClassListing(initialParams?: SearchClassesParams){
                 const data: SearchClassResponse = await searchClass(initialParams);
                 if (isMounted){
                     setClasses(data.items);
+                    setPagination({
+                        currentPage: data.currentPage,
+                        pageSize: data.pageSize,
+                        totalPages: data.totalPages,
+                        totalItems: data.totalItems,
+                    });
                 }
             } catch (err){
                 if (isMounted) {
@@ -34,5 +46,5 @@ export function useClassListing(initialParams?: SearchClassesParams){
             isMounted = false;
         };
     }, [initialParams]);
-    return {classes, loading, error}
+    return {classes, loading, error, pagination}
 }
