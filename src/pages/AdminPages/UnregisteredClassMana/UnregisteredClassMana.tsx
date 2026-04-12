@@ -268,7 +268,7 @@ export default function UnregisteredClassMana() {
                 className="class-detail-modal"
             >
                 {selectedClass && (
-                    <div className="class-detail-content">
+                    <div className="unregistered-class-detail-content">
                         <div className="class-detail__header">
                             <div className="class-detail__code">
                                 E{String(selectedClass.id).padStart(4, "0")}
