@@ -148,6 +148,70 @@
     font-size: 13px;
 }
 
+.class-apply-modal .ant-modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.class-apply-modal .ant-modal-header {
+    border-bottom: 1px solid #f0f2f5;
+    margin-bottom: 0;
+    padding-bottom: 14px;
+}
+
+.class-apply-modal .ant-modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.class-apply-modal .ant-modal-body {
+    padding-top: 18px;
+    padding-bottom: 16px;
+}
+
+.class-apply-modal .ant-input-textarea textarea {
+    border-radius: 12px;
+    border: 1px solid #d0d7e2;
+    padding: 14px 16px;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 150px;
+}
+
+.class-apply-modal .ant-input-textarea-show-count::after {
+    margin-top: 10px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.class-apply-modal .ant-modal-footer {
+    border-top: 1px solid #f0f2f5;
+    margin-top: 0;
+    padding-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.class-apply-modal .ant-modal-footer .ant-btn {
+    min-width: 128px;
+    height: 40px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.class-apply-modal .ant-modal-footer .ant-btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+}
+
+.class-apply-modal .ant-modal-footer .ant-btn-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
 @media (max-width: 768px) {
     .class-detail-container {
         padding: 10px;
@@ -180,5 +244,18 @@
 
     .class-detail-map {
         height: 300px;
+    }
+
+    .class-apply-modal .ant-modal {
+        max-width: calc(100vw - 20px);
+    }
+
+    .class-apply-modal .ant-modal-title {
+        font-size: 20px;
+    }
+
+    .class-apply-modal .ant-modal-footer .ant-btn {
+        min-width: 110px;
+        flex: 1;
     }
 }

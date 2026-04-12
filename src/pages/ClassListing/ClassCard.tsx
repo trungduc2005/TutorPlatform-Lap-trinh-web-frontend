@@ -9,7 +9,7 @@ function ClassCard(props: ClassItem){
     const classId = "E" + props.id.toString().padStart(5, "0");
 
     const handleViewDetail = () => {
-        navigate(`/class/${props.id}`);
+        navigate(`/class/${props.id}`, { state: { classData: props } });
     };
 
     return (
