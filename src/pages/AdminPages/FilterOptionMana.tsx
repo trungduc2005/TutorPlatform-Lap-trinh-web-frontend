@@ -1,4 +1,4 @@
-function RegisterClassMana() {
+function FilterOptionMana() {
 
     return (
         <>
@@ -7,4 +7,4 @@ function RegisterClassMana() {
     )
 }
 
-export default RegisterClassMana;
+export default FilterOptionMana;

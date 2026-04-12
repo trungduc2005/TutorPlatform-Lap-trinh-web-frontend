@@ -11,13 +11,13 @@ interface NavItem {
 
 const NAV_ITEMS_ADMIN: NavItem[] = [
     { path: "/admin/admin-dashboard", label: "Trang chủ"},
-    //{ path: "/admin/register-class-management", label: "Quản lý lớp học"},
     { path: "/admin/unregister-class-management", label: "Quản lý bài đăng"},
     { path: "/admin/featured-tutor-management", label: "Quản lý gia sư nổi bật"},
     { path: "/admin/payment-management", label: "Quản lý thanh toán"},
     { path: "/admin/notification-management", label: "Quản lý thông báo"},
     { path: "/admin/contract-management", label: "Quản lý hợp đồng"},
-    { path: "/admin/account-management", label: "Quản lý tài khoản"}
+    { path: "/admin/account-management", label: "Quản lý tài khoản"},
+    //{ path: "/admin/filteroption-class-management", label: "Quản lý bộ lọc"},
 ]
 
 function GuestTopActions() {
