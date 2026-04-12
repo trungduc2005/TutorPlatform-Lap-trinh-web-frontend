@@ -80,12 +80,8 @@ function ClassListing(){
     
     return (
         <div className="class-listing-container">
-            <div className="listing-breadcrumb">Trang chủ / Danh sách lớp mới</div>
-
-            <div className="listing-header">
-                <h1>Danh sách lớp mới</h1>
-                <div className="listing-meta">(Đang có {pagination.totalItems} lớp)</div>
-            </div>
+            <h1>Danh sách lớp mới</h1>
+            <p>Hiện có {classes.length} lớp học</p>
 
             <div className="class-layout">
                 <div className="filter-section">
