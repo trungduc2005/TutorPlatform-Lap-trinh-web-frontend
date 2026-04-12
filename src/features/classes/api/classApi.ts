@@ -88,6 +88,28 @@ export const searchClass = async (
     return response.data;
 }
 
+export const getPublicClassById = async (id: number): Promise<ClassItem | null> => {
+    const pageSize = 50;
+
+    const firstPage = await searchClass({ page: 0, size: pageSize });
+    const firstMatch = firstPage.items.find((item) => item.id === id);
+
+    if (firstMatch) {
+        return firstMatch;
+    }
+
+    for (let page = 1; page < firstPage.totalPages; page += 1) {
+        const response = await searchClass({ page, size: pageSize });
+        const found = response.items.find((item) => item.id === id);
+
+        if (found) {
+            return found;
+        }
+    }
+
+    return null;
+}
+
 export const getSubjectOptions = async (): Promise<FilterOption[]> => {
     const response = await axiosClient.get<FilterOption[]>('/public/subject-option');
     return response.data;
