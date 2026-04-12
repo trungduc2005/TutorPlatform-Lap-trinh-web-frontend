@@ -3,6 +3,8 @@ import axiosClient from "../../../shared/api/axiosClient";
 import type { AccountType } from "../model/accountType";
 import type { FeaturedTutorType, UpdateFeaturedTutorPayload } from "../model/featuredTutorType";
 import type {FilterOptionType, SearchClassType, StatisticsItemType } from "../model/statisticsType";
+import type { NotificationPayload } from "../model/notificationType";
+import type { PaymentHistoryType } from "../model/PaymentHistoryType";
 
 export const adminApi = {
     //Account APIs
@@ -81,6 +83,17 @@ export const adminApi = {
     updateFeaturedTutor: async (tutorId: number, tutorData: UpdateFeaturedTutorPayload): Promise<void> => {
         const res = await axiosClient.put(`/admin/featured_tutors/${tutorId}`, tutorData);
         return res.data;
-    }
+    },
 
+    //notifications
+    sendNotification: async (payload: NotificationPayload): Promise<void>  => {
+        const res = await axiosClient.post(`/admin/notifications/send`, payload);
+        return res.data;
+    },
+
+    //paymentHistory
+    getAllPaymentHistory: async (): Promise<PaymentHistoryType[]> => {
+        const res = await axiosClient.get(`/admin/payment/history`);
+        return res.data;
+    }
 }

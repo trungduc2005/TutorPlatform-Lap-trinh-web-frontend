@@ -1,0 +1,17 @@
+.payment-container {
+  padding: 24px;
+  background: #f5f6fa;
+  min-height: 100vh;
+}
+
+.payment-container h2 {
+  margin-bottom: 20px;
+}
+
+.raw-box {
+  background: #1e1e1e;
+  color: #00ff9c;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+}

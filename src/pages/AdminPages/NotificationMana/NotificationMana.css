@@ -1,0 +1,29 @@
+.notification-page {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.notification-card {
+  width: 600px;
+  border-radius: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
