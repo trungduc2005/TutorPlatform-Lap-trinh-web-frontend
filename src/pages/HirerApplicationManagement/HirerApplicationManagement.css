@@ -63,6 +63,12 @@
     min-width: 900px;
 }
 
+.hirer-application-pagination-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
 @media (max-width: 760px) {
     .hirer-application-class-select {
         min-width: 100%;

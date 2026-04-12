@@ -1,4 +1,4 @@
-import { Button, Card, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Pagination, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -14,14 +14,44 @@ import {
 } from "../../features/classes/api/classApi";
 import "./HirerApplicationManagement.css";
 
-type ApplicationStatus = "ACCEPTED" | "REJECTED" | "PENDING";
+type ApplicationStatus =
+    | "PENDING"
+    | "ACCEPTED"
+    | "REJECTED"
+    | "CANCELLED"
+    | "SELECTED_AWAITING_PAYMENT"
+    | "PAYMENT_EXPIRED";
+
+const APP_STATUS_LABELS: Record<ApplicationStatus, string> = {
+    PENDING: "Chờ duyệt",
+    ACCEPTED: "Đã chọn",
+    REJECTED: "Đã từ chối",
+    CANCELLED: "Đã hủy",
+    SELECTED_AWAITING_PAYMENT: "Đã chọn - chờ thanh toán",
+    PAYMENT_EXPIRED: "Hết hạn thanh toán",
+};
+
+const APP_STATUS_COLORS: Record<ApplicationStatus, string> = {
+    PENDING: "gold",
+    ACCEPTED: "green",
+    REJECTED: "red",
+    CANCELLED: "default",
+    SELECTED_AWAITING_PAYMENT: "blue",
+    PAYMENT_EXPIRED: "volcano",
+};
 
 function getAppStatus(item: HirerClassApplicationResponse): ApplicationStatus {
-    return (item.classApplicationStatus || item.status || "PENDING") as ApplicationStatus;
+    const rawStatus = (item.classApplicationStatus || item.status || "PENDING").toUpperCase();
+    if (rawStatus in APP_STATUS_LABELS) {
+        return rawStatus as ApplicationStatus;
+    }
+
+    return "PENDING";
 }
 
 function HirerApplicationManagement() {
     const initializedRef = useRef(false);
+    const pageSize = 8;
 
     const [classes, setClasses] = useState<HirerClassDTO[]>([]);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
@@ -34,6 +64,7 @@ function HirerApplicationManagement() {
     const [loadingApplications, setLoadingApplications] = useState(false);
     const [submittingAction, setSubmittingAction] = useState(false);
     const [bootstrapping, setBootstrapping] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const subjectMap = useMemo(() => new Map(subjects.map((item) => [item.id, item.name])), [subjects]);
     const gradeMap = useMemo(() => new Map(grades.map((item) => [item.id, item.name])), [grades]);
@@ -44,9 +75,25 @@ function HirerApplicationManagement() {
     );
 
     const acceptedApplication = useMemo(
-        () => applications.find((item) => getAppStatus(item) === "ACCEPTED"),
+        () =>
+            applications.find((item) => {
+                const status = getAppStatus(item);
+                return status === "ACCEPTED" || status === "SELECTED_AWAITING_PAYMENT";
+            }),
         [applications]
     );
+
+    const paginatedApplications = useMemo(
+        () => applications.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+        [applications, currentPage]
+    );
+
+    useEffect(() => {
+        const totalPages = Math.max(1, Math.ceil(applications.length / pageSize));
+        if (currentPage > totalPages) {
+            setCurrentPage(totalPages);
+        }
+    }, [applications, currentPage]);
 
     const fetchApplications = async (classId: number) => {
         try {
@@ -106,6 +153,7 @@ function HirerApplicationManagement() {
 
     const handleChangeClass = async (value: number) => {
         setSelectedClassId(value);
+        setCurrentPage(1);
         await fetchApplications(value);
     };
 
@@ -166,8 +214,9 @@ function HirerApplicationManagement() {
             width: 130,
             render: (_, item) => {
                 const status = getAppStatus(item);
-                const color = status === "ACCEPTED" ? "green" : status === "REJECTED" ? "red" : "gold";
-                return <Tag color={color}>{status}</Tag>;
+                const label = APP_STATUS_LABELS[status] ?? status;
+                const color = APP_STATUS_COLORS[status] ?? "default";
+                return <Tag color={color}>{label}</Tag>;
             },
         },
         {
@@ -252,9 +301,19 @@ function HirerApplicationManagement() {
                     rowKey="id"
                     columns={columns}
                     loading={loadingApplications || bootstrapping}
-                    dataSource={applications}
-                    pagination={{ pageSize: 8, showSizeChanger: false }}
+                    dataSource={paginatedApplications}
+                    pagination={false}
                     locale={{ emptyText: "Chưa có đơn ứng tuyển cho lớp này" }}
+                />
+            </div>
+
+            <div className="hirer-application-pagination-wrap">
+                <Pagination
+                    current={currentPage}
+                    pageSize={pageSize}
+                    total={applications.length}
+                    showSizeChanger={false}
+                    onChange={setCurrentPage}
                 />
             </div>
         </div>
