@@ -78,28 +78,49 @@
 .hirer-tutor-detail {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+    border: 1px solid #e1e9f4;
+    border-radius: 12px;
+    padding: 14px;
 }
 
-.hirer-tutor-detail-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.hirer-tutor-detail-header .ant-typography {
+.hirer-tutor-detail-name {
     margin: 0 !important;
+    color: #12325a !important;
+    font-weight: 700 !important;
 }
 
 .hirer-tutor-detail-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 12px;
+    gap: 10px 12px;
 }
 
 .hirer-tutor-detail p {
     margin: 0;
     color: #33445e;
+    line-height: 1.55;
+}
+
+.hirer-tutor-detail-grid p {
+    background: #ffffff;
+    border: 1px solid #e5edf7;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.hirer-tutor-detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hirer-tutor-detail-section p {
+    background: #ffffff;
+    border: 1px solid #e5edf7;
+    border-radius: 10px;
+    padding: 10px 12px;
 }
 
 @media (max-width: 760px) {
