@@ -63,8 +63,20 @@ export interface HirerClassApplicationResponse {
     tutorId?: number;
     tutorName?: string;
     message?: string;
-    classApplicationStatus?: "ACCEPTED" | "REJECTED" | "PENDING";
-    status?: "ACCEPTED" | "REJECTED" | "PENDING";
+    classApplicationStatus?:
+        | "PENDING"
+        | "ACCEPTED"
+        | "REJECTED"
+        | "CANCELLED"
+        | "SELECTED_AWAITING_PAYMENT"
+        | "PAYMENT_EXPIRED";
+    status?:
+        | "PENDING"
+        | "ACCEPTED"
+        | "REJECTED"
+        | "CANCELLED"
+        | "SELECTED_AWAITING_PAYMENT"
+        | "PAYMENT_EXPIRED";
     updateAt?: string;
     updatedAt?: string;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Tag, Typography, Modal } from "antd";
+import { Table, Tag, Typography, Modal, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { PaymentHistoryType } from "../../../features/admin/model/PaymentHistoryType";
 import { adminApi } from "../../../features/admin/api/adminApi";
@@ -17,6 +17,7 @@ export default function PaymentMana() {
         setLoading(true);
             try {
                 const res = await adminApi.getAllPaymentHistory(); 
+                message.success("Lấy danh sách thanh toán thành công");
                 setData(res);
             } catch (err) {
                 console.error(err);
@@ -132,7 +133,7 @@ export default function PaymentMana() {
 
   return (
     <div className="payment-container">
-      <h2>Lịch sử thanh toán</h2>
+      <h2>Danh sách thanh toán</h2>
 
       <Table
         columns={columns}

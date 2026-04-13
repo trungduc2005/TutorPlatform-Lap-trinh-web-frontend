@@ -1,7 +1,6 @@
 import MainLayout from "../layouts/MainLayout";
 import Error404 from "../../pages/ErrorPages/Error404"
 import Home from "../../pages/Home/Home"
-import About from "../../pages/About/About";
 import ClassListing from "../../pages/ClassListing/ClassListing";
 import ClassDetail from "../../pages/ClassDetail/ClassDetail";
 import RequireGuest from "./guards/RequireGuest";
@@ -9,8 +8,6 @@ import RequireAuth from "./guards/RequireAuth";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
 import RequireRole from "./guards/RequireRole";
-import ParentDashboard from "../../pages/ParentDashboard/ParentDashboard";
-import TutorDashboard from "../../pages/TutorDashboard/TutorDashboard";
 import Profile from "../../pages/ProfilePage/Profile";
 import ProfileInfo from "../../pages/ProfilePage/ProfileInfoPage/ProfileInfo";
 import TutorInfo from "../../pages/ProfilePage/TutorInfo/TutorInfo";
@@ -18,7 +15,6 @@ import Chat from "../../pages/Chat/Chat";
 import ClassroomCallingPage from "../../pages/ClassroomCalling/ClassroomCallingPage";
 import AdminLayout from "../layouts/AdminLayout";
 import NotificationMana from "../../pages/AdminPages/NotificationMana/NotitficationMana";
-import RegisterClassMana from "../../pages/AdminPages/RegisteredClassMana";
 import UnregisterClassMana from "../../pages/AdminPages/UnregisteredClassMana/UnregisteredClassMana";
 import PaymentMana from "../../pages/AdminPages/PaymentMana/PaymentMana";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard/AdminDashboard";
@@ -32,14 +28,15 @@ import HirerApplicationManagement from "../../pages/HirerApplicationManagement/H
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
-
+import PaymentSuccess from "../../pages/PaymentStatus/PaymentSucceed";
+import PaymentFail from "../../pages/PaymentStatus/PaymentFailed";
+import PaymentResult from "../../pages/PaymentStatus/PaymentResult";
 const routes = [
     {
         path: "/",
         element: <MainLayout />,
         children: [
             { index: true, element: <Home /> },
-            { path: "about", element: <About /> },
             { path: "classes", element: <ClassListing /> },
             { path: "featured-tutors", element: <TutorsList /> },
             { path: "contract", element: <Contract /> },
@@ -58,17 +55,23 @@ const routes = [
                     {
                         element: <RequireRole allow={["TUTOR"]} />,
                         children: [
-                            { path: "tutor/dashboard", element: <TutorDashboard /> },
                             { path: "tutor/class-applications", element: <ClassApplications /> }
                         ],
                     },
                     {
                         element: <RequireRole allow={["HIRER"]} />,
                         children: [
-                            { path: "parent/dashboard", element: <ParentDashboard /> },
                             { path: "hire-tutor", element: <HireTutor /> },
                             { path: "hirer/class-management", element: <HirerClassManagement /> },
                             { path: "hirer/application-management", element: <HirerApplicationManagement /> },
+                        ],
+                    },
+                 {
+                        path: "payment",
+                        children: [
+                            { path: "result", element: <PaymentResult /> },
+                            { path: "success/:classId", element: <PaymentSuccess /> },
+                            { path: "fail/:applicationId", element: <PaymentFail /> },
                         ],
                     },
                     {
@@ -96,7 +99,6 @@ const routes = [
                         children: [
                             { index: true, element: <AdminDashboard /> },
                             { path: "admin-dashboard", element: <AdminDashboard /> },
-                            { path: "register-class-management", element: <RegisterClassMana /> },
                             { path: "unregister-class-management", element: <UnregisterClassMana /> },
                             { path: "payment-management", element: <PaymentMana /> },
                             { path: "notification-management", element: <NotificationMana /> },

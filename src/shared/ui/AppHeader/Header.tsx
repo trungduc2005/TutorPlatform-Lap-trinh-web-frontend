@@ -13,10 +13,7 @@ interface NavItem {
 
 const NAV_ITEMS_COMMON: NavItem[] = [
     { path: "/", label: "Trang chủ" },
-    { path: "/about", label: "Giới thiệu" },
     { path: "/contract", label: "Hợp đồng"},
-    { path: "/chat", label: "Tin nhắn" },
-    { path: "/classroom-calling", label: "Phòng học Online"}
 ];
 
 const NAV_ITEMS_GUEST: NavItem[] = [
@@ -28,6 +25,9 @@ const NAV_ITEMS_GUEST: NavItem[] = [
 const NAV_ITEMS_TUTOR: NavItem[] = [
     ...NAV_ITEMS_COMMON,
     { path: "/classes", label: "Danh sách lớp mới" },
+    { path: "/chat", label: "Tin nhắn" },
+    { path: "/classroom-calling", label: "Phòng học Online"},
+    { path: "/tutor/class-applications", label: "Lớp đã nhận"}
 ];
 
 const NAV_ITEMS_HIRER: NavItem[] = [

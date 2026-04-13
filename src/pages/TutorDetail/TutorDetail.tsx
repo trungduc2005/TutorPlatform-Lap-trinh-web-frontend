@@ -22,7 +22,7 @@ export default function TutorDetail() {
 
           <span className="text-gray-400">/</span>
 
-          <span onClick={() => navigate("/tutors")} className="text-blue-500 cursor-pointer hover:underline">
+          <span onClick={() => navigate("/featured-tutors")} className="text-blue-500 cursor-pointer hover:underline">
             Gia sư tiêu biểu
           </span>
 
@@ -62,9 +62,6 @@ export default function TutorDetail() {
             </div>
 
             <div className="flex justify-end mt-6">
-              <button className="bg-blue-500 text-white px-8 py-3 rounded-xl hover:bg-blue-600 transition">
-                💬 Chat Đặt lớp
-              </button>
             </div>
           </div>
 
