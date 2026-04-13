@@ -28,7 +28,6 @@ import HirerApplicationManagement from "../../pages/HirerApplicationManagement/H
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
-import FilterOptionMana from "../../pages/AdminPages/FilterOptionMana/FilterOptionMana";
 
 const routes = [
     {
@@ -96,7 +95,6 @@ const routes = [
                             { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
                             { path: "contract-management", element: <ContractMana /> },
                             { path: "account-management", element: <AccountMana /> },
-                            { path: "filteroption-class-management", element: <FilterOptionMana /> },
                             { 
                                 path: "profile", element: <Profile />,
                                 children: [
