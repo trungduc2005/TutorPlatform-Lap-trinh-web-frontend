@@ -39,3 +39,20 @@ export type FilterOptionType = {
   id: number;
   name: string;
 }
+
+export type SubjectOptionRequestType = {
+  name: string;
+  code: string;
+}
+
+export type GradeOptionRequestType = {
+  code: string;
+  name: string;
+  sortOrder: number;
+}
+
+export type LocationOptionRequestType = {
+  name: string;
+  city: string;
+  districtCode: string;
+}

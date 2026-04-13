@@ -15,6 +15,7 @@ export default function AccountMana() {
         setLoading(true);
         try {
             const data = await adminApi.getAllAccounts();
+            message.success("Lấy danh sách tài khoản user thành công");
             setAccounts(data);
         } finally {
             setLoading(false);

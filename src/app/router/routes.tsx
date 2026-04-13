@@ -28,7 +28,7 @@ import HirerApplicationManagement from "../../pages/HirerApplicationManagement/H
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
-import FilterOptionMana from "../../pages/AdminPages/FilterOptionMana";
+import FilterOptionMana from "../../pages/AdminPages/FilterOptionMana/FilterOptionMana";
 
 const routes = [
     {
