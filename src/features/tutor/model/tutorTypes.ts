@@ -19,6 +19,17 @@ export interface FeaturedTutorDTO {
   availableTime: string;
 }
 
+export interface PublicTutorProfileDTO {
+  fullName: string;
+  userId: number;
+  experience: string;
+  achievements: string;
+  teachingArea: string;
+  bio: string;
+  school: string;
+  availableTime: string;
+}
+
 export type Tutor = {
   id: number; // dùng tutorUserId cho route /tutors/:id
   featuredId: number;

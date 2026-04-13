@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Modal, Pagination, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Modal, Pagination, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -12,8 +12,8 @@ import {
     type HirerClassApplicationResponse,
     type HirerClassDTO,
 } from "../../features/classes/api/classApi";
-import { getTutorById } from "../../features/tutor/api/tutorApi";
-import type { FeaturedTutorDTO } from "../../features/tutor/model/tutorTypes";
+import { getPublicTutorProfileById } from "../../features/tutor/api/tutorApi";
+import type { PublicTutorProfileDTO } from "../../features/tutor/model/tutorTypes";
 import { ApiError } from "../../shared/api/axiosClient";
 import "./HirerApplicationManagement.css";
 
@@ -69,7 +69,7 @@ function HirerApplicationManagement() {
     const [bootstrapping, setBootstrapping] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [isTutorDetailModalOpen, setIsTutorDetailModalOpen] = useState(false);
-    const [selectedTutorDetail, setSelectedTutorDetail] = useState<FeaturedTutorDTO | null>(null);
+    const [selectedTutorDetail, setSelectedTutorDetail] = useState<PublicTutorProfileDTO | null>(null);
     const [loadingTutorDetail, setLoadingTutorDetail] = useState(false);
 
     const subjectMap = useMemo(() => new Map(subjects.map((item) => [item.id, item.name])), [subjects]);
@@ -212,13 +212,13 @@ function HirerApplicationManagement() {
         return undefined;
     };
 
-    const getTutorUserIdFromApplication = (item: HirerClassApplicationResponse) => {
-        return parseId(item.tutorUserId) ?? parseId(item.userId);
+    const getTutorIdFromApplication = (item: HirerClassApplicationResponse) => {
+        return parseId(item.tutorId) ?? parseId(item.tutorUserId) ?? parseId(item.userId);
     };
 
     const handleOpenTutorDetail = async (item: HirerClassApplicationResponse) => {
-        const tutorUserId = getTutorUserIdFromApplication(item);
-        if (!tutorUserId) {
+        const tutorId = getTutorIdFromApplication(item);
+        if (!tutorId) {
             message.error("Không tìm thấy mã gia sư để xem chi tiết");
             return;
         }
@@ -226,12 +226,12 @@ function HirerApplicationManagement() {
         try {
             setLoadingTutorDetail(true);
             setIsTutorDetailModalOpen(true);
-            const data = await getTutorById(tutorUserId);
+            const data = await getPublicTutorProfileById(tutorId);
             setSelectedTutorDetail(data);
         } catch (error) {
             setIsTutorDetailModalOpen(false);
             if (error instanceof ApiError && error.status === 404) {
-                message.error(`Không tìm thấy chi tiết gia sư với tutorUserId = ${tutorUserId}. Vui lòng kiểm tra API ứng tuyển có trả đúng tutorUserId.`);
+                message.error(`Không tìm thấy thông tin gia sư với id = ${tutorId}`);
                 return;
             }
             message.error(error instanceof Error ? error.message : "Không thể tải thông tin gia sư");
@@ -391,27 +391,21 @@ function HirerApplicationManagement() {
                     <p>Đang tải thông tin gia sư...</p>
                 ) : selectedTutorDetail ? (
                     <div className="hirer-tutor-detail">
-                        <div className="hirer-tutor-detail-header">
-                            <Avatar src={selectedTutorDetail.avatarUrl} size={72}>
-                                {selectedTutorDetail.fullName?.charAt(0)?.toUpperCase()}
-                            </Avatar>
-                            <div>
-                                <Typography.Title level={4}>{selectedTutorDetail.fullName || "Chưa cập nhật"}</Typography.Title>
-                                <Typography.Text type="secondary">ID gia sư: {selectedTutorDetail.tutorUserId}</Typography.Text>
-                            </div>
-                        </div>
+                        <Typography.Title level={4} className="hirer-tutor-detail-name">
+                            Gia sư: {selectedTutorDetail.fullName || "Chưa cập nhật tên gia sư"}
+                        </Typography.Title>
 
                         <div className="hirer-tutor-detail-grid">
-                            <p><strong>Email:</strong> {selectedTutorDetail.email || "Chưa cập nhật"}</p>
-                            <p><strong>SĐT:</strong> {selectedTutorDetail.phone || "Chưa cập nhật"}</p>
                             <p><strong>Trường:</strong> {selectedTutorDetail.school || "Chưa cập nhật"}</p>
-                            <p><strong>Khu vực dạy:</strong> {selectedTutorDetail.teaching_area || "Chưa cập nhật"}</p>
+                            <p><strong>Khu vực dạy:</strong> {selectedTutorDetail.teachingArea || "Chưa cập nhật"}</p>
                             <p><strong>Kinh nghiệm:</strong> {selectedTutorDetail.experience || "Chưa cập nhật"}</p>
                             <p><strong>Thời gian rảnh:</strong> {selectedTutorDetail.availableTime || "Chưa cập nhật"}</p>
                         </div>
 
-                        <p><strong>Thành tích:</strong> {selectedTutorDetail.achievements || "Chưa cập nhật"}</p>
-                        <p><strong>Giới thiệu:</strong> {selectedTutorDetail.bio || "Chưa cập nhật"}</p>
+                        <div className="hirer-tutor-detail-section">
+                            <p><strong>Thành tích:</strong> {selectedTutorDetail.achievements || "Chưa cập nhật"}</p>
+                            <p><strong>Giới thiệu:</strong> {selectedTutorDetail.bio || "Chưa cập nhật"}</p>
+                        </div>
                     </div>
                 ) : (
                     <p>Không có dữ liệu gia sư.</p>
