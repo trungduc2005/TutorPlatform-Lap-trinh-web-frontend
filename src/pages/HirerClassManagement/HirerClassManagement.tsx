@@ -48,6 +48,12 @@ const fallbackDurationOptions: FilterOption[] = [
     { id: 4, name: "150 phút" },
 ];
 
+const STUDENT_GENDER_LABELS: Record<HirerClassDTO["studentGender"], string> = {
+    MALE: "Nam",
+    FEMALE: "Nữ",
+    OTHER: "Khác",
+};
+
 function HirerClassManagement() {
     const [form] = Form.useForm<EditValues>();
     const pageSize = 8;
@@ -83,6 +89,7 @@ function HirerClassManagement() {
     const durationMap = useMemo(() => new Map(durationOptions.map((item) => [item.id, item.name])), [durationOptions]);
 
     const getLabel = (mapping: Map<number, string>, id: number) => mapping.get(id) || `#${id}`;
+    const getStudentGenderLabel = (value: HirerClassDTO["studentGender"]) => STUDENT_GENDER_LABELS[value] || "Khác";
 
     const fetchClasses = async (isRefreshing = false) => {
         try {
@@ -243,12 +250,12 @@ function HirerClassManagement() {
             render: (value: number) => `${Number(value).toLocaleString("vi-VN")} đ`,
         },
         {
-            title: "Trạng thái HS",
+            title: "Giới tính",
             dataIndex: "studentGender",
             width: 130,
             render: (value: HirerClassDTO["studentGender"]) => {
                 const color = value === "MALE" ? "blue" : value === "FEMALE" ? "magenta" : "default";
-                return <Tag color={color}>{value}</Tag>;
+                return <Tag color={color}>{getStudentGenderLabel(value)}</Tag>;
             },
         },
         {
@@ -329,7 +336,7 @@ function HirerClassManagement() {
                         <p><strong>Khu vực:</strong> {getLabel(locationMap, detailItem.locationId)}</p>
                         <p><strong>Thời lượng:</strong> {getLabel(durationMap, detailItem.durationId)}</p>
                         <p><strong>Học phí:</strong> {Number(detailItem.fee).toLocaleString("vi-VN")} đ / buổi</p>
-                        <p><strong>Giới tính học sinh:</strong> {detailItem.studentGender}</p>
+                        <p><strong>Giới tính học sinh:</strong> {getStudentGenderLabel(detailItem.studentGender)}</p>
                         <p><strong>Yêu cầu gia sư:</strong> {detailItem.requirements}</p>
                         <p><strong>Mô tả học sinh:</strong> {detailItem.studentDescription}</p>
                         <p><strong>Ghi chú:</strong> {detailItem.note}</p>
