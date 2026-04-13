@@ -25,6 +25,7 @@ export default function FeaturedTutorMana() {
         const fetchFeaturedTutors = async () => {
             try {
                 const res = await adminApi.getFeaturedTutors();
+                message.success("Lấy danh sách gia sư tiêu biểu thành công");
                 setFeaturedTutors(res);
                 console.log("Featured Tutors:", res);
             }
@@ -113,7 +114,7 @@ export default function FeaturedTutorMana() {
         >
             <div className="featured-tutor__header"
             >
-                <h1>Quản lý gia sư nổi bật</h1>
+                <h1>Quản lý gia sư tiêu biểu</h1>
                 <div
                     style={{display: "flex", justifyContent: "center", width: "100%"}}
                 >

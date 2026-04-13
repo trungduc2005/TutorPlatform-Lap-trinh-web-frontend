@@ -2,7 +2,7 @@ import type { Payload } from "recharts/types/component/DefaultTooltipContent";
 import axiosClient from "../../../shared/api/axiosClient";
 import type { AccountType } from "../model/accountType";
 import type { FeaturedTutorType, UpdateFeaturedTutorPayload } from "../model/featuredTutorType";
-import type {FilterOptionType, SearchClassType, StatisticsItemType } from "../model/statisticsType";
+import type {FilterOptionType, GradeOptionRequestType, LocationOptionRequestType, SearchClassType, StatisticsItemType, SubjectOptionRequestType } from "../model/statisticsType";
 import type { NotificationPayload } from "../model/notificationType";
 import type { PaymentHistoryType } from "../model/PaymentHistoryType";
 
@@ -57,12 +57,53 @@ export const adminApi = {
         const res = await axiosClient.get("/public/subject-option");
         return res.data;
     },
+    creatSubjectOption: async (payload: SubjectOptionRequestType): Promise<SubjectOptionRequestType> => {
+        const res = await axiosClient.post("/admin/subject-option", payload);
+        return res.data;
+    },
+    updateSubjectOption: async (subjectId: number, payload: SubjectOptionRequestType): Promise<SubjectOptionRequestType> => {
+        const res = await axiosClient.put(`/admin/subject-option/${subjectId}`, 
+            {payload});
+        return res.data;
+    },
+    deleteSubjectOption: async (subjectId: number): Promise<void> => {
+        const res = await axiosClient.delete(`/admin/subject-option/${subjectId}`);
+        return res.data;
+    },
+
     getGradeOption: async (): Promise<FilterOptionType[]> => {
         const res = await axiosClient.get("/public/grade-option");
         return res.data;
     },
+    creatGradeOption: async (payload: GradeOptionRequestType): Promise<GradeOptionRequestType> => {
+        const res = await axiosClient.post("/admin/grade-option", payload);
+        return res.data;
+    },
+    updateGradeOption: async (gradeId: number, payload: GradeOptionRequestType): Promise<GradeOptionRequestType> => {
+        const res = await axiosClient.put(`/admin/grade-option/${gradeId}`, 
+            {payload});
+        return res.data;
+    },
+    deleteGradeOption: async (gradeId: number): Promise<void> => {
+        const res = await axiosClient.delete(`/admin/grade-option/${gradeId}`);
+        return res.data;
+    },
+    
     getLocationOption: async (): Promise<FilterOptionType[]> => {
         const res = await axiosClient.get("/public/location-option");
+        return res.data;
+    },
+    creatLocationOption: async (payload: LocationOptionRequestType): Promise<LocationOptionRequestType> => {
+        const res = await axiosClient.post("/admin/location-option", payload);
+        return res.data;
+    },
+    updateLocationOption: async (locationId: number, payload: LocationOptionRequestType): Promise<LocationOptionRequestType> => {
+        const res = await axiosClient.put(`/admin/location-option/${locationId}`, 
+            {payload});
+        return res.data;
+    },
+    deleteLocationOption: async (locationId: number): Promise<void> => {
+        const res = await axiosClient.delete(`/admin/location-option/${locationId}`);
         return res.data;
     },
 

@@ -56,8 +56,9 @@ export default function UnregisteredClassMana() {
                     pageSize,
                     subjectId,
                     gradeId,
-                    locationId);
-                
+                    locationId
+                );
+                message.success("Lấy danh sách lớp học thành công");
                 setClasses(res.items || [])
                 setTotalClass(res.totalItems || 0);
                 setTotalPages(res.totalPages || 0);
