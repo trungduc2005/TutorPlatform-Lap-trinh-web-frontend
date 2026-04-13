@@ -1,9 +1,9 @@
+import { useState } from "react";
+import type { SearchClassesParams } from "../../features/classes/api/classApi";
+import { useClassListing } from "../../features/classes/hooks/useClassListing";
 import ClassCard from "./ClassCard";
 import ClassFilter from "./ClassFilter";
 import "./ClassListing.css";
-import { useClassListing } from "../../features/classes/hooks/useClassListing";
-import type { SearchClassesParams } from "../../features/classes/api/classApi";
-import { useState } from "react";
 
 type PageToken = number | "ellipsis";
 
@@ -42,8 +42,7 @@ const getCompactPageTokens = (currentPage: number, totalPages: number): PageToke
     return tokens;
 };
 
-
-function ClassListing(){
+function ClassListing() {
     const [params, setParams] = useState<SearchClassesParams>({
         subjectId: undefined,
         gradeId: undefined,
@@ -53,17 +52,17 @@ function ClassListing(){
         locationId: undefined,
         page: 0,
         size: 12,
-    })
+    });
 
     const handleFilterChange = (filterParams: Partial<SearchClassesParams>) => {
-        setParams(prev => ({
+        setParams((prev) => ({
             ...prev,
             ...filterParams,
-            page: 0 // Reset Page when filter applies
+            page: 0,
         }));
     };
 
-    const {classes, loading, error, pagination} = useClassListing(params);
+    const { classes, loading, error, pagination } = useClassListing(params);
 
     const handlePageChange = (page: number) => {
         if (page < 0 || page >= pagination.totalPages || page === pagination.currentPage) {
@@ -77,32 +76,44 @@ function ClassListing(){
     };
 
     const pageTokens = getCompactPageTokens(pagination.currentPage, pagination.totalPages);
-    
-    return (
-        <div className="class-listing-container">
-            <div className="listing-breadcrumb">Trang chủ / Danh sách lớp mới</div>
+    const hasData = !loading && !error && classes.length > 0;
+    const isEmpty = !loading && !error && classes.length === 0;
 
-            <div className="listing-header">
-                <h1>Danh sách lớp mới</h1>
-                <div className="listing-meta">(Đang có {pagination.totalItems} lớp)</div>
+    return (
+        <section className="class-listing-container">
+            <div className="class-listing-header">
+                <h1 className="class-listing-title">Danh sách lớp mới</h1>
+                <p className="class-listing-subtitle">
+                    Khám phá các lớp phù hợp và kết nối với phụ huynh ngay hôm nay.
+                </p>
+                <div className="class-count-badge">
+                    Hiện có {pagination.totalItems} lớp học
+                </div>
             </div>
 
             <div className="class-layout">
-                <div className="filter-section">
+                <aside className="filter-section">
                     <ClassFilter onSearch={handleFilterChange} />
-                </div>
+                </aside>
 
                 <div className="list-section">
-                    {loading && <p className="listing-message">Đang tải danh sách lớp...</p>}
-                    {error && <p className="listing-message listing-error">{error}</p>}
-                    <div className="class-grid">
-                        {!loading && !error && classes.map((item) => (
-                            <ClassCard 
-                                key={item.id}
-                                {...item}
-                            />
-                        ))}
-                    </div>
+                    {loading ? <div className="class-feedback">Đang tải danh sách lớp...</div> : null}
+
+                    {error ? <div className="class-feedback class-feedback--error">{error}</div> : null}
+
+                    {isEmpty ? (
+                        <div className="class-feedback class-feedback--empty">
+                            Chưa có lớp phù hợp với bộ lọc hiện tại. Hãy thử điều chỉnh tiêu chí nhé.
+                        </div>
+                    ) : null}
+
+                    {hasData ? (
+                        <div className="class-grid">
+                            {classes.map((item) => (
+                                <ClassCard key={item.id} {...item} />
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
             </div>
 
@@ -121,7 +132,11 @@ function ClassListing(){
                     {pageTokens.map((token, index) => {
                         if (token === "ellipsis") {
                             return (
-                                <span key={`ellipsis-${index}`} className="page-item page-ellipsis" aria-hidden="true">
+                                <span
+                                    key={`ellipsis-${index}`}
+                                    className="page-item page-ellipsis"
+                                    aria-hidden="true"
+                                >
                                     ...
                                 </span>
                             );
@@ -154,7 +169,7 @@ function ClassListing(){
                     </button>
                 </div>
             )}
-        </div>
+        </section>
     );
 }
 
