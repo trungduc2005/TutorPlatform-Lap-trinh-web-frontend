@@ -6,22 +6,25 @@ export default function PaymentResult() {
   const [params] = useSearchParams();
 
   useEffect(() => {
+    const validSignature = params.get("validSignature");
     const responseCode = params.get("vnp_ResponseCode");
+    const transactionStatus = params.get("vnp_TransactionStatus");
     const classId = params.get("classId");
     const applicationId = params.get("applicationId");
 
-    console.log("VNPay response:", responseCode);
+    const success =
+      validSignature === "true" &&
+      responseCode === "00" &&
+      transactionStatus === "00" &&
+      !!classId;
 
-    if (responseCode === "00") {
-      navigate(`/payment-success/${classId}`);
-    } else {
-      navigate(`/payment-fail/${applicationId}`);
+    if (success) {
+      navigate(`/payment/success/${classId}`, { replace: true });
+      return;
     }
-  }, []);
 
-  return (
-    <div className="text-center mt-10">
-      Đang xử lý kết quả thanh toán...
-    </div>
-  );
+    navigate(`/payment/fail/${applicationId ?? 0}`, { replace: true });
+  }, [navigate, params]);
+
+  return <div className="text-center mt-10">Dang xu ly ket qua thanh toan...</div>;
 }
