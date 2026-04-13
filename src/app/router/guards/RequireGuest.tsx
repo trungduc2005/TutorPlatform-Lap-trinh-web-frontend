@@ -11,9 +11,9 @@ function RequireGuest() {
     if (status === "AUTHENTICATED") {
         return (
             <Navigate
-                to={user?.role === "TUTOR" ? "/tutor/dashboard" : "/parent/dashboard"}
+                to={"/"}
                 replace
-            />
+            />  
         );
     }
 

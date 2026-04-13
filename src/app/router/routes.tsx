@@ -1,7 +1,6 @@
 import MainLayout from "../layouts/MainLayout";
 import Error404 from "../../pages/ErrorPages/Error404"
 import Home from "../../pages/Home/Home"
-import About from "../../pages/About/About";
 import ClassListing from "../../pages/ClassListing/ClassListing";
 import ClassDetail from "../../pages/ClassDetail/ClassDetail";
 import RequireGuest from "./guards/RequireGuest";
@@ -9,8 +8,6 @@ import RequireAuth from "./guards/RequireAuth";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
 import RequireRole from "./guards/RequireRole";
-import ParentDashboard from "../../pages/ParentDashboard/ParentDashboard";
-import TutorDashboard from "../../pages/TutorDashboard/TutorDashboard";
 import Profile from "../../pages/ProfilePage/Profile";
 import ProfileInfo from "../../pages/ProfilePage/ProfileInfoPage/ProfileInfo";
 import TutorInfo from "../../pages/ProfilePage/TutorInfo/TutorInfo";
@@ -39,7 +36,6 @@ const routes = [
         element: <MainLayout />,
         children: [
             { index: true, element: <Home /> },
-            { path: "about", element: <About /> },
             { path: "classes", element: <ClassListing /> },
             { path: "featured-tutors", element: <TutorsList /> },
             { path: "contract", element: <Contract /> },
@@ -58,14 +54,12 @@ const routes = [
                     {
                         element: <RequireRole allow={["TUTOR"]} />,
                         children: [
-                            { path: "tutor/dashboard", element: <TutorDashboard /> },
                             { path: "tutor/class-applications", element: <ClassApplications /> }
                         ],
                     },
                     {
                         element: <RequireRole allow={["HIRER"]} />,
                         children: [
-                            { path: "parent/dashboard", element: <ParentDashboard /> },
                             { path: "hire-tutor", element: <HireTutor /> },
                             { path: "hirer/class-management", element: <HirerClassManagement /> },
                             { path: "hirer/application-management", element: <HirerApplicationManagement /> },
