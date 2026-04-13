@@ -28,7 +28,9 @@ import HirerApplicationManagement from "../../pages/HirerApplicationManagement/H
 import FeaturedTutorMana from "../../pages/AdminPages/FeaturedTutorMana/FeaturedTutorMana";
 import ContractMana from "../../pages/AdminPages/ContractMana/ContractMana";
 import AccountMana from "../../pages/AdminPages/AccountMana/AccountMana";
-
+import PaymentSuccess from "../../pages/PaymentStatus/PaymentSucceed";
+import PaymentFail from "../../pages/PaymentStatus/PaymentFailed";
+import PaymentResult from "../../pages/PaymentStatus/PaymentResult";
 const routes = [
     {
         path: "/",
@@ -62,6 +64,14 @@ const routes = [
                             { path: "hire-tutor", element: <HireTutor /> },
                             { path: "hirer/class-management", element: <HirerClassManagement /> },
                             { path: "hirer/application-management", element: <HirerApplicationManagement /> },
+                        ],
+                    },
+                 {
+                        path: "payment",
+                        children: [
+                            { path: "result", element: <PaymentResult /> },
+                            { path: "success/:classId", element: <PaymentSuccess /> },
+                            { path: "fail/:applicationId", element: <PaymentFail /> },
                         ],
                     },
                     {

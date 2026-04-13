@@ -8,7 +8,6 @@ export default function Home() {
   return (
     <div className="bg-gray-100">
 
-      {/* HERO */}
       <div
         className="py-24 relative select-none"
         style={{
@@ -46,7 +45,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* STUDENT */}
       <div className="bg-white select-none">
         <div className="max-w-7xl mx-auto py-16 px-6 grid md:grid-cols-2 gap-10 items-center">
           <img src={studentImg} className="rounded-lg" />
@@ -74,23 +72,26 @@ export default function Home() {
                ✔ Đăng nhập
              </span>
 
-             <span className="cursor-pointer hover:underline">
+             <span
+              onClick={() => navigate("/classes")}
+              className="cursor-pointer hover:underline">
                ✔ Xem lớp
              </span>
            </div>
 
-            <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <button
+                onClick={() => navigate("/register")}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
               Đến trang gia sư
             </button>
           </div>
         </div>
       </div>
 
-      {/* SERVICES */}
       <div className="bg-white py-16 px-6 select-none">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
 
-          {/* LEFT */}
           <div>
             <h2 className="text-2xl font-bold leading-relaxed">
               Dịch vụ tại hệ thống <br />
@@ -98,7 +99,6 @@ export default function Home() {
             </h2>
           </div>
 
-          {/* RIGHT */}
           <div className="space-y-6">
             <p className="font-bold text-xl mb-6">
               Hệ thống kết nối gia sư và phụ huynh luôn nỗ lực để cung cấp cho bạn dịch vụ gia sư chất lượng nhất, bao gồm:
@@ -141,7 +141,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* LINE */}
       <div className="bg-white py-10">
         <div className="max-w-6xl mx-auto px-6 relative">
           <div className="h-px bg-blue-400"></div>
@@ -152,7 +151,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CTA */}
       <div className="bg-white select-none">
         <div className="max-w-6xl mx-auto py-16 px-6 grid md:grid-cols-2 gap-10">
           <img src={starImg} className="rounded-lg" />

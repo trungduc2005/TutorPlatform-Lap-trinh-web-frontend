@@ -28,7 +28,8 @@ const NAV_ITEMS_TUTOR: NavItem[] = [
     ...NAV_ITEMS_COMMON,
     { path: "/classes", label: "Danh sách lớp mới" },
     { path: "/chat", label: "Tin nhắn" },
-    { path: "/classroom-calling", label: "Phòng học Online"}
+    { path: "/classroom-calling", label: "Phòng học Online"},
+    { path: "/tutor/class-applications", label: "Lớp đã nhận"}
 ];
 
 const NAV_ITEMS_HIRER: NavItem[] = [

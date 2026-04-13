@@ -3,6 +3,7 @@ import type { FeaturedTutorDTO } from "../model/tutorTypes";
 
 export const getFeaturedTutors = async (): Promise<FeaturedTutorDTO[]> => {
   const res = await axiosClient.get<FeaturedTutorDTO[]>("/public/featured_tutors");
+  console.log(res.data);
   return res.data;
 };
 

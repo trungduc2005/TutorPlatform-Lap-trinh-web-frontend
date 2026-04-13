@@ -78,7 +78,7 @@ function getErrorMessage(error: AxiosError): string {
 }
 
 const axiosClient = axios.create({
-    baseURL: BASE_URL,
+    baseURL: "http://localhost:8081",
     timeout: 10000,
     withCredentials: true,
     headers: {
