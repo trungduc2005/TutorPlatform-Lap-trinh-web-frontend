@@ -7,6 +7,7 @@ import type { ClassItem } from '../../features/classes/model/classTypes';
 import { getPublicClassById, applyClass } from '../../features/classes/api/classApi';
 import 'leaflet/dist/leaflet.css';
 import './ClassDetail.css';
+import { useAppSelector } from '../../app/store/hooks';
 
 type GeocodePoint = [number, number];
 
@@ -21,6 +22,7 @@ function ClassDetail() {
     const navigate = useNavigate();
     const location = useLocation();
     const stateClassData = (location.state as ClassDetailLocationState | null)?.classData;
+    const { status: authStatus, user, hasTutorProfile } = useAppSelector((state) => state.auth);
     const [classData, setClassData] = useState<ClassItem | null>(stateClassData ?? null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -143,6 +145,22 @@ function ClassDetail() {
     const classId = classData ? "E" + classData.id.toString().padStart(5, "0") : "";
 
     const handleOpenApplyModal = () => {
+        if (authStatus !== 'AUTHENTICATED') {
+            navigate('/login', { state: { from: location } });
+            return;
+        }
+
+        if (user?.role === 'TUTOR' && hasTutorProfile === false) {
+            Modal.confirm({
+                title: 'Bạn chưa cập nhật hồ sơ gia sư',
+                content: 'Vui lòng cập nhật hồ sơ trước khi đăng ký nhận lớp.',
+                okText: 'Đi tới cập nhật thông tin',
+                cancelText: 'Tắt thông báo',
+                onOk: () => navigate('/profile/tutor'),
+            });
+            return;
+        }
+
         setIsApplyModalOpen(true);
     };
 
