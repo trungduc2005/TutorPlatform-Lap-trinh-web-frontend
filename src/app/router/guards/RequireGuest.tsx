@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 
 function RequireGuest() {
-    const { status, user } = useAppSelector((state) => state.auth);
+    const { status } = useAppSelector((state) => state.auth);
 
     if (status === "CHECKING") {
         return <div>Loading...</div>;
@@ -11,9 +11,9 @@ function RequireGuest() {
     if (status === "AUTHENTICATED") {
         return (
             <Navigate
-                to={user?.role === "TUTOR" ? "/tutor/dashboard" : "/parent/dashboard"}
+                to={"/"}
                 replace
-            />
+            />  
         );
     }
 

@@ -19,7 +19,7 @@ const initFormValues: RegisterFormValues = {
     role: "TUTOR",
     username: "",
     password: "",
-    avatarUrl: "",
+    avatarUrl: "https://res.cloudinary.com/dvjkqs1ne/image/upload/v1776011633/images_siqgjv.jpg",
 };
 
 function Register() {

@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Modal, Pagination, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -67,10 +67,6 @@ function HirerApplicationManagement() {
     const [loadingApplications, setLoadingApplications] = useState(false);
     const [submittingAction, setSubmittingAction] = useState(false);
     const [bootstrapping, setBootstrapping] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isTutorDetailModalOpen, setIsTutorDetailModalOpen] = useState(false);
-    const [selectedTutorDetail, setSelectedTutorDetail] = useState<FeaturedTutorDTO | null>(null);
-    const [loadingTutorDetail, setLoadingTutorDetail] = useState(false);
 
     const subjectMap = useMemo(() => new Map(subjects.map((item) => [item.id, item.name])), [subjects]);
     const gradeMap = useMemo(() => new Map(grades.map((item) => [item.id, item.name])), [grades]);
@@ -369,54 +365,6 @@ function HirerApplicationManagement() {
                     locale={{ emptyText: "Chưa có đơn ứng tuyển cho lớp này" }}
                 />
             </div>
-
-            <div className="hirer-application-pagination-wrap">
-                <Pagination
-                    current={currentPage}
-                    pageSize={pageSize}
-                    total={applications.length}
-                    showSizeChanger={false}
-                    onChange={setCurrentPage}
-                />
-            </div>
-
-            <Modal
-                title="Thông tin chi tiết gia sư"
-                open={isTutorDetailModalOpen}
-                onCancel={handleCloseTutorDetail}
-                footer={null}
-                destroyOnClose
-            >
-                {loadingTutorDetail ? (
-                    <p>Đang tải thông tin gia sư...</p>
-                ) : selectedTutorDetail ? (
-                    <div className="hirer-tutor-detail">
-                        <div className="hirer-tutor-detail-header">
-                            <Avatar src={selectedTutorDetail.avatarUrl} size={72}>
-                                {selectedTutorDetail.fullName?.charAt(0)?.toUpperCase()}
-                            </Avatar>
-                            <div>
-                                <Typography.Title level={4}>{selectedTutorDetail.fullName || "Chưa cập nhật"}</Typography.Title>
-                                <Typography.Text type="secondary">ID gia sư: {selectedTutorDetail.tutorUserId}</Typography.Text>
-                            </div>
-                        </div>
-
-                        <div className="hirer-tutor-detail-grid">
-                            <p><strong>Email:</strong> {selectedTutorDetail.email || "Chưa cập nhật"}</p>
-                            <p><strong>SĐT:</strong> {selectedTutorDetail.phone || "Chưa cập nhật"}</p>
-                            <p><strong>Trường:</strong> {selectedTutorDetail.school || "Chưa cập nhật"}</p>
-                            <p><strong>Khu vực dạy:</strong> {selectedTutorDetail.teaching_area || "Chưa cập nhật"}</p>
-                            <p><strong>Kinh nghiệm:</strong> {selectedTutorDetail.experience || "Chưa cập nhật"}</p>
-                            <p><strong>Thời gian rảnh:</strong> {selectedTutorDetail.availableTime || "Chưa cập nhật"}</p>
-                        </div>
-
-                        <p><strong>Thành tích:</strong> {selectedTutorDetail.achievements || "Chưa cập nhật"}</p>
-                        <p><strong>Giới thiệu:</strong> {selectedTutorDetail.bio || "Chưa cập nhật"}</p>
-                    </div>
-                ) : (
-                    <p>Không có dữ liệu gia sư.</p>
-                )}
-            </Modal>
         </div>
     );
 }

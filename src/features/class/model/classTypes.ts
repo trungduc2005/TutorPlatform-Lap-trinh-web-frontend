@@ -1,4 +1,4 @@
-export type ClassApplicationStatus = "ACCEPTED" | "REJECTED" | "PENDING";
+export type ClassApplicationStatus = "ACCEPTED" | "REJECTED" | "PENDING" | "CANCELLED" | "SELECTED_AWAITING_PAYMENT" | "PAYMENT_EXPIRED";
 
 export interface ClassApplicationDTO {
   id: number;
@@ -7,6 +7,7 @@ export interface ClassApplicationDTO {
   tutorName: string;
   message: string;
   updateAt: string;
+  selectionExpiresAt?: string;
 }
 
 export type ClassApplication = {
@@ -16,6 +17,7 @@ export type ClassApplication = {
   tutorName: string;
   message: string;
   updatedAt: string;
+  selectionExpiresAt?: string;
 };
 
 export const mapClassApplication = (c: ClassApplicationDTO): ClassApplication => ({
@@ -25,4 +27,5 @@ export const mapClassApplication = (c: ClassApplicationDTO): ClassApplication =>
   tutorName: c.tutorName,
   message: c.message,
   updatedAt: c.updateAt,
+  selectionExpiresAt: c.selectionExpiresAt,
 });

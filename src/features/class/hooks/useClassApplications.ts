@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getMyClassApplications } from "../api/classApplicationsApi";
-import { mapClassApplication, type ClassApplication } from "../model/classTypes";
+import { getMyClassApplications,startPayment as startPaymentApi,} from "../api/classApplicationsApi";
+import { mapClassApplication,type ClassApplication,} from "../model/classTypes";
 
 export const useClassApplications = () => {
   const [data, setData] = useState<ClassApplication[]>([]);
@@ -19,9 +19,28 @@ export const useClassApplications = () => {
     }
   };
 
+  const startPayment = async (applicationId: number) => {
+    try {
+      const res = await startPaymentApi(applicationId);
+      return res;
+    } catch (err: any) {
+      throw err;
+    }
+  };
+
+  const refresh = () => {
+    fetchData();
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  return { data, loading, error };
+  return {
+    data,
+    loading,
+    error,
+    refresh,
+    startPayment,
+  };
 };
