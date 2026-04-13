@@ -8,7 +8,7 @@ export const getFeaturedTutors = async (): Promise<FeaturedTutorDTO[]> => {
 };
 
 export const getTutorById = async (tutorUserId: number): Promise<FeaturedTutorDTO> => {
-  const res = await axiosClient.get<FeaturedTutorDTO>(`/public/tutors/${tutorUserId}`);
+  const res = await axiosClient.get<FeaturedTutorDTO>(`/public/featured_tutors/${tutorUserId}`);
   return res.data;
 };
 
