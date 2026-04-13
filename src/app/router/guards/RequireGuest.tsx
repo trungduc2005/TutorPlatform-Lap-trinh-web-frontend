@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 
 function RequireGuest() {
-    const { status, user } = useAppSelector((state) => state.auth);
+    const { status } = useAppSelector((state) => state.auth);
 
     if (status === "CHECKING") {
         return <div>Loading...</div>;
