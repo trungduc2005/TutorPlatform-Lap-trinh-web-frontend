@@ -1,10 +1,12 @@
 import defaultAvatar from "../../../assets/tutor-profile.svg";
 
 export interface FeaturedTutorDTO {
-  id: number;  
-  tutorUserId: number;  
+  id: number;
+  tutorUserId: number;
   fullName: string;
   avatarUrl: string;
+  email: string;
+  phone: string;
   experience: string;
   school: string;
   achievements: string;
@@ -13,8 +15,9 @@ export interface FeaturedTutorDTO {
   availableTime: string;
 }
 
+
 export type Tutor = {
-  id: number; // dùng tutorUserId cho route /tutors/:id
+  id: number; 
   featuredId: number;
   fullName: string;
   avatarUrl: string;
