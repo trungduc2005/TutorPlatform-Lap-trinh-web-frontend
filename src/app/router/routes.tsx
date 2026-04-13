@@ -94,7 +94,7 @@ const routes = [
             {
                 element: <RequireRole allow={["ADMIN"]} />,
                 children: [
-                    {   
+                    {
                         element: <AdminLayout/>,
                         children: [
                             { index: true, element: <AdminDashboard /> },
@@ -105,7 +105,7 @@ const routes = [
                             { path: "featured-tutor-management", element: <FeaturedTutorMana /> },
                             { path: "contract-management", element: <ContractMana /> },
                             { path: "account-management", element: <AccountMana /> },
-                            { 
+                            {
                                 path: "profile", element: <Profile />,
                                 children: [
                                     {index: true, element: <ProfileInfo/>},
