@@ -25,8 +25,8 @@ const handlePayment = async (applicationId: number) => {
 
     console.log("payment response:", res);
 
-    if (res?.paymentUrl) {
-      window.location.href = res.paymentUrl;
+    if (res?.payment?.paymentUrl) {
+      window.location.href = res.payment.paymentUrl;
     } else {
       alert("Không có paymentUrl");
     }
