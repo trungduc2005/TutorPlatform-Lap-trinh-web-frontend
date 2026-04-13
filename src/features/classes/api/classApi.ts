@@ -61,6 +61,8 @@ export interface HirerClassApplicationResponse {
     id: number;
     classId?: number;
     tutorId?: number;
+    tutorUserId?: number | string;
+    userId?: number | string;
     tutorName?: string;
     message?: string;
     classApplicationStatus?:

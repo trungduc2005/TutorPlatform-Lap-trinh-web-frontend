@@ -63,6 +63,33 @@
     min-width: 900px;
 }
 
+.hirer-tutor-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hirer-tutor-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hirer-tutor-detail-header .ant-typography {
+    margin: 0 !important;
+}
+
+.hirer-tutor-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+}
+
+.hirer-tutor-detail p {
+    margin: 0;
+    color: #33445e;
+}
+
 .hirer-application-pagination-wrap {
     display: flex;
     justify-content: flex-end;
@@ -72,5 +99,9 @@
 @media (max-width: 760px) {
     .hirer-application-class-select {
         min-width: 100%;
+    }
+
+    .hirer-tutor-detail-grid {
+        grid-template-columns: 1fr;
     }
 }

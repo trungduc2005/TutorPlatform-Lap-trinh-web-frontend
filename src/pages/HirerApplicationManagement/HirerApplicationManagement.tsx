@@ -1,4 +1,4 @@
-import { Button, Card, Pagination, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
+import { Avatar, Button, Card, Modal, Pagination, Popconfirm, Select, Space, Table, Tag, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -12,6 +12,9 @@ import {
     type HirerClassApplicationResponse,
     type HirerClassDTO,
 } from "../../features/classes/api/classApi";
+import { getTutorById } from "../../features/tutor/api/tutorApi";
+import type { FeaturedTutorDTO } from "../../features/tutor/model/tutorTypes";
+import { ApiError } from "../../shared/api/axiosClient";
 import "./HirerApplicationManagement.css";
 
 type ApplicationStatus =
@@ -65,6 +68,9 @@ function HirerApplicationManagement() {
     const [submittingAction, setSubmittingAction] = useState(false);
     const [bootstrapping, setBootstrapping] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isTutorDetailModalOpen, setIsTutorDetailModalOpen] = useState(false);
+    const [selectedTutorDetail, setSelectedTutorDetail] = useState<FeaturedTutorDTO | null>(null);
+    const [loadingTutorDetail, setLoadingTutorDetail] = useState(false);
 
     const subjectMap = useMemo(() => new Map(subjects.map((item) => [item.id, item.name])), [subjects]);
     const gradeMap = useMemo(() => new Map(grades.map((item) => [item.id, item.name])), [grades]);
@@ -191,6 +197,54 @@ function HirerApplicationManagement() {
         }
     };
 
+    const parseId = (value: unknown): number | undefined => {
+        if (typeof value === "number" && Number.isFinite(value)) {
+            return value;
+        }
+
+        if (typeof value === "string" && value.trim()) {
+            const parsed = Number(value);
+            if (Number.isFinite(parsed)) {
+                return parsed;
+            }
+        }
+
+        return undefined;
+    };
+
+    const getTutorUserIdFromApplication = (item: HirerClassApplicationResponse) => {
+        return parseId(item.tutorUserId) ?? parseId(item.userId);
+    };
+
+    const handleOpenTutorDetail = async (item: HirerClassApplicationResponse) => {
+        const tutorUserId = getTutorUserIdFromApplication(item);
+        if (!tutorUserId) {
+            message.error("Không tìm thấy mã gia sư để xem chi tiết");
+            return;
+        }
+
+        try {
+            setLoadingTutorDetail(true);
+            setIsTutorDetailModalOpen(true);
+            const data = await getTutorById(tutorUserId);
+            setSelectedTutorDetail(data);
+        } catch (error) {
+            setIsTutorDetailModalOpen(false);
+            if (error instanceof ApiError && error.status === 404) {
+                message.error(`Không tìm thấy chi tiết gia sư với tutorUserId = ${tutorUserId}. Vui lòng kiểm tra API ứng tuyển có trả đúng tutorUserId.`);
+                return;
+            }
+            message.error(error instanceof Error ? error.message : "Không thể tải thông tin gia sư");
+        } finally {
+            setLoadingTutorDetail(false);
+        }
+    };
+
+    const handleCloseTutorDetail = () => {
+        setIsTutorDetailModalOpen(false);
+        setSelectedTutorDetail(null);
+    };
+
     const columns: ColumnsType<HirerClassApplicationResponse> = [
         {
             title: "Mã đơn",
@@ -222,18 +276,27 @@ function HirerApplicationManagement() {
         {
             title: "Thao tác",
             key: "actions",
-            width: 170,
+            width: 260,
             render: (_, item) => {
                 const status = getAppStatus(item);
                 return (
-                    <Button
-                        type="primary"
-                        size="small"
-                        disabled={status === "ACCEPTED" || submittingAction}
-                        onClick={() => void handleSelectApplication(item.id)}
-                    >
-                        Chọn gia sư
-                    </Button>
+                    <Space wrap>
+                        <Button
+                            type="default"
+                            size="small"
+                            onClick={() => void handleOpenTutorDetail(item)}
+                        >
+                            Xem thông tin
+                        </Button>
+                        <Button
+                            type="primary"
+                            size="small"
+                            disabled={status === "ACCEPTED" || submittingAction}
+                            onClick={() => void handleSelectApplication(item.id)}
+                        >
+                            Chọn gia sư
+                        </Button>
+                    </Space>
                 );
             },
         },
@@ -316,6 +379,44 @@ function HirerApplicationManagement() {
                     onChange={setCurrentPage}
                 />
             </div>
+
+            <Modal
+                title="Thông tin chi tiết gia sư"
+                open={isTutorDetailModalOpen}
+                onCancel={handleCloseTutorDetail}
+                footer={null}
+                destroyOnClose
+            >
+                {loadingTutorDetail ? (
+                    <p>Đang tải thông tin gia sư...</p>
+                ) : selectedTutorDetail ? (
+                    <div className="hirer-tutor-detail">
+                        <div className="hirer-tutor-detail-header">
+                            <Avatar src={selectedTutorDetail.avatarUrl} size={72}>
+                                {selectedTutorDetail.fullName?.charAt(0)?.toUpperCase()}
+                            </Avatar>
+                            <div>
+                                <Typography.Title level={4}>{selectedTutorDetail.fullName || "Chưa cập nhật"}</Typography.Title>
+                                <Typography.Text type="secondary">ID gia sư: {selectedTutorDetail.tutorUserId}</Typography.Text>
+                            </div>
+                        </div>
+
+                        <div className="hirer-tutor-detail-grid">
+                            <p><strong>Email:</strong> {selectedTutorDetail.email || "Chưa cập nhật"}</p>
+                            <p><strong>SĐT:</strong> {selectedTutorDetail.phone || "Chưa cập nhật"}</p>
+                            <p><strong>Trường:</strong> {selectedTutorDetail.school || "Chưa cập nhật"}</p>
+                            <p><strong>Khu vực dạy:</strong> {selectedTutorDetail.teaching_area || "Chưa cập nhật"}</p>
+                            <p><strong>Kinh nghiệm:</strong> {selectedTutorDetail.experience || "Chưa cập nhật"}</p>
+                            <p><strong>Thời gian rảnh:</strong> {selectedTutorDetail.availableTime || "Chưa cập nhật"}</p>
+                        </div>
+
+                        <p><strong>Thành tích:</strong> {selectedTutorDetail.achievements || "Chưa cập nhật"}</p>
+                        <p><strong>Giới thiệu:</strong> {selectedTutorDetail.bio || "Chưa cập nhật"}</p>
+                    </div>
+                ) : (
+                    <p>Không có dữ liệu gia sư.</p>
+                )}
+            </Modal>
         </div>
     );
 }

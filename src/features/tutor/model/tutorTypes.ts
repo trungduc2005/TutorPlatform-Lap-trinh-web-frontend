@@ -3,7 +3,13 @@ import defaultAvatar from "../../../assets/tutor-profile.svg";
 export interface FeaturedTutorDTO {
   id: number;  
   tutorUserId: number;  
+  title?: string;
+  note?: string;
+  displayOrder?: number;
+  createdAt?: string;
   fullName: string;
+  email?: string;
+  phone?: string;
   avatarUrl: string;
   experience: string;
   school: string;
