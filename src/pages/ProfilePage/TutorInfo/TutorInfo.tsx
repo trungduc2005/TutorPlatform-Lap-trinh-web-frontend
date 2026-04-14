@@ -1,230 +1,237 @@
+﻿import {
+  FiAward,
+  FiBookOpen,
+  FiClock,
+  FiEdit3,
+  FiMapPin,
+  FiMonitor,
+  FiSave,
+  FiUser,
+  FiX,
+} from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../app/store/hooks";
 import { useTutorProfileForm } from "../../../features/profile/hooks/useTutorProfileForm";
 import "./TutorInfo.css";
 
+const isOnlineTeaching = (teachingArea: string) => /online|trực tuyến/i.test(teachingArea);
+
 function TutorInfo() {
-    const { user, hasTutorProfile } = useAppSelector((state) => state.auth);
-    const [isEditing, setIsEditing] = useState(false);
+  const { user, hasTutorProfile } = useAppSelector((state) => state.auth);
+  const [isEditing, setIsEditing] = useState(false);
 
-    const {
-        formValues,
-        loading,
-        loadingProfile,
-        error,
-        success,
-        handleChange,
-        handleSubmit,
-        resetForm,
-    } = useTutorProfileForm(hasTutorProfile, user?.role);
+  const {
+    formValues,
+    loading,
+    loadingProfile,
+    error,
+    success,
+    handleChange,
+    handleSubmit,
+    resetForm,
+  } = useTutorProfileForm(hasTutorProfile, user?.role);
 
-    useEffect(() => {
-        if (success) {
-            setIsEditing(false);
-        }
-    }, [success]);
-
-    if (!user || user.role !== "TUTOR") {
-        return <div>Chỉ tài khoản gia sư mới dùng được mục này.</div>;
+  useEffect(() => {
+    if (success) {
+      setIsEditing(false);
     }
+  }, [success]);
 
-    const handleCancel = async () => {
-        await resetForm();
-        setIsEditing(false);
-    };
+  if (!user || user.role !== "TUTOR") {
+    return <div>Chỉ tài khoản gia sư mới dùng được mục này.</div>;
+  }
 
-    const renderValue = (value?: string) => (
-        <div className={`profile-info__value${value?.trim() ? "" : " profile-info__value--empty"}`}>
-            {value?.trim() ? value : "Chưa cập nhật"}
+  const handleCancel = async () => {
+    await resetForm();
+    setIsEditing(false);
+  };
+
+  const highlights = [
+    { icon: FiBookOpen, label: "Kinh nghiệm", value: formValues.experience || "Chưa cập nhật" },
+    { icon: FiMapPin, label: "Khu vực dạy", value: formValues.teachingArea || "Chưa cập nhật" },
+    {
+      icon: FiMonitor,
+      label: "Hình thức",
+      value: formValues.teachingArea
+        ? isOnlineTeaching(formValues.teachingArea)
+          ? "Online và trực tiếp"
+          : "Trực tiếp"
+        : "Chưa cập nhật",
+    },
+  ];
+
+  const detailItems = [
+    { icon: FiAward, label: "Thành tích", value: formValues.achievements },
+    { icon: FiBookOpen, label: "Kinh nghiệm", value: formValues.experience },
+    { icon: FiMapPin, label: "Khu vực dạy", value: formValues.teachingArea },
+    { icon: FiUser, label: "Trường", value: formValues.school },
+    { icon: FiEdit3, label: "Giới thiệu", value: formValues.bio },
+    { icon: FiClock, label: "Thời gian rảnh", value: formValues.availableTime },
+  ];
+
+  return (
+    <section className="tutor-profile-page">
+      <div className="tutor-profile-summary">
+        <div>
+          <p className="tutor-profile-summary__eyebrow">Hồ sơ gia sư</p>
+          <h2 className="tutor-profile-summary__title">
+            {hasTutorProfile ? "Hồ sơ chuyên môn của bạn" : "Tạo hồ sơ gia sư"}
+          </h2>
+          <p className="tutor-profile-summary__description">
+            Hoàn thiện hồ sơ để phụ huynh nhìn nhanh được điểm mạnh, khu vực dạy và kinh nghiệm của bạn.
+          </p>
         </div>
-    );
 
-    const renderViewMode = () => (
-        <div className="profile-info__form">
-            <div className="profile-info__grid">
-                <div className="profile-info__field profile-info__field--full">
-                    <label>Kinh nghiệm</label>
-                    {renderValue(formValues.experience)}
-                </div>
-
-                <div className="profile-info__field profile-info__field--full">
-                    <label>Thành tích</label>
-                    {renderValue(formValues.achievements)}
-                </div>
-
-                <div className="profile-info__field">
-                    <label>Khu vực dạy</label>
-                    {renderValue(formValues.teachingArea)}
-                </div>
-
-                <div className="profile-info__field">
-                    <label>Trường</label>
-                    {renderValue(formValues.school)}
-                </div>
-
-                <div className="profile-info__field profile-info__field--full">
-                    <label>Giới thiệu</label>
-                    {renderValue(formValues.bio)}
-                </div>
-
-                <div className="profile-info__field profile-info__field--full">
-                    <label>Thời gian rảnh</label>
-                    {renderValue(formValues.availableTime)}
-                </div>
+        <div className="tutor-profile-summary__badges">
+          {highlights.map(({ icon: Icon, label, value }) => (
+            <div key={label} className="tutor-profile-summary__badge">
+              <span className="tutor-profile-summary__badge-icon">
+                <Icon />
+              </span>
+              <div>
+                <p>{label}</p>
+                <strong>{value}</strong>
+              </div>
             </div>
-
-            {loadingProfile ? (
-                <p className="profile-info__message">Đang tải hồ sơ hiện tại...</p>
-            ) : null}
-
-            {error ? (
-                <p className="profile-info__message profile-info__message--error">{error}</p>
-            ) : null}
-
-            {success ? (
-                <p className="profile-info__message profile-info__message--success">{success}</p>
-            ) : null}
-
-            <div className="profile-info__actions">
-                <button
-                    type="button"
-                    className="profile-info__submit"
-                    onClick={() => setIsEditing(true)}
-                    disabled={loadingProfile || hasTutorProfile === null}
-                >
-                    {hasTutorProfile ? "Cập nhật" : "Tạo hồ sơ"}
-                </button>
-            </div>
+          ))}
         </div>
-    );
+      </div>
 
-    const renderEditMode = () => (
-        <form className="profile-info__form" onSubmit={handleSubmit}>
-            <div className="profile-info__grid">
-                <div className="profile-info__field profile-info__field--full">
-                    <label htmlFor="experience">Kinh nghiệm</label>
-                    <input
-                        id="experience"
-                        name="experience"
-                        value={formValues.experience}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: 3 năm dạy Toán"
-                    />
-                </div>
+      <div className="tutor-profile-card">
+        <div className="tutor-profile-card__header">
+          <div>
+            <h3>{isEditing ? (hasTutorProfile ? "Cập nhật hồ sơ gia sư" : "Tạo hồ sơ gia sư") : "Thông tin hồ sơ"}</h3>
+            <p>Mỗi dòng là một mục thông tin rõ ràng để phụ huynh đọc nhanh và nắm ngay thế mạnh của bạn.</p>
+          </div>
 
-                <div className="profile-info__field profile-info__field--full">
-                    <label htmlFor="achievements">Thành tích</label>
-                    <input
-                        id="achievements"
-                        name="achievements"
-                        value={formValues.achievements}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: IELTS 8.0, Best Tutor 2023"
-                    />
-                </div>
+          {!isEditing ? (
+            <button
+              type="button"
+              className="tutor-profile-card__primary"
+              onClick={() => setIsEditing(true)}
+              disabled={loadingProfile || hasTutorProfile === null}
+            >
+              <FiEdit3 />
+              <span>{hasTutorProfile ? "Chỉnh sửa hồ sơ" : "Tạo hồ sơ"}</span>
+            </button>
+          ) : null}
+        </div>
 
-                <div className="profile-info__field">
-                    <label htmlFor="teachingArea">Khu vực dạy</label>
-                    <input
-                        id="teachingArea"
-                        name="teachingArea"
-                        value={formValues.teachingArea}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: Hà Nội"
-                    />
-                </div>
+        {loadingProfile ? <p className="tutor-profile-card__message">Đang tải hồ sơ hiện tại...</p> : null}
+        {error ? <p className="tutor-profile-card__message tutor-profile-card__message--error">{error}</p> : null}
+        {success ? <p className="tutor-profile-card__message tutor-profile-card__message--success">{success}</p> : null}
 
-                <div className="profile-info__field">
-                    <label htmlFor="school">Trường</label>
-                    <input
-                        id="school"
-                        name="school"
-                        value={formValues.school}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: HUST"
-                    />
-                </div>
+        {isEditing ? (
+          <form className="tutor-profile-form" onSubmit={handleSubmit}>
+            <div className="tutor-profile-form__grid">
+              <div className="tutor-profile-field tutor-profile-field--full">
+                <label htmlFor="achievements">Thành tích</label>
+                <input
+                  id="achievements"
+                  name="achievements"
+                  value={formValues.achievements}
+                  onChange={handleChange}
+                  placeholder="Ví dụ: IELTS 8.0, nhiều học sinh đậu trường chuyên"
+                />
+              </div>
 
-                <div className="profile-info__field profile-info__field--full">
-                    <label htmlFor="bio">Giới thiệu</label>
-                    <input
-                        id="bio"
-                        name="bio"
-                        value={formValues.bio}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: Thân thiện, kiên nhẫn"
-                    />
-                </div>
+              <div className="tutor-profile-field tutor-profile-field--full">
+                <label htmlFor="experience">Kinh nghiệm</label>
+                <input
+                  id="experience"
+                  name="experience"
+                  value={formValues.experience}
+                  onChange={handleChange}
+                  placeholder="Ví dụ: 3 năm dạy Toán THCS và luyện thi vào 10"
+                />
+              </div>
 
-                <div className="profile-info__field profile-info__field--full">
-                    <label htmlFor="availableTime">Thời gian rảnh</label>
-                    <input
-                        id="availableTime"
-                        name="availableTime"
-                        value={formValues.availableTime}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: Thứ 2 - Thứ 6, 18:00 - 21:00"
-                    />
-                </div>
+              <div className="tutor-profile-field">
+                <label htmlFor="teachingArea">Khu vực dạy</label>
+                <input
+                  id="teachingArea"
+                  name="teachingArea"
+                  value={formValues.teachingArea}
+                  onChange={handleChange}
+                  placeholder="Ví dụ: Cầu Giấy, Thanh Xuân, online"
+                />
+              </div>
+
+              <div className="tutor-profile-field">
+                <label htmlFor="school">Trường</label>
+                <input
+                  id="school"
+                  name="school"
+                  value={formValues.school}
+                  onChange={handleChange}
+                  placeholder="Ví dụ: Đại học Ngoại ngữ - ĐHQGHN"
+                />
+              </div>
+
+              <div className="tutor-profile-field tutor-profile-field--full">
+                <label htmlFor="availableTime">Thời gian rảnh</label>
+                <input
+                  id="availableTime"
+                  name="availableTime"
+                  value={formValues.availableTime}
+                  onChange={handleChange}
+                  placeholder="Ví dụ: Tối các ngày trong tuần và cuối tuần"
+                />
+              </div>
+
+              <div className="tutor-profile-field tutor-profile-field--full">
+                <label htmlFor="bio">Giới thiệu</label>
+                <textarea
+                  id="bio"
+                  name="bio"
+                  value={formValues.bio}
+                  onChange={handleChange}
+                  placeholder="Mô tả ngắn gọn phong cách dạy, thế mạnh và đối tượng học viên phù hợp"
+                  rows={4}
+                />
+              </div>
             </div>
 
-            {loadingProfile ? (
-                <p className="profile-info__message">Đang tải hồ sơ hiện tại...</p>
-            ) : null}
+            <div className="tutor-profile-form__actions">
+              <button type="button" className="tutor-profile-card__secondary" onClick={handleCancel} disabled={loading}>
+                <FiX />
+                <span>Hủy</span>
+              </button>
 
-            {error ? (
-                <p className="profile-info__message profile-info__message--error">{error}</p>
-            ) : null}
-
-            {success ? (
-                <p className="profile-info__message profile-info__message--success">{success}</p>
-            ) : null}
-
-            <div className="profile-info__actions">
-                <button
-                    type="button"
-                    className="profile-info__cancel"
-                    onClick={handleCancel}
-                    disabled={loading}
-                >
-                    Hủy
-                </button>
-
-                <button
-                    type="submit"
-                    className="profile-info__submit"
-                    disabled={loading || loadingProfile || hasTutorProfile === null}
-                >
-                    {loading
-                        ? hasTutorProfile
-                            ? "Đang cập nhật..."
-                            : "Đang tạo..."
-                        : hasTutorProfile
-                          ? "Lưu thay đổi"
-                          : "Tạo hồ sơ"}
-                </button>
+              <button
+                type="submit"
+                className="tutor-profile-card__primary"
+                disabled={loading || loadingProfile || hasTutorProfile === null}
+              >
+                <FiSave />
+                <span>
+                  {loading
+                    ? hasTutorProfile
+                      ? "Đang cập nhật..."
+                      : "Đang tạo..."
+                    : hasTutorProfile
+                      ? "Lưu thay đổi"
+                      : "Tạo hồ sơ"}
+                </span>
+              </button>
             </div>
-        </form>
-    );
-
-    return (
-        <section className="profile-info">
-            <div className="profile-info__header">
-                <div>
-                    <p className="profile-info__eyebrow">Hồ sơ gia sư</p>
-                    <h3 className="profile-info__title">
-                        {isEditing
-                            ? hasTutorProfile
-                                ? "Cập nhật hồ sơ gia sư"
-                                : "Tạo hồ sơ gia sư"
-                            : "Hồ sơ của bạn"}
-                    </h3>
+          </form>
+        ) : (
+          <div className="tutor-profile-details">
+            {detailItems.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="tutor-profile-details__item">
+                <div className="tutor-profile-details__label">
+                  <Icon />
+                  <span>{label}</span>
                 </div>
-            </div>
-
-            {isEditing ? renderEditMode() : renderViewMode()}
-        </section>
-    );
+                <div className="tutor-profile-details__value">{value?.trim() ? value : "Chưa cập nhật"}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
 
 export default TutorInfo;

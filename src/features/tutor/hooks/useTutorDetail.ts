@@ -13,7 +13,7 @@ export const useTutorDetail = (id: number) => {
       const data = await getTutorById(id);
       setTutor(mapTutor(data));
     } catch (err: any) {
-      setError(err.message || "Lỗi khi tải dữ liệu gia sư");
+      setError(err.message || "L\u1ed7i khi t\u1ea3i d\u1eef li\u1ec7u gia s\u01b0");
     } finally {
       setLoading(false);
     }

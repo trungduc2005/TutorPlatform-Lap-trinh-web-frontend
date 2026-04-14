@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+﻿import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../app/store/hooks";
 import { setAuthenticatedUser } from "../../auth/model/authSlice";
 import { profileApi } from "../api/profileApi";
@@ -87,3 +87,4 @@ export function useProfileForm(user: AuthUser) {
         setAvatarUrl,
     };
 }
+

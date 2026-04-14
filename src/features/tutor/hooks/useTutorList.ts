@@ -13,7 +13,7 @@ export const useTutorList = () => {
       const data = await getFeaturedTutors();
       setTutors(data.map(mapTutor));
     } catch (err: any) {
-      setError(err.message || "Lỗi khi load tutor");
+      setError(err.message || "L\u1ed7i khi t\u1ea3i danh s\u00e1ch gia s\u01b0");
     } finally {
       setLoading(false);
     }

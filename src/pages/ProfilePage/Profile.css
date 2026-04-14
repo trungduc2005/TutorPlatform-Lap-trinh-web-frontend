@@ -1,75 +1,87 @@
-.profile-page {
+﻿.profile-page {
     min-height: calc(100vh - 128px);
-    padding: 20px 16px 48px;
-    background: #f5f7fb;
+    padding: 36px 20px 56px;
+    background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.92) 0%, rgba(243, 247, 253, 0.9) 36%, rgba(233, 240, 250, 0.96) 100%),
+        #edf3fb;
 }
 
-.profile-layout {
-    max-width: 1200px;
+.profile-shell {
+    max-width: 1220px;
     margin: 0 auto;
-    min-height: 640px;
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    background: #ffffff;
-    border: 1px solid #e4ebf3;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 14px 38px rgba(15, 23, 42, 0.10);
 }
 
-.profile-sidebar {
+.profile-page__header {
     display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    border-right: 1px solid #e2e8f0;
-    padding: 24px 0;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
 }
 
-.profile-sidebar__header {
-    padding: 0 20px 18px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #edf2f7;
-}
-
-.profile-sidebar__header h2 {
+.profile-page__title {
     margin: 0;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #0f172a;
-    line-height: 1.3;
+    color: #17345f;
+    font-size: 3rem;
+    line-height: 1.1;
+    font-weight: 800;
 }
 
-.profile-menu {
-    display: grid;
-    gap: 4px;
-    padding: 0 12px;
+.profile-page__description {
+    margin: 12px 0 0;
+    color: #617694;
+    font-size: 1.15rem;
+    line-height: 1.6;
 }
 
-.profile-menu__item {
-    display: block;
-    padding: 12px 14px;
-    border-radius: 10px;
-    color: #475569;
-    font-size: 0.97rem;
+.profile-page__backlink {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 12px;
+    color: #2f6ef4;
+    font-size: 1rem;
     font-weight: 600;
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.profile-menu__item:hover {
-    background: #f1f5f9;
-    color: #1e293b;
-    transform: translateX(2px);
+.profile-page__backlink:hover {
+    color: #2459c4;
+    transform: translateX(-1px);
 }
 
-.profile-menu__item--active {
-    background: #365d84;
+.profile-page__tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.profile-page__tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid #dbe5f1;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    color: #4e627f;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.profile-page__tab:hover {
+    border-color: #bfd0eb;
+    color: #1f3e6f;
+}
+
+.profile-page__tab--active {
+    background: #2f6ef4;
+    border-color: #2f6ef4;
     color: #ffffff;
-    box-shadow: 0 8px 18px rgba(54, 93, 132, 0.18);
+    box-shadow: 0 10px 24px rgba(47, 110, 244, 0.18);
 }
 
 .profile-content {
-    padding: 28px 30px;
-    background: #ffffff;
     min-width: 0;
 }
 
@@ -79,50 +91,26 @@
     color: #475569;
 }
 
-.profile-logout {
-    margin-top: auto;
-    padding: 16px 12px 0;
-    border-top: 1px solid #edf2f7;
-}
-
-.profile-logout__button {
-    width: 100%;
-    height: 46px;
-    border: 1px solid #4f6df3;
-    border-radius: 10px;
-    background: #455C77;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.profile-logout__button:hover {
-    background: #112E51;
-    transform: translateY(-1px);
-}
-
 @media (max-width: 900px) {
-    .profile-layout {
-        grid-template-columns: 1fr;
+    .profile-page {
+        padding: 24px 14px 36px;
     }
 
-    .profile-sidebar {
-        border-right: 0;
-        border-bottom: 1px solid #e2e8f0;
-        padding: 18px 0;
+    .profile-page__header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
     }
 
-    .profile-sidebar__header {
-        padding: 0 16px 14px;
+    .profile-page__title {
+        font-size: 2.25rem;
     }
 
-    .profile-menu {
-        padding: 0 10px;
+    .profile-page__description {
+        font-size: 1rem;
     }
 
-    .profile-content {
-        padding: 20px 16px 24px;
+    .profile-page__tabs {
+        flex-wrap: wrap;
     }
 }
