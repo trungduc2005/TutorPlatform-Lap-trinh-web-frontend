@@ -1,72 +1,78 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+﻿import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../app/store/hooks";
-import { useLogin } from "../../features/auth/hooks/useLogin";
-import "./Profile.css"
+import "./Profile.css";
 
 const MENU_ITEMS_TUTOR = [
-    { to: "", label: "Thông tin cá nhân" },
-    { to: "tutor", label: "Hồ sơ gia sư" },
+  { to: "", label: "Thông tin cá nhân" },
+  { to: "tutor", label: "Hồ sơ gia sư" },
 ];
 
-const MENU_ITEMS_GUEST = [
-    { to: "", label: "Thông tin cá nhân" },
-];
+const MENU_ITEMS_DEFAULT = [{ to: "", label: "Thông tin cá nhân" }];
 
 function Profile() {
-    const user = useAppSelector((state) => state.auth.user);
-    const location = useLocation();
-    const MENU_ITEMS = (user?.role === "TUTOR" ? MENU_ITEMS_TUTOR : MENU_ITEMS_GUEST);
-    const basePath = user?.role === "ADMIN" ? "/admin/profile" : "/profile";
+  const user = useAppSelector((state) => state.auth.user);
+  const location = useLocation();
 
-    const {
-        handleLogout
-    } = useLogin();
+  if (!user) {
+    return <div className="profile-empty">Không có thông tin người dùng</div>;
+  }
 
-    if (!user) {
-        return <div className="profile-empty">Không có thông tin người dùng</div>;
-    }
+  const isAdmin = user.role === "ADMIN";
+  const basePath = isAdmin ? "/admin/profile" : "/profile";
+  const menuItems = user.role === "TUTOR" ? MENU_ITEMS_TUTOR : MENU_ITEMS_DEFAULT;
+  const currentItem =
+    menuItems.find((item) =>
+      item.to === ""
+        ? location.pathname === basePath
+        : location.pathname.endsWith(`${basePath}/${item.to}`)
+    ) ?? menuItems[0];
 
-    const currentItem = MENU_ITEMS
-        .find((item) => location.pathname.endsWith(`${basePath}/${item.to}`)) 
-        ?? MENU_ITEMS[0];
+  const pageTitle = currentItem.label;
+  const pageDescription =
+    currentItem.to === "tutor"
+      ? "Quản lý hồ sơ gia sư và cập nhật thông tin chuyên môn của bạn."
+      : "Quản lý thông tin tài khoản và cập nhật hồ sơ của bạn.";
 
-    return (
-        <section className="profile-page">
-            <div className="profile-layout">
-                <aside className="profile-sidebar">
-                    <div className="profile-sidebar__header">
-                        <h2>{currentItem.label}</h2>
-                    </div>
+  const backHref = isAdmin ? "/admin/admin-dashboard" : "/";
+  const backLabel = isAdmin ? "Quay lại trang quản trị" : "Quay lại Trang chủ";
 
-                    <div className="profile-menu">
-                        {MENU_ITEMS.map((item) => (
-                            <NavLink
-                                key={item.to}
-                                to={item.to === "" ? basePath : `${basePath}/${item.to}`}
-                                end={item.to === ""}
-                                className={({ isActive }) =>
-                                    `profile-menu__item${isActive ? " profile-menu__item--active" : ""}`
-                                }
-                            >
-                                {item.label}
-                            </NavLink>
+  return (
+    <section className="profile-page">
+      <div className="profile-shell">
+        <div className="profile-page__header">
+          <div>
+            <h1 className="profile-page__title">{pageTitle}</h1>
+            <p className="profile-page__description">{pageDescription}</p>
+          </div>
 
-                        ))}
-                    </div>
+          <NavLink to={backHref} className="profile-page__backlink">
+            {backLabel}
+          </NavLink>
+        </div>
 
-                    <div className="profile-logout">
-                        <button type="button" className="profile-logout__button" onClick={handleLogout}>
-                            Đăng xuất
-                        </button>
-                    </div>
-                </aside>
+        {menuItems.length > 1 ? (
+          <nav className="profile-page__tabs" aria-label="Profile navigation">
+            {menuItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to === "" ? basePath : `${basePath}/${item.to}`}
+                end={item.to === ""}
+                className={({ isActive }) =>
+                  `profile-page__tab${isActive ? " profile-page__tab--active" : ""}`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        ) : null}
 
-                <main className="profile-content">
-                    <Outlet />
-                </main>
-            </div>
-        </section>
-    );
+        <main className="profile-content">
+          <Outlet />
+        </main>
+      </div>
+    </section>
+  );
 }
 
 export default Profile;

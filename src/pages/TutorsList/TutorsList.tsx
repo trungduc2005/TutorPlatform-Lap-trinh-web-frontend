@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TutorCard from "../../features/tutor/components/TutorCard";
 import { useTutorList } from "../../features/tutor/hooks/useTutorList";
@@ -39,7 +39,7 @@ export default function TutorsList() {
             setPage(1);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="w-8 h-8 flex items-center justify-center border border-blue-200 rounded-md bg-white hover:bg-blue-50 text-xs text-gray-700"
+          className="flex h-8 w-8 items-center justify-center rounded-md border border-blue-200 bg-white text-xs text-gray-700 hover:bg-blue-50"
         >
           {"<"}
         </button>
@@ -54,10 +54,10 @@ export default function TutorsList() {
             setPage(p);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className={`w-8 h-8 flex items-center justify-center border rounded-md text-xs ${
+          className={`flex h-8 w-8 items-center justify-center rounded-md border text-xs ${
             p === page
-              ? "bg-blue-600 border-blue-600 text-white"
-              : "bg-white border-blue-200 text-gray-700 hover:bg-blue-50"
+              ? "border-blue-600 bg-blue-600 text-white"
+              : "border-blue-200 bg-white text-gray-700 hover:bg-blue-50"
           }`}
         >
           {p}
@@ -74,7 +74,7 @@ export default function TutorsList() {
             setPage(end + 1);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="w-8 h-8 flex items-center justify-center text-gray-500 text-xs"
+          className="flex h-8 w-8 items-center justify-center text-xs text-gray-500"
         >
           ...
         </button>
@@ -89,7 +89,7 @@ export default function TutorsList() {
             setPage(totalPages);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="w-8 h-8 flex items-center justify-center border border-blue-200 rounded-md bg-white hover:bg-blue-50 text-xs text-gray-700"
+          className="flex h-8 w-8 items-center justify-center rounded-md border border-blue-200 bg-white text-xs text-gray-700 hover:bg-blue-50"
         >
           {">"}
         </button>
@@ -100,19 +100,17 @@ export default function TutorsList() {
   };
 
   return (
-      <div className="bg-gray-200 min-h-screen py-10 select-none">
-        <div className="max-w-5xl mx-auto px-4">
-
-          <div className="mb-4 text-sm text-gray-600">
-          <span onClick={() => navigate("/")}
-          className="text-blue-500 cursor-pointer hover:underline">
-          💠
-          </span>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-600"> Gia sư tiêu biểu </span>
+    <div className="min-h-screen select-none bg-gray-200 py-10">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-[1120px]">
+          <div className="mb-7">
+            <h1 className="text-4xl font-bold tracking-tight text-slate-800">{"Gia sư tiêu biểu"}</h1>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
+              {"Chọn nhanh những gia sư nổi bật về thành tích, kinh nghiệm và khu vực dạy phù hợp."}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 justify-items-center">
+          <div className="grid grid-cols-1 gap-x-5 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
             {currentData.map((tutor) => (
               <TutorCard
                 key={tutor.featuredId}
@@ -122,11 +120,11 @@ export default function TutorsList() {
             ))}
           </div>
 
-          <div className="flex justify-center mt-6 gap-2">
+          <div className="mt-8 flex justify-center gap-2">
             {renderPagination()}
           </div>
-
         </div>
       </div>
-    );
+    </div>
+  );
 }

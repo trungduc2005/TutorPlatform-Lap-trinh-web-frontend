@@ -335,14 +335,6 @@ function ClassDetail() {
                             <p className="description-text">{classData.studentDescription?.trim() || "Không có"}</p>
                         </div>
                     </section>
-
-                    <section className="detail-section detail-block">
-                        <h3>Gia sư hướng dẫn</h3>
-                        <div className="mini-info-row">
-                            <span className="mini-info-label">Tên người phụ trách</span>
-                            <span className="mini-info-value">{classData.createdByName || "Không có"}</span>
-                        </div>
-                    </section>
                 </div>
 
                 <aside className="detail-map-panel">

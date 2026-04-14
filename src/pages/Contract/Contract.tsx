@@ -1,23 +1,8 @@
-import { useNavigate } from "react-router-dom";
-
 export default function Contract() {
-      const navigate = useNavigate();
   return (
     <div className="bg-gray-200 min-h-screen py-10 select-none">
-
-      <div className="max-w-5xl mx-auto px-4 mb-4 text-sm text-gray-500">
-            <span onClick ={() => navigate("/")}
-            className="text-blue-500 cursor-pointer hover:underline"
-            > 💠
-              </span>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-600"> Hợp đồng mẫu</span>
-                  </div>
-
-
       {/* DOCUMENT */}
       <div className="max-w-3xl mx-auto bg-white p-10 shadow-md">
-
         {/* TITLE */}
         <h1 className="text-center font-bold text-lg mb-4">
           ĐIỀU KHOẢN SỬ DỤNG
@@ -29,7 +14,6 @@ export default function Contract() {
 
         {/* CONTENT */}
         <div className="text-sm text-gray-800 leading-6 space-y-3">
-
           <p><b>1. Giới thiệu</b></p>
           <p>
             Hệ Thống Kết Nối Gia Sư Với Phụ Huynh (sau đây gọi là Hệ Thống) là nền tảng trực tuyến cung cấp dịch vụ kết nối
@@ -134,7 +118,6 @@ export default function Contract() {
           tài khoản và sử dụng dịch vụ trên Hệ Thống.</p>
           <p className="text-center mt-6">– Hết –</p>
         </div>
-
       </div>
     </div>
   );
