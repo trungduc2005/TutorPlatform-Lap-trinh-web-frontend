@@ -127,7 +127,7 @@ function AdminHeader() {
                 <div className="container topbar-inner">
                     <div className="brand">
                         <img className="brand-logo" src={kittyLogo} alt="Logo" />
-                        <span className="brand-name">Nhóm 5</span>
+                        <span className="brand-name">Trung tâm gia sư</span>
                     </div>
 
                     <div className="top-actions">
