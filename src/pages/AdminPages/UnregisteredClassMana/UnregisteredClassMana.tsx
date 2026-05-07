@@ -27,6 +27,8 @@ export default function UnregisteredClassMana() {
     const [totalClass, setTotalClass] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false); 
+
+    const [classStatus, setClassStatus] = useState<string | undefined>(undefined);
     
     useEffect(() => {
         const fetchFilterOptions = async () => {
@@ -43,6 +45,7 @@ export default function UnregisteredClassMana() {
             }
             catch (error) {
                 console.log("Failed to fetch filter options", error);
+                message.error("Lấy thông tin bộ lọc thất bại");
             }
         }
         fetchFilterOptions();
@@ -56,7 +59,8 @@ export default function UnregisteredClassMana() {
                     pageSize,
                     subjectId,
                     gradeId,
-                    locationId
+                    locationId,
+                    classStatus
                 );
                 message.success("Lấy danh sách lớp học thành công");
                 setClasses(res.items || [])
@@ -66,13 +70,14 @@ export default function UnregisteredClassMana() {
             }
             catch (error) {
                 console.log("Failed to fetch unregisterd class", error);
+                message.error("Lấy danh sách lớp thất bại");
             }
             finally{
                 setLoading(false);
             }
         }
         fetchClassData();
-    }, [currentPage, pageSize, subjectId, gradeId, locationId, loading]);
+    }, [currentPage, pageSize, subjectId, gradeId, locationId, classStatus, loading]);
 
     const deleteUnregisteredClass = async (classId: number | null) => {
         if(!classId) return;
@@ -86,6 +91,7 @@ export default function UnregisteredClassMana() {
         }
         catch(error) {
             console.log("Failed to delete class: ", error);
+            message.error("Xóa lớp thất bại");
         } finally {
             setLoading(false);
         }
@@ -106,10 +112,16 @@ export default function UnregisteredClassMana() {
         setCurrentPage(0);
     }
 
+    const handleClassStatusChange = (value: string | undefined) => {
+        setClassStatus(value);
+        setCurrentPage(0);
+    };
+
     const handleClearFilters = () => {
         setSubjectId(undefined);
         setGradeId(undefined);
         setLocationId(undefined);
+        setClassStatus(undefined);
         setCurrentPage(0);
     };
 
@@ -174,6 +186,20 @@ export default function UnregisteredClassMana() {
                         label: item.name,
                         value: item.id,
                     }))}
+                />
+
+                <Select
+                    placeholder="Trạng thái lớp"
+                    allowClear
+                    value={classStatus}
+                    onChange={handleClassStatusChange}
+                    className="filter-select"
+                    options={[
+                        { label: "Mở", value: "OPEN" },
+                        { label: "Đã đăng ký xong", value: "ASSIGNED" },
+                        { label: "Đã đóng", value: "CLOSED" },
+                        { label: "Chờ GS thanh toán", value: "WAITING_TUTOR_PAYMENT" },
+                    ]}
                 />
 
                 <button

@@ -1,65 +1,97 @@
 import { useEffect, useState } from "react";
-import type { StatisticsItemType } from "../../../features/admin/model/statisticsType";
-import { adminApi } from "../../../features/admin/api/adminApi";
-import StatisticsChart from "./StatisticChart";
 import { message } from "antd";
 
+import type {
+    StatisticsItemType,
+    TutorStatItemType,
+} from "../../../features/admin/model/statisticsType";
+
+import { adminApi } from "../../../features/admin/api/adminApi";
+
+import StatisticsChart from "./StatisticChart";
+import TutorStatisticsChart from "./TutorStatisticsChart";
+
 export default function AdminDashboard() {
+
     const currentYear = new Date().getFullYear();
-    const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
-    const currentItem = "subject";
-    const [statItem, setStatItem] = useState<string>(currentItem);
+
+    const years = Array.from(
+        { length: 5 },
+        (_, i) => currentYear - i
+    );
+
+    const [statItem, setStatItem] = useState<string>("subject");
 
     const [year, setYear] = useState<number>(currentYear);
+
     const [statistics, setStatistics] = useState<StatisticsItemType[]>([]);
 
-    useEffect(() =>{
+    const [tutorStatistics, setTutorStatistics] = useState<TutorStatItemType[]>([]);
+
+    const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
 
         const fetchData = async () => {
-            try{
+
+            try {
+
+                setLoading(true);
+
+                if (statItem === "tutor") {
+
+                    const tutorRes =
+                        await adminApi.getTutorStats(year);
+                    setTutorStatistics(tutorRes);
+                    message.success("Lấy thống kê gia sư thành công.")
+                    return;
+                }
+
                 let res;
-                if(statItem === "subject"){
+                if (statItem === "subject") {
                     res = await adminApi.getSubjectStats(year);
+                    message.success("Lấy thống kê theo môn học thành công.")
                 }
-                else if(statItem === "grade"){
+                else if (statItem === "grade") {
                     res = await adminApi.getGradeStats(year);
+                    message.success("Lấy thống kê theo lớp học thành công.")
                 }
-                else{
+                else {
                     res = await adminApi.getLocationStats(year);
+                    message.success("Lấy thống kê theo khu vực thành công.")
                 }
                 setStatistics(res);
-                message.success("Thống kê đã được cập nhật");
+
             }
-            catch(error) {
-                console.error("Failed to fetch statistics: ", error);  
+            catch (error) {
+                console.error(error);
+                message.error("Không thể tải thống kê");
             }
-        }
+            finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
+
     }, [year, statItem]);
 
-    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setYear(parseInt(e.target.value));
-    };
-
-    const handleStatItemChange = (item: string) => {
-        setStatItem(item);
-    }
-    
-    
     return (
         <div
             style={{
-                minHeight: "80vh",
+                minHeight: "100vh",
                 background: "#f5f7fb",
                 padding: "24px",
             }}
         >
             <div
                 style={{
-                    maxWidth: 1200,
+                    maxWidth: 1400,
                     margin: "0 auto",
                 }}
             >
+
+                {/* HEADER */}
                 <div
                     style={{
                         display: "flex",
@@ -70,109 +102,166 @@ export default function AdminDashboard() {
                         gap: 12,
                     }}
                 >
+
                     <div>
                         <h2
                             style={{
                                 margin: 0,
                                 fontSize: 32,
                                 fontWeight: 700,
-                                color: "#1f2d3d",
+                                color: "#1f2937",
                             }}
                         >
                             Admin Dashboard
                         </h2>
+
                         <p
                             style={{
                                 marginTop: 8,
                                 color: "#6b7280",
-                                fontSize: 15,
                             }}
                         >
-                            Theo dõi số lớp và doanh thu theo {statItem === "subject" ? "môn học" : statItem === "grade" ? "khối lớp" : "khu vực" }
+                            Theo dõi thống kê hệ thống
                         </p>
                     </div>
 
                     <div
                         style={{
-                            background: "#fff",
-                            padding:"12px 16px",
-                            borderRadius: 12,
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                            display: "flex",
+                            gap: 12,
+                            flexWrap: "wrap",
                         }}
                     >
-                        <label 
-                            htmlFor="item-select"
-                            style={{
-                                marginRight: 10,
-                                fontWeight: 600,
-                                color: "#374251",
-                            }}>
-                            Chọn Loại thống kê:
-                        </label>
-                        <select 
-                            id="item-select"
-                            value={statItem}
-                            onChange={(e) => handleStatItemChange(e.target.value)}
-                            style={{
-                                padding: "8px 12px",
-                                borderRadius: 9,
-                                border: "1px solid #d1d5db",
-                                fontSize: 14,
-                                outline: "none",
-                                cursor: "pointer",
-                            }}
-                        >
-                            <option value='subject'> Môn học</option>
-                            <option value='grade'> Khối lớp</option>
-                            <option value='location'> Khu vực</option>
-                        </select>
-                    </div>
 
-                    <div
-                        style={{
-                            background: "#fff",
-                            padding: "12px 16px",
-                            borderRadius: 12,
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-                        }}
-                    >
-                        <label
-                            htmlFor="year-select"
+                        {/* SELECT THỐNG KÊ */}
+                        <div
                             style={{
-                                marginRight: 10,
-                                fontWeight: 600,
-                                color: "#374151",
+                                background: "#fff",
+                                padding: "12px 16px",
+                                borderRadius: 12,
+                                boxShadow:
+                                    "0 4px 12px rgba(0,0,0,0.06)",
                             }}
                         >
-                            Chọn năm:
-                        </label>
-                        <select
-                            id="year-select"
-                            value={year}
-                            onChange={handleYearChange}
-                            style={{
-                                padding: "8px 12px",
-                                borderRadius: 8,
-                                border: "1px solid #d1d5db",
-                                fontSize: 14,
-                                outline: "none",
-                                cursor: "pointer",
-                            }}
-                        >
-                            {years.map((y) => (
-                                <option key={y} value={y}>
-                                    {y}
+                            <label
+                                style={{
+                                    marginRight: 10,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Loại thống kê:
+                            </label>
+
+                            <select
+                                value={statItem}
+                                onChange={(e) =>
+                                    setStatItem(e.target.value)
+                                }
+                                style={{
+                                    padding: "8px 12px",
+                                    borderRadius: 8,
+                                    border: "1px solid #d1d5db",
+                                }}
+                            >
+                                <option value="subject">
+                                    Môn học
                                 </option>
-                            ))}
-                        </select>
+
+                                <option value="grade">
+                                    Khối lớp
+                                </option>
+
+                                <option value="location">
+                                    Khu vực
+                                </option>
+
+                                <option value="tutor">
+                                    Gia sư
+                                </option>
+                            </select>
+                        </div>
+
+                        {/* CHỌN NĂM */}
+      
+                        <div
+                            style={{
+                                background: "#fff",
+                                padding: "12px 16px",
+                                borderRadius: 12,
+                                boxShadow:
+                                    "0 4px 12px rgba(0,0,0,0.06)",
+                            }}
+                        >
+                            <label
+                                style={{
+                                    marginRight: 10,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Năm:
+                            </label>
+
+                            <select
+                                value={year}
+                                onChange={(e) =>
+                                    setYear(
+                                        parseInt(e.target.value)
+                                    )
+                                }
+                                style={{
+                                    padding: "8px 12px",
+                                    borderRadius: 8,
+                                    border:
+                                        "1px solid #d1d5db",
+                                }}
+                            >
+                                {years.map((y) => (
+                                    <option
+                                        key={y}
+                                        value={y}
+                                    >
+                                        {y}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <StatisticsChart
-                    title={`Thống kê theo môn học năm ${year}`}
-                    data={statistics}
-                />
+                {/* LOADING */}
+                {loading && (
+                    <div
+                        style={{
+                            textAlign: "center",
+                            padding: 30,
+                        }}
+                    >
+                        Đang tải dữ liệu...
+                    </div>
+                )}
+
+                {/* CHART */}
+                {!loading && statItem !== "tutor" && (
+                    <StatisticsChart
+                        title={
+                            statItem === "subject"
+                                ? `Thống kê theo môn học năm ${year}`
+                                : statItem === "grade"
+                                    ? `Thống kê theo khối lớp năm ${year}`
+                                    : `Thống kê theo khu vực năm ${year}`
+                        }
+                        data={statistics}
+                    />
+                )}
+
+                {/* TUTOR CHART */}
+                {!loading && statItem === "tutor" && (
+                    <TutorStatisticsChart
+                        title={`Thống kế số lượng lớp gia sư đã nhận năm ${year}`}
+                        data={tutorStatistics}
+                    />
+                )}
             </div>
         </div>
-    )
+    );
 }

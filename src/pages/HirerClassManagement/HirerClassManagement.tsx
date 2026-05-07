@@ -260,7 +260,12 @@ function HirerClassManagement() {
                     <Button size="small" onClick={() => void handleOpenDetail(record.id)}>
                         Chi tiết
                     </Button>
-                    <Button size="small" type="primary" onClick={() => handleOpenEdit(record)}>
+                    <Button 
+                        size="small" 
+                        type="primary" 
+                        onClick={() => handleOpenEdit(record)}
+                        disabled={record.hasTutorApplied}
+                    >
                         Sửa
                     </Button>
                     <Popconfirm

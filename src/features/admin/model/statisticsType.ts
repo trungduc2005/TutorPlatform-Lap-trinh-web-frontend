@@ -56,3 +56,9 @@ export type LocationOptionRequestType = {
   city: string;
   districtCode: string;
 }
+
+export type TutorStatItemType = {
+  id: number;
+  fullName: string;
+  totalReceivedClasses: number;
+}

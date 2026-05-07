@@ -23,7 +23,7 @@ export default function TutorDetail() {
           <span className="text-gray-400">/</span>
 
           <span onClick={() => navigate("/tutors")} className="text-blue-500 cursor-pointer hover:underline">
-            Gia sư tiêu biểu
+            Gia sư đề cử
           </span>
 
           <span className="text-gray-400">/</span>

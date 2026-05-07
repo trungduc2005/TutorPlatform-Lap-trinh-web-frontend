@@ -2,7 +2,7 @@ import type { Payload } from "recharts/types/component/DefaultTooltipContent";
 import axiosClient from "../../../shared/api/axiosClient";
 import type { AccountType } from "../model/accountType";
 import type { FeaturedTutorType, UpdateFeaturedTutorPayload } from "../model/featuredTutorType";
-import type {FilterOptionType, GradeOptionRequestType, LocationOptionRequestType, SearchClassType, StatisticsItemType, SubjectOptionRequestType } from "../model/statisticsType";
+import type {FilterOptionType, GradeOptionRequestType, LocationOptionRequestType, SearchClassType, StatisticsItemType, SubjectOptionRequestType, TutorStatItemType } from "../model/statisticsType";
 import type { NotificationPayload } from "../model/notificationType";
 import type { PaymentHistoryType } from "../model/PaymentHistoryType";
 
@@ -41,10 +41,11 @@ export const adminApi = {
     },
 
     //Unregistered Classes APIs
-    getUnregisteredClasses: async (page?: number, size?: number, subjectId?: number, gradeId?: number, locationId?: number): Promise<SearchClassType> => {
-        const res = await axiosClient.get("/public/search", {
-            params:{page, size, subjectId, gradeId, locationId},
+    getUnregisteredClasses: async (page?: number, size?: number, subjectId?: number, gradeId?: number, locationId?: number, classStatus?: string): Promise<SearchClassType> => {
+        const res = await axiosClient.get("/public/searchbystatus", {
+            params:{page, size, subjectId, gradeId, locationId, classStatus},
         });
+        console.log("api", res.data);
         return res.data;
     },
     deleteUnregisteredClass: async (classId: number): Promise<void> => {
@@ -104,6 +105,14 @@ export const adminApi = {
     },
     deleteLocationOption: async (locationId: number): Promise<void> => {
         const res = await axiosClient.delete(`/admin/location-option/${locationId}`);
+        return res.data;
+    },
+
+    //Tutor Statistic APIs
+    getTutorStats: async (year: number): Promise<TutorStatItemType[]> => {
+        const res = await axiosClient.get("/admin/statistics/tutor", {
+            params: {year},
+        });
         return res.data;
     },
 

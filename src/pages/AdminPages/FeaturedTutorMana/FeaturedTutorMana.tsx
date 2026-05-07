@@ -25,13 +25,13 @@ export default function FeaturedTutorMana() {
         const fetchFeaturedTutors = async () => {
             try {
                 const res = await adminApi.getFeaturedTutors();
-                message.success("Lấy danh sách gia sư tiêu biểu thành công");
+                message.success("Lấy danh sách gia sư đề cử thành công");
                 setFeaturedTutors(res);
                 console.log("Featured Tutors:", res);
             }
             catch (error) {
-                console.error("Không thể lấy danh sách gia sư tiêu biểu:", error);
-                message.error("Lấy danh sách gia sư tiêu biểu thất bại");
+                console.error("Không thể lấy danh sách gia sư đề cử:", error);
+                message.error("Lấy danh sách gia sư đề cử thất bại");
             }
             finally {
                 setLoading(false);
@@ -43,12 +43,12 @@ export default function FeaturedTutorMana() {
     const handleCreateFeaturedTutor = async (tutorData: Payload) => {
         try {
             await adminApi.createFeaturedTutor(tutorData);
-            message.success("Tạo gia sư tiêu biểu thành công");
+            message.success("Tạo gia sư đề cử thành công");
             handleCreateModalClose();
             setLoading(true);
         } catch (error) {
-            console.error("Không thể tạo gia sư tiêu biểu:", error);
-            message.error("Tạo gia sư tiêu biểu thất bại");
+            console.error("Không thể tạo gia sư đề cử:", error);
+            message.error("Tạo gia sư đề cử thất bại");
         }
     };
 
@@ -56,12 +56,12 @@ export default function FeaturedTutorMana() {
         if (!selectedFeturedTutor) return;
         try {
             await adminApi.updateFeaturedTutor(selectedFeturedTutor.id, tutorData);
-            message.success("Cập nhật gia sư tiêu biểu thành công");
+            message.success("Cập nhật gia sư đề cử thành công");
             setIsEditing(false);
             setLoading(true);
         } catch (error) {
-            console.error("Không thể cập nhật gia sư tiêu biểu:", error);
-            message.error("Cập nhật gia sư tiêu biểu thất bại");
+            console.error("Không thể cập nhật gia sư đề cử:", error);
+            message.error("Cập nhật gia sư đề cử thất bại");
         }
     };
 
@@ -69,12 +69,12 @@ export default function FeaturedTutorMana() {
         if (!selectedFeturedTutor) return;
         try{
             await adminApi.deleteFeaturedTutor(selectedFeturedTutor.id);
-            message.success("Xóa gia sư tiêu biểu thành công");
+            message.success("Xóa gia sư đề cử thành công");
             handleModalClose();
             setLoading(true);
         } catch (error) {
-            console.error("Không thể xóa gia sư tiêu biểu:", error);
-            message.error("Xóa gia sư tiêu biểu thất bại");
+            console.error("Không thể xóa gia sư đề cử:", error);
+            message.error("Xóa gia sư đề cử thất bại");
         }
     }
 
@@ -114,7 +114,7 @@ export default function FeaturedTutorMana() {
         >
             <div className="featured-tutor__header"
             >
-                <h1>Quản lý gia sư tiêu biểu</h1>
+                <h1>Quản lý gia sư đề cử</h1>
                 <div
                     style={{display: "flex", justifyContent: "center", width: "100%"}}
                 >

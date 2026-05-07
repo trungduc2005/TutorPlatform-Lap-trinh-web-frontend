@@ -109,7 +109,7 @@ export default function TutorsList() {
           💠
           </span>
           <span className="text-gray-400">/</span>
-          <span className="text-gray-600"> Gia sư tiêu biểu </span>
+          <span className="text-gray-600"> Gia sư đề cử</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 justify-items-center">

@@ -24,7 +24,7 @@ const NAV_ITEMS_COMMON: NavItem[] = [
 const NAV_ITEMS_GUEST: NavItem[] = [
     ...NAV_ITEMS_COMMON,
     { path: "/classes", label: "Danh sách lớp mới" },
-    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
+    { path: "/featured-tutors", label: "Gia sư đề cử" },
 ];
 
 const NAV_ITEMS_TUTOR: NavItem[] = [
@@ -35,7 +35,7 @@ const NAV_ITEMS_TUTOR: NavItem[] = [
 const NAV_ITEMS_HIRER: NavItem[] = [
     { path: "/", label: "Trang chủ" },
     { path: "/hire-tutor", label: "Thuê gia sư" },
-    { path: "/featured-tutors", label: "Gia sư tiêu biểu" },
+    { path: "/featured-tutors", label: "Gia sư đề cử" },
     { path: "/hirer/class-management", label: "Quản lý lớp học" },
     { path: "/hirer/application-management", label: "Quản lý ứng tuyển" },
     { path: "/contract", label: "Hợp đồng" },

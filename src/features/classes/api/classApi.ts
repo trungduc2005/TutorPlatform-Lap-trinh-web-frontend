@@ -53,6 +53,7 @@ export interface HirerClassDTO {
     note: string;
     studentGender: "MALE" | "FEMALE" | "OTHER";
     studentDescription: string;
+    hasTutorApplied: boolean;
 }
 
 export type UpdateHirerClassPayload = Partial<Omit<HirerClassDTO, "id">>;
