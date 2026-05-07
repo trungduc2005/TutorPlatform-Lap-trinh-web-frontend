@@ -107,13 +107,15 @@ export default function AdminNotificationPage() {
           <Select
             mode="multiple"
             allowClear
+            showSearch
+            optionFilterProp="label"
             options={userOptions}
             value={payload.userIds}
             onChange={(value) =>
-              setPayload({ ...payload, userIds: value })
+                setPayload({ ...payload, userIds: value })
             }
             placeholder="Chọn user..."
-          />
+        />
         </div>
 
         <div className="form-group">
